@@ -223,7 +223,7 @@ function ResumeBuilder({ selectedTemplate = 'compact', onBack }) {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header with Back Button and Progress Bar */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3">
+      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-6 py-3 z-10">
         <div className="flex items-center gap-6">
           <button
             onClick={onBack}
@@ -286,7 +286,7 @@ function ResumeBuilder({ selectedTemplate = 'compact', onBack }) {
           </button>
         </div>
       </div>
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[calc(100vh-57px)]">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[calc(100vh-57px)] mt-[57px]">
         {/* Mobile Preview Toggle - Show preview button on mobile */}
         <div className="lg:hidden fixed bottom-4 right-4 z-50">
           <button

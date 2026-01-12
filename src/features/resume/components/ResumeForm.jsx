@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Icon from '../../../components/common/Icon'
 
-const sections = [
+const allSections = [
   { id: 'personal', label: 'Personal Info', icon: 'user' },
   { id: 'education', label: 'Education', icon: 'education' },
   { id: 'experience', label: 'Experience', icon: 'briefcase' },
@@ -40,7 +40,32 @@ function ResumeForm({
   removeProject,
 }) {
   const [errors, setErrors] = useState({})
-  const currentSectionId = sections[currentSection].id
+  
+  // Filter sections based on template
+  const sections = useMemo(() => {
+    const baseSections = [
+      { id: 'personal', label: 'Personal Info', icon: 'user' },
+      { id: 'education', label: 'Education', icon: 'education' },
+      { id: 'experience', label: 'Experience', icon: 'briefcase' },
+    ]
+    
+    if (selectedTemplate === 'corporate') {
+      // Corporate: Only Personal, Education, Experience, Skills
+      return [
+        ...baseSections,
+        { id: 'skills', label: 'Skills & More', icon: 'skills' },
+      ]
+    } else {
+      // All other templates: Personal, Education, Experience, Skills, Projects
+      return [
+        ...baseSections,
+        { id: 'skills', label: 'Skills & More', icon: 'skills' },
+        { id: 'projects', label: 'Projects', icon: 'project' },
+      ]
+    }
+  }, [selectedTemplate])
+  
+  const currentSectionId = sections[currentSection]?.id
 
   // Validation functions
   const validatePersonal = () => {
@@ -194,29 +219,31 @@ function ResumeForm({
     return Object.keys(newErrors).length === 0
   }
 
-  // Validate all sections before finishing
+  // Validate all sections before finishing (only sections in current template)
   const validateAllSections = () => {
     const allErrors = {}
     
-    // Validate personal info
+    // Validate personal info (always present)
     const personalErrors = validatePersonal()
     Object.assign(allErrors, personalErrors)
     
-    // Validate education
+    // Validate education (always present)
     const educationErrors = validateEducation()
     Object.assign(allErrors, educationErrors)
     
-    // Validate experience
+    // Validate experience (always present)
     const experienceErrors = validateExperience()
     Object.assign(allErrors, experienceErrors)
     
-    // Validate skills
+    // Validate skills (always present)
     const skillsErrors = validateSkills()
     Object.assign(allErrors, skillsErrors)
     
-    // Validate projects
-    const projectsErrors = validateProjects()
-    Object.assign(allErrors, projectsErrors)
+    // Validate projects (only if in template)
+    if (selectedTemplate !== 'corporate') {
+      const projectsErrors = validateProjects()
+      Object.assign(allErrors, projectsErrors)
+    }
     
     return allErrors
   }
@@ -228,25 +255,21 @@ function ResumeForm({
       // Find the first section with errors and navigate to it
       let sectionToNavigate = -1
       
-      // Check personal section (index 0) - personal info errors
+      // Find section index by matching section ID
       if (allErrors.fullName || allErrors.email || allErrors.phone || allErrors.location) {
-        sectionToNavigate = 0
+        sectionToNavigate = sections.findIndex(s => s.id === 'personal')
       }
-      // Check education section (index 1) - education errors
       else if (allErrors.education_general || Object.keys(allErrors).some(key => key.startsWith('education_'))) {
-        sectionToNavigate = 1
+        sectionToNavigate = sections.findIndex(s => s.id === 'education')
       }
-      // Check experience section (index 2) - experience errors
       else if (allErrors.experience_general || Object.keys(allErrors).some(key => key.startsWith('experience_'))) {
-        sectionToNavigate = 2
+        sectionToNavigate = sections.findIndex(s => s.id === 'experience')
       }
-      // Check skills section (index 3) - skills errors
       else if (allErrors.skills_general || Object.keys(allErrors).some(key => key.startsWith('skill_'))) {
-        sectionToNavigate = 3
+        sectionToNavigate = sections.findIndex(s => s.id === 'skills')
       }
-      // Check projects section (index 4) - projects errors
       else if (allErrors.projects_general || Object.keys(allErrors).some(key => key.startsWith('project_'))) {
-        sectionToNavigate = 4
+        sectionToNavigate = sections.findIndex(s => s.id === 'projects')
       }
       
       // Navigate to the section with errors
@@ -979,174 +1002,183 @@ function ResumeForm({
               ))}
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold text-gray-900">Tools & Technologies</h2>
-                <button onClick={addTool} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-                  Add Tool
-                </button>
-              </div>
-              <p className="text-sm text-gray-500 italic mb-4">Add software, frameworks, or tools you're proficient with</p>
-              {resumeData.tools.length === 0 && (
-                <div className="py-12 text-center text-gray-400 text-sm">
-                  <p>No tools yet. Click "Add Tool" to get started.</p>
-                </div>
-              )}
-              {resumeData.tools.map((tool) => (
-                <div key={tool.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3 flex items-center gap-3">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      placeholder="React, Docker, Figma, Git, etc."
-                      value={tool.name}
-                      onChange={(e) => {
-                        updateTool(tool.id, e.target.value)
-                        if (errors[`tool_${tool.id}`]) {
-                          setErrors(prev => ({ ...prev, [`tool_${tool.id}`]: null }))
-                        }
-                      }}
-                      className={`w-full px-3 py-2 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                        errors[`tool_${tool.id}`]
-                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                      }`}
-                    />
-                    {errors[`tool_${tool.id}`] && (
-                      <p className="text-xs text-red-500 mt-1">{errors[`tool_${tool.id}`]}</p>
-                    )}
-                  </div>
-                  <button onClick={() => removeTool(tool.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors whitespace-nowrap">
-                    Remove
+            {/* Tools - Hidden for corporate and with-image templates */}
+            {selectedTemplate !== 'corporate' && selectedTemplate !== 'with-image' && (
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-semibold text-gray-900">Tools & Technologies</h2>
+                  <button onClick={addTool} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Add Tool
                   </button>
                 </div>
-              ))}
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold text-gray-900">Languages</h2>
-                <button onClick={addLanguage} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-                  Add Language
-                </button>
-              </div>
-              <p className="text-sm text-gray-500 italic mb-4">List languages you speak and your proficiency level</p>
-              {resumeData.languages.length === 0 && (
-                <div className="py-12 text-center text-gray-400 text-sm">
-                  <p>No languages yet. Click "Add Language" to get started.</p>
-                </div>
-              )}
-              {resumeData.languages.map((lang) => (
-                <div key={lang.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-700">Language</label>
+                <p className="text-sm text-gray-500 italic mb-4">Add software, frameworks, or tools you're proficient with</p>
+                {resumeData.tools.length === 0 && (
+                  <div className="py-12 text-center text-gray-400 text-sm">
+                    <p>No tools yet. Click "Add Tool" to get started.</p>
+                  </div>
+                )}
+                {resumeData.tools.map((tool) => (
+                  <div key={tool.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3 flex items-center gap-3">
+                    <div className="flex-1">
                       <input
                         type="text"
-                        placeholder="English, Spanish, etc."
-                        value={lang.name}
+                        placeholder="React, Docker, Figma, Git, etc."
+                        value={tool.name}
                         onChange={(e) => {
-                          updateLanguage(lang.id, 'name', e.target.value)
-                          if (errors[`language_${lang.id}_name`]) {
-                            setErrors(prev => ({ ...prev, [`language_${lang.id}_name`]: null }))
+                          updateTool(tool.id, e.target.value)
+                          if (errors[`tool_${tool.id}`]) {
+                            setErrors(prev => ({ ...prev, [`tool_${tool.id}`]: null }))
                           }
                         }}
-                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                          errors[`language_${lang.id}_name`]
+                        className={`w-full px-3 py-2 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                          errors[`tool_${tool.id}`]
                             ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
                             : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
                         }`}
                       />
-                      {errors[`language_${lang.id}_name`] && (
-                        <p className="text-xs text-red-500">{errors[`language_${lang.id}_name`]}</p>
+                      {errors[`tool_${tool.id}`] && (
+                        <p className="text-xs text-red-500 mt-1">{errors[`tool_${tool.id}`]}</p>
                       )}
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-700">Proficiency</label>
-                      <select
-                        value={lang.proficiency}
-                        onChange={(e) => updateLanguage(lang.id, 'proficiency', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
-                      >
-                        <option value="Native">Native</option>
-                        <option value="Fluent">Fluent</option>
-                        <option value="Professional">Professional</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Basic">Basic</option>
-                      </select>
-                    </div>
+                    <button onClick={() => removeTool(tool.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors whitespace-nowrap">
+                      Remove
+                    </button>
                   </div>
-                  <button onClick={() => removeLanguage(lang.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors">
-                    Remove
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold text-gray-900">Certifications</h2>
-                <button onClick={addCertification} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-                  Add Certification
-                </button>
+                ))}
               </div>
-              <p className="text-sm text-gray-500 italic mb-4">Add professional certifications and credentials</p>
-              {resumeData.certifications.length === 0 && (
-                <div className="py-12 text-center text-gray-400 text-sm">
-                  <p>No certifications yet. Click "Add Certification" to get started.</p>
-                </div>
-              )}
-              {resumeData.certifications.map((cert) => (
-                <div key={cert.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-700">Certification Name</label>
-                      <input
-                        type="text"
-                        placeholder="AWS Certified Solutions Architect"
-                        value={cert.name}
-                        onChange={(e) => {
-                          updateCertification(cert.id, 'name', e.target.value)
-                          if (errors[`certification_${cert.id}_name`]) {
-                            setErrors(prev => ({ ...prev, [`certification_${cert.id}_name`]: null }))
-                          }
-                        }}
-                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                          errors[`certification_${cert.id}_name`]
-                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                        }`}
-                      />
-                      {errors[`certification_${cert.id}_name`] && (
-                        <p className="text-xs text-red-500">{errors[`certification_${cert.id}_name`]}</p>
-                      )}
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-700">Issuing Organization</label>
-                      <input
-                        type="text"
-                        placeholder="Amazon Web Services"
-                        value={cert.issuer}
-                        onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-700">Date Obtained</label>
-                      <input
-                        type="text"
-                        placeholder="Jan 2023"
-                        value={cert.date}
-                        onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-                  <button onClick={() => removeCertification(cert.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors">
-                    Remove
+            )}
+
+            {/* Languages - Hidden for corporate template */}
+            {selectedTemplate !== 'corporate' && (
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-semibold text-gray-900">Languages</h2>
+                  <button onClick={addLanguage} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Add Language
                   </button>
                 </div>
-              ))}
-            </div>
+                <p className="text-sm text-gray-500 italic mb-4">List languages you speak and your proficiency level</p>
+                {resumeData.languages.length === 0 && (
+                  <div className="py-12 text-center text-gray-400 text-sm">
+                    <p>No languages yet. Click "Add Language" to get started.</p>
+                  </div>
+                )}
+                {resumeData.languages.map((lang) => (
+                  <div key={lang.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">Language</label>
+                        <input
+                          type="text"
+                          placeholder="English, Spanish, etc."
+                          value={lang.name}
+                          onChange={(e) => {
+                            updateLanguage(lang.id, 'name', e.target.value)
+                            if (errors[`language_${lang.id}_name`]) {
+                              setErrors(prev => ({ ...prev, [`language_${lang.id}_name`]: null }))
+                            }
+                          }}
+                          className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                            errors[`language_${lang.id}_name`]
+                              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                              : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                          }`}
+                        />
+                        {errors[`language_${lang.id}_name`] && (
+                          <p className="text-xs text-red-500">{errors[`language_${lang.id}_name`]}</p>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">Proficiency</label>
+                        <select
+                          value={lang.proficiency}
+                          onChange={(e) => updateLanguage(lang.id, 'proficiency', e.target.value)}
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                        >
+                          <option value="Native">Native</option>
+                          <option value="Fluent">Fluent</option>
+                          <option value="Professional">Professional</option>
+                          <option value="Intermediate">Intermediate</option>
+                          <option value="Basic">Basic</option>
+                        </select>
+                      </div>
+                    </div>
+                    <button onClick={() => removeLanguage(lang.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors">
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Certifications - Hidden for corporate template */}
+            {selectedTemplate !== 'corporate' && (
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-semibold text-gray-900">Certifications</h2>
+                  <button onClick={addCertification} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Add Certification
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500 italic mb-4">Add professional certifications and credentials</p>
+                {resumeData.certifications.length === 0 && (
+                  <div className="py-12 text-center text-gray-400 text-sm">
+                    <p>No certifications yet. Click "Add Certification" to get started.</p>
+                  </div>
+                )}
+                {resumeData.certifications.map((cert) => (
+                  <div key={cert.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">Certification Name</label>
+                        <input
+                          type="text"
+                          placeholder="AWS Certified Solutions Architect"
+                          value={cert.name}
+                          onChange={(e) => {
+                            updateCertification(cert.id, 'name', e.target.value)
+                            if (errors[`certification_${cert.id}_name`]) {
+                              setErrors(prev => ({ ...prev, [`certification_${cert.id}_name`]: null }))
+                            }
+                          }}
+                          className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                            errors[`certification_${cert.id}_name`]
+                              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                              : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                          }`}
+                        />
+                        {errors[`certification_${cert.id}_name`] && (
+                          <p className="text-xs text-red-500">{errors[`certification_${cert.id}_name`]}</p>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">Issuing Organization</label>
+                        <input
+                          type="text"
+                          placeholder="Amazon Web Services"
+                          value={cert.issuer}
+                          onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-gray-700">Date Obtained</label>
+                        <input
+                          type="text"
+                          placeholder="Jan 2023"
+                          value={cert.date}
+                          onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
+                          className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                    <button onClick={() => removeCertification(cert.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors">
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         )
 

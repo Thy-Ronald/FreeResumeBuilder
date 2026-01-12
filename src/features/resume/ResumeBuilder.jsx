@@ -6,13 +6,28 @@ import { templates } from '../../constants/templates'
 import logoImage from '../../assets/logo.jpg'
 import Icon from '../../components/common/Icon'
 
-const sections = [
-  { id: 'personal', label: 'Personal Info', icon: 'user' },
-  { id: 'education', label: 'Education', icon: 'education' },
-  { id: 'experience', label: 'Experience', icon: 'briefcase' },
-  { id: 'skills', label: 'Skills & More', icon: 'skills' },
-  { id: 'projects', label: 'Projects', icon: 'project' },
-]
+// Sections will be filtered in ResumeForm based on template
+// This is just for the progress bar - actual sections come from ResumeForm
+const getSectionsForTemplate = (template) => {
+  const baseSections = [
+    { id: 'personal', label: 'Personal Info', icon: 'user' },
+    { id: 'education', label: 'Education', icon: 'education' },
+    { id: 'experience', label: 'Experience', icon: 'briefcase' },
+  ]
+  
+  if (template === 'corporate') {
+    return [
+      ...baseSections,
+      { id: 'skills', label: 'Skills & More', icon: 'skills' },
+    ]
+  } else {
+    return [
+      ...baseSections,
+      { id: 'skills', label: 'Skills & More', icon: 'skills' },
+      { id: 'projects', label: 'Projects', icon: 'project' },
+    ]
+  }
+}
 
 function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }) {
   const [resumeData, setResumeData] = useState(initialResumeData)
@@ -27,6 +42,15 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
+
+  // Reset current section when template changes to prevent out-of-bounds
+  useEffect(() => {
+    const sections = getSectionsForTemplate(selectedTemplate)
+    if (currentSection >= sections.length) {
+      setCurrentSection(0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTemplate])
 
   const updatePersonalInfo = (field, value) => {
     setResumeData(prev => ({
@@ -225,6 +249,7 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }
     }))
   }
 
+  const sections = getSectionsForTemplate(selectedTemplate)
   const progress = ((currentSection + 1) / sections.length) * 100
 
   const goToSection = (index) => {

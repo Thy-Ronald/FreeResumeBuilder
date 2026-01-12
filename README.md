@@ -59,6 +59,36 @@ To preview the production build locally:
 npm run preview
 ```
 
+## Deployment
+
+### Deploy to Vercel
+
+The easiest way to deploy this app is using [Vercel](https://vercel.com):
+
+1. **Install Vercel CLI** (optional):
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Deploy via CLI**:
+   ```bash
+   vercel
+   ```
+
+3. **Deploy via Vercel Dashboard**:
+   - Push your code to GitHub/GitLab/Bitbucket
+   - Import your repository in [Vercel Dashboard](https://vercel.com/new)
+   - Vercel will automatically detect Vite and configure the build settings
+   - Click "Deploy"
+
+The `vercel.json` configuration file is already set up with:
+- Build command: `npm run build`
+- Output directory: `dist`
+- SPA routing support
+- Optimized caching headers
+
+Your app will be live at `https://your-project.vercel.app`
+
 ## Usage
 
 1. **Fill in Your Information**:

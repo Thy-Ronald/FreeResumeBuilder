@@ -11,6 +11,8 @@ const sections = [
 
 function ResumeForm({
   resumeData,
+  currentSection,
+  setCurrentSection,
   updatePersonalInfo,
   updateSummary,
   addExperience,
@@ -35,7 +37,6 @@ function ResumeForm({
   updateProject,
   removeProject,
 }) {
-  const [currentSection, setCurrentSection] = useState(0)
   const [errors, setErrors] = useState({})
   const currentSectionId = sections[currentSection].id
 
@@ -184,11 +185,11 @@ function ResumeForm({
   }
 
   const goToSection = (index) => {
-    setCurrentSection(index)
+    if (setCurrentSection) {
+      setCurrentSection(index)
+    }
     setErrors({})
   }
-
-  const progress = ((currentSection + 1) / sections.length) * 100
 
   const renderSection = () => {
     switch (currentSectionId) {
@@ -1002,47 +1003,6 @@ function ResumeForm({
   return (
     <div className="bg-gray-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-4xl mx-auto flex flex-col">
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            {sections.map((section, index) => (
-              <button
-                key={section.id}
-                onClick={() => goToSection(index)}
-                className={`flex flex-col items-center gap-2 transition-all ${
-                  index === currentSection
-                    ? 'text-gray-900'
-                    : index < currentSection
-                    ? 'text-blue-600'
-                    : 'text-gray-400'
-                }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
-                    index === currentSection
-                      ? 'bg-gray-900 text-white border-gray-900'
-                      : index < currentSection
-                      ? 'bg-blue-600 text-white border-blue-600'
-                      : 'bg-white border-gray-300'
-                  }`}
-                >
-                  <Icon name={section.icon} className="text-sm" />
-                </div>
-                <span className="text-xs font-medium hidden sm:block">{section.label}</span>
-              </button>
-            ))}
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <div className="text-center mt-2 text-sm text-gray-600">
-            Step {currentSection + 1} of {sections.length}: {sections[currentSection].label}
-          </div>
-        </div>
-
         {/* Current Section Content */}
         <div className="flex-1">
           {renderSection()}

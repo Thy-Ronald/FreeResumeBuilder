@@ -13,6 +13,8 @@ const iconMap = {
   skills: 'fi-rr-settings',
   project: 'fi-rr-folder',
   preview: 'fi-rr-eye',
+  arrowLeft: 'fi-rr-arrow-left',
+  chevronLeft: 'fi-rr-angle-left',
 }
 
 function Icon({ name, className = '' }) {

@@ -1,9 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 import Icon from '../../../components/common/Icon'
 
-function ResumePreview({ resumeData, selectedTemplate = 'compact' }) {
+function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadReady }) {
   const resumeRef = useRef(null)
 
   const downloadPDF = async () => {
@@ -18,8 +18,8 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact' }) {
         useCORS: true,
         logging: false,
         backgroundColor: '#ffffff',
-        windowWidth: 794, // A4 width in pixels at 96 DPI
-        windowHeight: 1123, // A4 height in pixels at 96 DPI
+        windowWidth: 816, // US Letter width in pixels at 96 DPI (8.5" x 96)
+        windowHeight: 1056, // US Letter height in pixels at 96 DPI (11" x 96)
         scrollY: -window.scrollY,
         scrollX: -window.scrollX,
         allowTaint: true,
@@ -30,7 +30,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact' }) {
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'a4',
+        format: 'letter', // US Letter format (8.5" x 11")
         compress: true,
       })
 
@@ -46,8 +46,17 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact' }) {
     }
   }
 
+  useEffect(() => {
+    if (onDownloadReady) {
+      onDownloadReady(downloadPDF)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const getTemplateClasses = () => {
-    const base = "bg-white w-[210mm] min-h-[297mm] max-h-[297mm] border border-gray-200 shadow-sm font-sans text-gray-900"
+    // US Letter: 8.5" x 11" = 215.9mm x 279.4mm (aspect ratio 1:1.294)
+    // Maintaining true physical dimensions for PDF export
+    const base = "bg-white w-[215.9mm] h-[279.4mm] font-sans text-gray-900 overflow-hidden"
     const styles = {
       compact: `${base} text-[9pt] leading-[1.32] p-[10mm_12mm]`,
       modern: `${base} text-[9.5pt] leading-[1.4] p-[12mm_14mm]`,
@@ -631,25 +640,27 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact' }) {
   )
 
   return (
-    <div className="bg-white border-l border-gray-200 p-10 sticky top-0 h-screen overflow-y-auto flex flex-col">
-      <div className="flex justify-between items-center mb-6 pb-6 border-b border-gray-200">
-        <h2 className="text-xl font-semibold text-gray-900 tracking-tight">Preview</h2>
-        <button 
-          onClick={downloadPDF} 
-          className="px-5 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 transition-colors"
-        >
-          <Icon name="download" className="text-base" />
-          Download PDF
-        </button>
-      </div>
-      <div className="flex-1 bg-gray-50 p-8 rounded-lg flex justify-center overflow-y-auto">
+    <div className="border-l border-gray-200 sticky top-0 h-screen overflow-y-auto flex flex-col" data-resume-preview>
+      {/* Outer container with breathing room padding */}
+      <div className="flex-1 flex justify-center items-start overflow-y-auto p-2 sm:p-3 md:p-4 lg:p-6">
+        {/* Scaled preview wrapper - maintains true US Letter aspect ratio (8.5:11) */}
         <div 
-          ref={resumeRef} 
-          className={getTemplateClasses()}
-          style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif" }}
+          className="scale-[0.25] sm:scale-[0.3] md:scale-[0.35] lg:scale-[0.4] xl:scale-[0.45] origin-top"
         >
-          {renderHeader()}
-          {selectedTemplate === 'classic' ? renderSingleColumnLayout() : renderTwoColumnLayout()}
+          {/* Paper frame with thin border and shadow for realism */}
+          <div className="border-2 border-gray-300 shadow-2xl bg-white">
+            {/* Actual resume content - true physical dimensions (215.9mm x 279.4mm = US Letter) */}
+            <div 
+              ref={resumeRef} 
+              className={getTemplateClasses()}
+              style={{ 
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
+              }}
+            >
+              {renderHeader()}
+              {selectedTemplate === 'classic' ? renderSingleColumnLayout() : renderTwoColumnLayout()}
+            </div>
+          </div>
         </div>
       </div>
     </div>

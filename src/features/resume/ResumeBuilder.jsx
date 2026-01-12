@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ResumeForm from './components/ResumeForm'
 import ResumePreview from './components/ResumePreview'
 import { initialResumeData } from '../../constants/resume'
+import Icon from '../../components/common/Icon'
 
-function ResumeBuilder({ selectedTemplate = 'compact' }) {
+const sections = [
+  { id: 'personal', label: 'Personal Info', icon: 'user' },
+  { id: 'education', label: 'Education', icon: 'education' },
+  { id: 'experience', label: 'Experience', icon: 'briefcase' },
+  { id: 'skills', label: 'Skills & More', icon: 'skills' },
+  { id: 'projects', label: 'Projects', icon: 'project' },
+]
+
+function ResumeBuilder({ selectedTemplate = 'compact', onBack }) {
   const [resumeData, setResumeData] = useState(initialResumeData)
+  const [currentSection, setCurrentSection] = useState(0)
+  const downloadPDFRef = useRef(null)
 
   const updatePersonalInfo = (field, value) => {
     setResumeData(prev => ({
@@ -203,11 +214,100 @@ function ResumeBuilder({ selectedTemplate = 'compact' }) {
     }))
   }
 
+  const progress = ((currentSection + 1) / sections.length) * 100
+
+  const goToSection = (index) => {
+    setCurrentSection(index)
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-screen">
+      {/* Header with Back Button and Progress Bar */}
+      <div className="bg-white border-b border-gray-200 px-6 py-3">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={onBack}
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0"
+          >
+            <Icon name="arrowLeft" className="text-lg" />
+          </button>
+          
+          {/* Progress Bar */}
+          <div className="flex-1 max-w-md mx-auto">
+            <div className="flex items-center justify-between mb-1.5">
+              {sections.map((section, index) => (
+                <button
+                  key={section.id}
+                  onClick={() => goToSection(index)}
+                  className={`flex flex-col items-center gap-0.5 transition-all ${
+                    index === currentSection
+                      ? 'text-gray-900'
+                      : index < currentSection
+                      ? 'text-blue-600'
+                      : 'text-gray-400'
+                  }`}
+                >
+                  <div
+                    className={`w-5 h-5 rounded-full flex items-center justify-center border-2 transition-all ${
+                      index === currentSection
+                        ? 'bg-gray-900 text-white border-gray-900'
+                        : index < currentSection
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-white border-gray-300'
+                    }`}
+                  >
+                    <Icon name={section.icon} className="text-[8px]" />
+                  </div>
+                  <span className="text-[9px] font-medium hidden sm:block">{section.label}</span>
+                </button>
+              ))}
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-0.5">
+              <div
+                className="bg-blue-600 h-0.5 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <div className="text-center mt-0.5 text-[9px] text-gray-600">
+              Step {currentSection + 1} of {sections.length}: {sections[currentSection].label}
+            </div>
+          </div>
+
+          <button 
+            onClick={() => {
+              if (downloadPDFRef.current) {
+                downloadPDFRef.current()
+              }
+            }}
+            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-gray-800 transition-colors flex-shrink-0"
+          >
+            <Icon name="download" className="text-sm" />
+            Download PDF
+          </button>
+        </div>
+      </div>
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[calc(100vh-57px)]">
+        {/* Mobile Preview Toggle - Show preview button on mobile */}
+        <div className="lg:hidden fixed bottom-4 right-4 z-50">
+          <button
+            onClick={() => {
+              const preview = document.querySelector('[data-resume-preview]')
+              if (preview) {
+                preview.classList.toggle('hidden')
+                preview.classList.toggle('fixed')
+                preview.classList.add('inset-0', 'bg-white', 'z-40')
+              }
+            }}
+            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium shadow-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
+          >
+            <Icon name="preview" className="text-sm" />
+            Preview
+          </button>
+        </div>
         <ResumeForm
           resumeData={resumeData}
+          currentSection={currentSection}
+          setCurrentSection={setCurrentSection}
           updatePersonalInfo={updatePersonalInfo}
           updateSummary={updateSummary}
           addExperience={addExperience}
@@ -235,6 +335,9 @@ function ResumeBuilder({ selectedTemplate = 'compact' }) {
         <ResumePreview
           resumeData={resumeData}
           selectedTemplate={selectedTemplate}
+          onDownloadReady={(downloadFn) => {
+            downloadPDFRef.current = downloadFn
+          }}
         />
       </div>
     </div>

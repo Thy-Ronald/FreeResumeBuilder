@@ -9,7 +9,7 @@ function App() {
     return <TemplateSelection onSelectTemplate={setSelectedTemplate} />
   }
 
-  return <ResumeBuilder selectedTemplate={selectedTemplate} />
+  return <ResumeBuilder selectedTemplate={selectedTemplate} onBack={() => setSelectedTemplate(null)} />
 }
 
 export default App

@@ -2,6 +2,14 @@
 
 A professional, ATS-friendly resume builder built with React. Create compact, space-efficient resumes that fit perfectly on one page and export them as PDFs.
 
+## 🌐 Live Demo
+
+**Try it now:** [https://resumebuilder-free.vercel.app/](https://resumebuilder-free.vercel.app/)
+
+✨ **100% Free** - No payment required  
+🔒 **No Account Needed** - Start building immediately, no sign-up or login  
+💻 **Client-Side Only** - All processing happens in your browser, your data stays private
+
 ## Features
 
 - ✨ **ATS-Friendly Design**: Optimized for Applicant Tracking Systems
@@ -9,7 +17,10 @@ A professional, ATS-friendly resume builder built with React. Create compact, sp
 - 📄 **Live Preview**: See your resume update in real-time as you type
 - 📥 **PDF Download**: Export your resume as a professional PDF
 - 🎨 **Modern Typography**: Uses Inter font for clean, professional appearance
-- 💾 **Client-Side Only**: No backend required, everything runs in your browser
+- 💾 **Client-Side Only**: No backend required, everything runs in your browser - your data never leaves your device
+- 🎨 **Multiple Templates**: Choose from various professional resume templates
+- 🎨 **Customizable Colors**: Pick accent colors to personalize your resume
+- 🔤 **Font Selection**: Choose from multiple professional fonts
 - 📐 **Two-Column Layout**: Efficient 30/70 split for maximum space utilization
 - 📏 **One-Page Design**: Compact layout ensures everything fits on a single page
 

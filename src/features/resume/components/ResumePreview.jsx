@@ -116,7 +116,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
       pdf.save(`${resumeData.personalInfo.fullName || 'resume'}-resume.pdf`)
     } catch (error) {
       console.error('Error generating PDF:', error)
-      alert('Error generating PDF. Please try again.')
+      throw error // Re-throw so loading state can be handled
     }
   }
 

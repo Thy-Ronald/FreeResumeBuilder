@@ -14,6 +14,7 @@ function ResumeForm({
   currentSection,
   setCurrentSection,
   selectedTemplate = 'compact',
+  onFinish,
   updatePersonalInfo,
   updateSummary,
   addExperience,
@@ -64,7 +65,7 @@ function ResumeForm({
   const validateEducation = () => {
     const newErrors = {}
     if (resumeData.education.length === 0) {
-      newErrors.general = 'At least one education entry is required'
+      newErrors.education_general = 'At least one education entry is required'
       return newErrors
     }
     resumeData.education.forEach((edu, index) => {
@@ -90,7 +91,7 @@ function ResumeForm({
   const validateExperience = () => {
     const newErrors = {}
     if (resumeData.experience.length === 0) {
-      newErrors.general = 'At least one experience entry is required'
+      newErrors.experience_general = 'At least one experience entry is required'
       return newErrors
     }
     resumeData.experience.forEach((exp, index) => {
@@ -115,8 +116,10 @@ function ResumeForm({
 
   const validateSkills = () => {
     const newErrors = {}
+    
+    // Validate Skills
     if (resumeData.skills.length === 0) {
-      newErrors.general = 'At least one skill is required'
+      newErrors.skills_general = 'At least one skill is required'
       return newErrors
     }
     resumeData.skills.forEach((skill) => {
@@ -124,13 +127,35 @@ function ResumeForm({
         newErrors[`skill_${skill.id}`] = 'Skill name is required'
       }
     })
+    
+    // Validate Tools - if tools exist, each must have a name
+    resumeData.tools.forEach((tool) => {
+      if (!tool.name?.trim()) {
+        newErrors[`tool_${tool.id}`] = 'Tool name is required'
+      }
+    })
+    
+    // Validate Languages - if languages exist, each must have a name
+    resumeData.languages.forEach((lang) => {
+      if (!lang.name?.trim()) {
+        newErrors[`language_${lang.id}_name`] = 'Language name is required'
+      }
+    })
+    
+    // Validate Certifications - if certifications exist, each must have a name
+    resumeData.certifications.forEach((cert) => {
+      if (!cert.name?.trim()) {
+        newErrors[`certification_${cert.id}_name`] = 'Certification name is required'
+      }
+    })
+    
     return newErrors
   }
 
   const validateProjects = () => {
     const newErrors = {}
     if (resumeData.projects.length === 0) {
-      newErrors.general = 'At least one project is required'
+      newErrors.projects_general = 'At least one project is required'
       return newErrors
     }
     resumeData.projects.forEach((project) => {
@@ -169,14 +194,185 @@ function ResumeForm({
     return Object.keys(newErrors).length === 0
   }
 
-  const nextSection = () => {
-    if (validateCurrentSection()) {
-      if (currentSection < sections.length - 1) {
-        setCurrentSection(currentSection + 1)
-        setErrors({})
-        // Scroll to top when moving to next section
+  // Validate all sections before finishing
+  const validateAllSections = () => {
+    const allErrors = {}
+    
+    // Validate personal info
+    const personalErrors = validatePersonal()
+    Object.assign(allErrors, personalErrors)
+    
+    // Validate education
+    const educationErrors = validateEducation()
+    Object.assign(allErrors, educationErrors)
+    
+    // Validate experience
+    const experienceErrors = validateExperience()
+    Object.assign(allErrors, experienceErrors)
+    
+    // Validate skills
+    const skillsErrors = validateSkills()
+    Object.assign(allErrors, skillsErrors)
+    
+    // Validate projects
+    const projectsErrors = validateProjects()
+    Object.assign(allErrors, projectsErrors)
+    
+    return allErrors
+  }
+
+  const handleFinish = () => {
+    const allErrors = validateAllSections()
+    
+    if (Object.keys(allErrors).length > 0) {
+      // Find the first section with errors and navigate to it
+      let sectionToNavigate = -1
+      
+      // Check personal section (index 0) - personal info errors
+      if (allErrors.fullName || allErrors.email || allErrors.phone || allErrors.location) {
+        sectionToNavigate = 0
+      }
+      // Check education section (index 1) - education errors
+      else if (allErrors.education_general || Object.keys(allErrors).some(key => key.startsWith('education_'))) {
+        sectionToNavigate = 1
+      }
+      // Check experience section (index 2) - experience errors
+      else if (allErrors.experience_general || Object.keys(allErrors).some(key => key.startsWith('experience_'))) {
+        sectionToNavigate = 2
+      }
+      // Check skills section (index 3) - skills errors
+      else if (allErrors.skills_general || Object.keys(allErrors).some(key => key.startsWith('skill_'))) {
+        sectionToNavigate = 3
+      }
+      // Check projects section (index 4) - projects errors
+      else if (allErrors.projects_general || Object.keys(allErrors).some(key => key.startsWith('project_'))) {
+        sectionToNavigate = 4
+      }
+      
+      // Navigate to the section with errors
+      if (sectionToNavigate >= 0 && sectionToNavigate !== currentSection) {
+        setCurrentSection(sectionToNavigate)
+      }
+      
+      // Show error message
+      setErrors(allErrors)
+      // Scroll to top to show error message
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      // All validations passed, proceed to finish
+      setErrors({})
+      if (onFinish) {
+        onFinish()
+      }
+    }
+  }
+
+  const scrollToFirstError = (errors) => {
+    // Wait a bit for errors to be set in state and DOM to update
+    setTimeout(() => {
+      // Find the first input/textarea field with error styling (border-red-500)
+      const errorFields = document.querySelectorAll('input.border-red-500, textarea.border-red-500')
+      
+      if (errorFields.length > 0) {
+        // Calculate offset to account for fixed header
+        const headerHeight = 57 // Height of fixed header
+        const elementTop = errorFields[0].getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementTop - headerHeight - 20 // 20px padding
+        
+        // Smooth scroll to the field with offset
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+        
+        // Focus the field after a short delay to ensure scroll completes
+        setTimeout(() => {
+          errorFields[0].focus()
+        }, 300)
+        return
+      }
+      
+      // Fallback: Find first error message element
+      const firstErrorMsg = document.querySelector('.text-red-500, .bg-red-50')
+      if (firstErrorMsg) {
+        // Try to find the input/textarea near the error message
+        const parentContainer = firstErrorMsg.closest('.flex-col, .bg-gray-50, .bg-white')
+        if (parentContainer) {
+          const inputField = parentContainer.querySelector('input, textarea')
+          if (inputField) {
+            const headerHeight = 57
+            const elementTop = inputField.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementTop - headerHeight - 20
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+            
+            setTimeout(() => {
+              inputField.focus()
+            }, 300)
+            return
+          }
+        }
+        
+        // Scroll to error message
+        const headerHeight = 57
+        const elementTop = firstErrorMsg.getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementTop - headerHeight - 20
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      } else {
+        // Last resort: scroll to top smoothly
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
+    }, 200)
+  }
+
+  const nextSection = () => {
+    // Validate current section - this sets errors and returns true/false
+    let newErrors = {}
+    switch (currentSectionId) {
+      case 'personal':
+        newErrors = validatePersonal()
+        break
+      case 'education':
+        newErrors = validateEducation()
+        break
+      case 'experience':
+        newErrors = validateExperience()
+        break
+      case 'skills':
+        newErrors = validateSkills()
+        break
+      case 'projects':
+        newErrors = validateProjects()
+        break
+      default:
+        break
+    }
+    
+    // Set errors in state
+    setErrors(newErrors)
+    
+    // Check if there are any errors - if yes, prevent navigation
+    const hasErrors = Object.keys(newErrors).length > 0
+    
+    if (hasErrors) {
+      // Scroll to first error field
+      scrollToFirstError(newErrors)
+      return // Prevent navigation - do not proceed to next section
+    }
+    
+    // Only proceed if no errors (validation passed)
+    if (currentSection < sections.length - 1) {
+      setCurrentSection(currentSection + 1)
+      setErrors({})
+      // Scroll to top when moving to next section
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
@@ -393,9 +589,9 @@ function ResumeForm({
                 Add Education
               </button>
             </div>
-            {errors.general && (
+            {errors.education_general && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{errors.general}</p>
+                <p className="text-sm text-red-600">{errors.education_general}</p>
               </div>
             )}
             {resumeData.education.length === 0 && (
@@ -568,9 +764,9 @@ function ResumeForm({
                 Add Experience
               </button>
             </div>
-            {errors.general && (
+            {errors.experience_general && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{errors.general}</p>
+                <p className="text-sm text-red-600">{errors.experience_general}</p>
               </div>
             )}
             {resumeData.experience.length === 0 && (
@@ -743,9 +939,9 @@ function ResumeForm({
                 </button>
               </div>
               <p className="text-sm text-gray-500 italic mb-4">Add your core technical and professional skills</p>
-              {errors.general && (
+              {errors.skills_general && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-sm text-red-600">{errors.general}</p>
+                  <p className="text-sm text-red-600">{errors.skills_general}</p>
                 </div>
               )}
               {resumeData.skills.length === 0 && (
@@ -803,9 +999,21 @@ function ResumeForm({
                       type="text"
                       placeholder="React, Docker, Figma, Git, etc."
                       value={tool.name}
-                      onChange={(e) => updateTool(tool.id, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      onChange={(e) => {
+                        updateTool(tool.id, e.target.value)
+                        if (errors[`tool_${tool.id}`]) {
+                          setErrors(prev => ({ ...prev, [`tool_${tool.id}`]: null }))
+                        }
+                      }}
+                      className={`w-full px-3 py-2 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                        errors[`tool_${tool.id}`]
+                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                      }`}
                     />
+                    {errors[`tool_${tool.id}`] && (
+                      <p className="text-xs text-red-500 mt-1">{errors[`tool_${tool.id}`]}</p>
+                    )}
                   </div>
                   <button onClick={() => removeTool(tool.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors whitespace-nowrap">
                     Remove
@@ -836,9 +1044,21 @@ function ResumeForm({
                         type="text"
                         placeholder="English, Spanish, etc."
                         value={lang.name}
-                        onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onChange={(e) => {
+                          updateLanguage(lang.id, 'name', e.target.value)
+                          if (errors[`language_${lang.id}_name`]) {
+                            setErrors(prev => ({ ...prev, [`language_${lang.id}_name`]: null }))
+                          }
+                        }}
+                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                          errors[`language_${lang.id}_name`]
+                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                        }`}
                       />
+                      {errors[`language_${lang.id}_name`] && (
+                        <p className="text-xs text-red-500">{errors[`language_${lang.id}_name`]}</p>
+                      )}
                     </div>
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-medium text-gray-700">Proficiency</label>
@@ -884,9 +1104,21 @@ function ResumeForm({
                         type="text"
                         placeholder="AWS Certified Solutions Architect"
                         value={cert.name}
-                        onChange={(e) => updateCertification(cert.id, 'name', e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onChange={(e) => {
+                          updateCertification(cert.id, 'name', e.target.value)
+                          if (errors[`certification_${cert.id}_name`]) {
+                            setErrors(prev => ({ ...prev, [`certification_${cert.id}_name`]: null }))
+                          }
+                        }}
+                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
+                          errors[`certification_${cert.id}_name`]
+                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                        }`}
                       />
+                      {errors[`certification_${cert.id}_name`] && (
+                        <p className="text-xs text-red-500">{errors[`certification_${cert.id}_name`]}</p>
+                      )}
                     </div>
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-medium text-gray-700">Issuing Organization</label>
@@ -927,9 +1159,9 @@ function ResumeForm({
                 Add Project
               </button>
             </div>
-            {errors.general && (
+            {errors.projects_general && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{errors.general}</p>
+                <p className="text-sm text-red-600">{errors.projects_general}</p>
               </div>
             )}
             {resumeData.projects.length === 0 && (
@@ -1058,22 +1290,22 @@ function ResumeForm({
             <span>←</span>
             Previous
           </button>
-          <button
-            onClick={nextSection}
-            disabled={currentSection === sections.length - 1}
-            className={`px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-              currentSection === sections.length - 1
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
-          >
-            Next
-            <span>→</span>
-          </button>
-          {Object.keys(errors).length > 0 && (
-            <p className="text-xs text-red-500 text-center mt-2">
-              Please fill in all required fields before proceeding
-            </p>
+          {currentSection === sections.length - 1 ? (
+            <button
+              onClick={handleFinish}
+              className="px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 bg-green-600 text-white hover:bg-green-700"
+            >
+              Finish
+              <span>✓</span>
+            </button>
+          ) : (
+            <button
+              onClick={nextSection}
+              className="px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Next
+              <span>→</span>
+            </button>
           )}
         </div>
       </div>

@@ -143,12 +143,29 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
     return styles[selectedTemplate] || styles.compact
   }
 
+  // Standardized divider element for PDF-safe rendering
+  const renderDivider = () => {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '0.75pt',
+          backgroundColor: '#E5E7EB',
+          marginTop: '8pt',
+          marginBottom: '8pt',
+          border: 'none',
+          padding: 0,
+        }}
+      />
+    )
+  }
+
   const renderHeader = () => {
     const headerStyles = {
-      compact: 'text-center mb-1.5 pb-1 border-b border-gray-300',
-      modern: 'text-center mb-2 pb-1.5 border-b-2 border-gray-400',
-      classic: 'text-center mb-2 pb-1.5 border-b border-gray-300',
-      minimal: 'text-center mb-1.5 pb-0.5 border-b border-gray-200',
+      compact: 'text-center mb-1.5 pb-1',
+      modern: 'text-center mb-2 pb-1.5',
+      classic: 'text-center mb-2 pb-1.5',
+      minimal: 'text-center mb-1.5 pb-0.5',
       corporate: 'mb-3 pb-2',
       'with-image': 'mb-3 pb-2',
     }
@@ -233,6 +250,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
             </>
           )}
         </div>
+        {renderDivider()}
       </header>
     )
   }
@@ -246,20 +264,12 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
       corporate: 'text-[10pt] font-bold uppercase tracking-[0.1em] mb-1.5 text-blue-600',
       'with-image': 'text-[10pt] font-bold uppercase tracking-wide mb-1 text-gray-900',
     }
-    const dividerStyles = {
-      compact: 'h-[0.5px] bg-gray-300 mb-1',
-      modern: 'h-[1px] bg-gray-400 mb-1',
-      classic: 'h-[1px] bg-gray-300 mb-1',
-      minimal: 'h-[0.5px] bg-gray-200 mb-0.5',
-      corporate: 'h-[0.5px] bg-gray-300 mb-2',
-      'with-image': 'h-[1px] bg-gray-300 mb-2',
-    }
     return (
       <>
         <h2 className={headerStyles[selectedTemplate] || headerStyles.compact} style={{ fontVariant: 'small-caps' }}>
           {title}
         </h2>
-        <div className={dividerStyles[selectedTemplate] || dividerStyles.compact}></div>
+        {renderDivider()}
       </>
     )
   }

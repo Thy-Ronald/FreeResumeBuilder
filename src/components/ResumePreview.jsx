@@ -4,6 +4,11 @@ import html2canvas from 'html2canvas'
 import ModernTemplate from './templates/ModernTemplate'
 import ClassicTemplate from './templates/ClassicTemplate'
 import MinimalTemplate from './templates/MinimalTemplate'
+import ATSTemplate from './templates/ATSTemplate'
+import TwoColumnTemplate from './templates/TwoColumnTemplate'
+import CreativeTemplate from './templates/CreativeTemplate'
+import CompactTemplate from './templates/CompactTemplate'
+import ProfessionalTemplate from './templates/ProfessionalTemplate'
 import Icon from './Icon'
 import './ResumePreview.css'
 
@@ -11,6 +16,11 @@ const templates = {
   modern: ModernTemplate,
   classic: ClassicTemplate,
   minimal: MinimalTemplate,
+  ats: ATSTemplate,
+  'two-column': TwoColumnTemplate,
+  creative: CreativeTemplate,
+  compact: CompactTemplate,
+  professional: ProfessionalTemplate,
 }
 
 function ResumePreview({ resumeData, template }) {

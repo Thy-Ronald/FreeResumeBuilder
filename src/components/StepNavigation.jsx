@@ -2,6 +2,7 @@ import './StepNavigation.css'
 import Icon from './Icon'
 
 const steps = [
+  { id: 'template', label: 'Template', icon: 'project' },
   { id: 'personal', label: 'Personal Info', icon: 'user' },
   { id: 'education', label: 'Education', icon: 'education' },
   { id: 'experience', label: 'Experience', icon: 'briefcase' },
@@ -10,7 +11,7 @@ const steps = [
   { id: 'preview', label: 'Preview / Export', icon: 'preview' },
 ]
 
-function StepNavigation({ activeStep, onStepChange }) {
+function StepNavigation({ activeStep, onStepChange, selectedTemplate, onTemplateStepClick }) {
   return (
     <nav className="step-navigation">
       <div className="nav-header">
@@ -21,7 +22,13 @@ function StepNavigation({ activeStep, onStepChange }) {
           <li key={step.id}>
             <button
               className={`step-item ${activeStep === step.id ? 'active' : ''}`}
-              onClick={() => onStepChange(step.id)}
+              onClick={() => {
+                if (step.id === 'template') {
+                  onTemplateStepClick()
+                } else {
+                  onStepChange(step.id)
+                }
+              }}
             >
               <Icon name={step.icon} className="step-icon" />
               <span className="step-label">{step.label}</span>

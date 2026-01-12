@@ -1,0 +1,188 @@
+.two-column-template {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+  min-height: 100%;
+}
+
+.two-column-left {
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 30px 20px;
+}
+
+.two-column-right {
+  background: #ffffff;
+  padding: 30px 30px;
+}
+
+.two-column-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.two-column-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+  letter-spacing: -0.01em;
+}
+
+.contact-item {
+  font-size: 12px;
+  color: #ecf0f1;
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+.two-column-section {
+  margin-bottom: 30px;
+}
+
+.two-column-section h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+}
+
+.two-column-right .two-column-section h2 {
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+}
+
+.two-column-item {
+  margin-bottom: 20px;
+}
+
+.two-column-item h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.two-column-right .two-column-item h3 {
+  color: #2c3e50;
+}
+
+.institution,
+.company {
+  font-size: 13px;
+  color: #bdc3c7;
+  margin-bottom: 4px;
+}
+
+.two-column-right .company {
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.field,
+.technologies {
+  font-size: 12px;
+  color: #95a5a6;
+  margin-bottom: 4px;
+}
+
+.date {
+  font-size: 12px;
+  color: #ecf0f1;
+  font-weight: 500;
+}
+
+.two-column-right .date {
+  color: #7f8c8d;
+}
+
+.gpa {
+  font-size: 12px;
+  color: #ecf0f1;
+}
+
+.description {
+  font-size: 13px;
+  color: #ecf0f1;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.two-column-right .description {
+  color: #34495e;
+}
+
+.description p {
+  margin: 4px 0;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-name {
+  font-size: 12px;
+  color: #ecf0f1;
+  font-weight: 500;
+}
+
+.skill-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.skill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.skill-dot.filled {
+  background: #3498db;
+  border-color: #3498db;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.links {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 6px;
+}
+
+.links span {
+  display: block;
+  margin: 2px 0;
+}
+
+@media print {
+  .two-column-template {
+    page-break-inside: avoid;
+  }
+  
+  .two-column-section {
+    page-break-inside: avoid;
+  }
+}

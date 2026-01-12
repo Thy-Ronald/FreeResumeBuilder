@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ResumeForm from './ResumeForm'
 import ResumePreview from './ResumePreview'
 import StepNavigation from './StepNavigation'
+import TemplateSelector from './TemplateSelector'
 import './ResumeBuilder.css'
 
 const initialResumeData = {
@@ -23,8 +24,8 @@ const initialResumeData = {
 
 function ResumeBuilder() {
   const [resumeData, setResumeData] = useState(initialResumeData)
-  const [selectedTemplate, setSelectedTemplate] = useState('minimal')
-  const [activeStep, setActiveStep] = useState('personal')
+  const [selectedTemplate, setSelectedTemplate] = useState(null)
+  const [activeStep, setActiveStep] = useState('template')
 
   const updatePersonalInfo = (field, value) => {
     setResumeData(prev => ({
@@ -152,15 +153,46 @@ function ResumeBuilder() {
     }))
   }
 
+  const handleTemplateSelect = (templateId) => {
+    setSelectedTemplate(templateId)
+    setActiveStep('personal')
+  }
+
+  const handleSkipTemplate = () => {
+    if (!selectedTemplate) {
+      setSelectedTemplate('minimal')
+    }
+    setActiveStep('personal')
+  }
+
+  const handleTemplateStepClick = () => {
+    setActiveStep('template')
+  }
+
+  if (activeStep === 'template') {
+    return (
+      <TemplateSelector
+        selectedTemplate={selectedTemplate}
+        onSelectTemplate={handleTemplateSelect}
+        onSkip={handleSkipTemplate}
+      />
+    )
+  }
+
   return (
     <div className="resume-builder">
       <div className="builder-layout">
-        <StepNavigation activeStep={activeStep} onStepChange={setActiveStep} />
+        <StepNavigation
+          activeStep={activeStep}
+          onStepChange={setActiveStep}
+          selectedTemplate={selectedTemplate}
+          onTemplateStepClick={handleTemplateStepClick}
+        />
         <div className={`builder-content ${activeStep === 'preview' ? 'preview-only' : ''}`}>
           {activeStep === 'preview' ? (
             <ResumePreview
               resumeData={resumeData}
-              template={selectedTemplate}
+              template={selectedTemplate || 'minimal'}
             />
           ) : (
             <>
@@ -184,7 +216,7 @@ function ResumeBuilder() {
               />
               <ResumePreview
                 resumeData={resumeData}
-                template={selectedTemplate}
+                template={selectedTemplate || 'minimal'}
               />
             </>
           )}

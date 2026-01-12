@@ -1,0 +1,126 @@
+.ats-template {
+  font-family: 'Times New Roman', 'Arial', sans-serif;
+  color: #000000;
+  line-height: 1.5;
+  font-size: 11pt;
+}
+
+.ats-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 10px;
+}
+
+.ats-header h1 {
+  font-size: 18pt;
+  color: #000000;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-info {
+  font-size: 10pt;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact-info span {
+  white-space: nowrap;
+}
+
+.ats-section {
+  margin-bottom: 18px;
+  page-break-inside: avoid;
+}
+
+.ats-section h2 {
+  font-size: 12pt;
+  color: #000000;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 3px;
+}
+
+.ats-item {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.ats-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.ats-item-header h3 {
+  font-size: 11pt;
+  color: #000000;
+  font-weight: bold;
+  margin: 0;
+  text-transform: none;
+}
+
+.ats-company {
+  font-size: 10pt;
+  color: #000000;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.ats-field {
+  font-size: 10pt;
+  color: #000000;
+  margin-bottom: 4px;
+}
+
+.ats-date {
+  font-size: 10pt;
+  color: #000000;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.ats-description {
+  font-size: 10pt;
+  color: #000000;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.ats-description p {
+  margin: 2px 0;
+}
+
+.ats-skills {
+  font-size: 10pt;
+  color: #000000;
+  line-height: 1.6;
+}
+
+.ats-skill-tag {
+  display: inline;
+}
+
+@media print {
+  .ats-template {
+    page-break-inside: avoid;
+  }
+  
+  .ats-section {
+    page-break-inside: avoid;
+  }
+  
+  .ats-item {
+    page-break-inside: avoid;
+  }
+}

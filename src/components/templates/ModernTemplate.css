@@ -1,0 +1,141 @@
+.modern-template {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+.modern-header {
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+}
+
+.modern-header h1 {
+  font-size: 28px;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.contact-info span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contact-icon {
+  font-size: 14px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.modern-section {
+  margin-bottom: 32px;
+}
+
+.modern-section h2 {
+  font-size: 12px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modern-item {
+  margin-bottom: 20px;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.item-header h3 {
+  font-size: 15px;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.company {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.field {
+  color: #9ca3af;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.date {
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.description {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skill-name {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.skill-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+@media print {
+  .modern-template {
+    page-break-inside: avoid;
+  }
+  
+  .modern-section {
+    page-break-inside: avoid;
+  }
+}

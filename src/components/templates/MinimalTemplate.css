@@ -1,0 +1,129 @@
+.minimal-template {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+.minimal-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.minimal-header h1 {
+  font-size: 28px;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.contact-info span {
+  position: relative;
+}
+
+.contact-info span:not(:last-child)::after {
+  content: '•';
+  margin-left: 16px;
+  color: #d1d5db;
+}
+
+.minimal-section {
+  margin-bottom: 32px;
+}
+
+.minimal-section h2 {
+  font-size: 16px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.minimal-item {
+  margin-bottom: 24px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.item-row h3 {
+  font-size: 15px;
+  color: #1a1a1a;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.company {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.field {
+  color: #9ca3af;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.gpa {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.date {
+  color: #9ca3af;
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.description {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-badge {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+@media print {
+  .minimal-template {
+    page-break-inside: avoid;
+  }
+  
+  .minimal-section {
+    page-break-inside: avoid;
+  }
+}

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ResumeForm from './components/ResumeForm'
 import ResumePreview from './components/ResumePreview'
 import { initialResumeData } from '../../constants/resume'
@@ -22,6 +22,11 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }
   const [showTemplateModal, setShowTemplateModal] = useState(false)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const downloadPDFRef = useRef(null)
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
 
   const updatePersonalInfo = (field, value) => {
     setResumeData(prev => ({

@@ -4,11 +4,7 @@ import { templates } from '../../constants/templates'
 import logoImage from '../../assets/logo.jpg'
 
 function TemplateSelection({ onSelectTemplate }) {
-  const [selectedTemplate, setSelectedTemplate] = useState('compact')
-
-  const handleContinue = () => {
-    onSelectTemplate(selectedTemplate)
-  }
+  const [hoveredTemplate, setHoveredTemplate] = useState(null)
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -28,15 +24,24 @@ function TemplateSelection({ onSelectTemplate }) {
           {templates.map((template) => (
             <div
               key={template.id}
-              className={`relative bg-white border-2 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 ${
-                selectedTemplate === template.id
-                  ? 'border-blue-500 shadow-lg shadow-blue-500/20'
-                  : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
-              }`}
-              onClick={() => setSelectedTemplate(template.id)}
+              className="relative bg-white border-2 rounded-xl overflow-hidden transition-all duration-200 border-gray-200 hover:border-blue-300 hover:shadow-md group"
+              onMouseEnter={() => setHoveredTemplate(template.id)}
+              onMouseLeave={() => setHoveredTemplate(null)}
             >
               {/* Preview */}
               <div className="relative bg-gray-50 p-6 h-64 flex items-center justify-center">
+                {/* Hover Overlay with Use Template Button */}
+                {hoveredTemplate === template.id && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 rounded-t-xl transition-opacity duration-200">
+                    <button
+                      onClick={() => onSelectTemplate(template.id)}
+                      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 shadow-lg"
+                    >
+                      Use Template
+                      <Icon name="briefcase" className="text-white" />
+                    </button>
+                  </div>
+                )}
                 <div className="w-full h-full bg-white border border-gray-200 rounded p-4 overflow-hidden">
                   {template.id === 'compact' && (
                     <div className="w-full h-full flex flex-col text-[6px] leading-tight">
@@ -238,11 +243,6 @@ function TemplateSelection({ onSelectTemplate }) {
                     </div>
                   )}
                 </div>
-                {selectedTemplate === template.id && (
-                  <div className="absolute top-3 right-3 bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
-                    <i className="fi fi-rr-check text-sm"></i>
-                  </div>
-                )}
               </div>
 
               {/* Info */}
@@ -253,11 +253,7 @@ function TemplateSelection({ onSelectTemplate }) {
                   {template.features.map((feature, idx) => (
                     <span
                       key={idx}
-                      className={`text-xs px-2 py-1 rounded font-medium ${
-                        selectedTemplate === template.id
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
+                      className="text-xs px-2 py-1 rounded font-medium bg-gray-100 text-gray-600"
                     >
                       {feature}
                     </span>
@@ -269,22 +265,11 @@ function TemplateSelection({ onSelectTemplate }) {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-center items-center gap-3 bg-gray-50 rounded-lg p-6 mb-8">
+        <div className="flex justify-center items-center gap-3 bg-gray-50 rounded-lg p-6">
           <i className="fi fi-rr-info text-blue-500"></i>
           <span className="text-sm text-gray-600">
             You can switch templates anytime. Your content will be preserved.
           </span>
-        </div>
-
-        {/* Continue Button */}
-        <div className="flex justify-center">
-          <button
-            onClick={handleContinue}
-            className="px-8 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center gap-2 shadow-lg"
-          >
-            Continue with {templates.find(t => t.id === selectedTemplate)?.name}
-            <Icon name="briefcase" className="text-white" />
-          </button>
         </div>
       </div>
     </div>

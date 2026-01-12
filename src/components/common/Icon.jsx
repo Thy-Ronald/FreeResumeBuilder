@@ -14,8 +14,12 @@ const iconMap = {
   project: 'fi-rr-folder',
   preview: 'fi-rr-eye',
   arrowLeft: 'fi-rr-arrow-left',
+  arrowRight: 'fi-rr-arrow-right',
   chevronLeft: 'fi-rr-angle-left',
+  chevronRight: 'fi-rr-angle-right',
   font: 'fi-rr-text',
+  file: 'fi-rr-file',
+  palette: 'fi-rr-palette',
 }
 
 function Icon({ name, className = '' }) {

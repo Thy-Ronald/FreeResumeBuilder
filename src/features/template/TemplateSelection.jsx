@@ -37,11 +37,11 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
           {templates.map((template) => (
             <div
               key={template.id}
-              className="relative bg-white border-2 rounded-xl overflow-hidden transition-all duration-200 border-gray-200 hover:border-blue-300 hover:shadow-md group"
+              className="relative bg-white border-2 rounded-xl overflow-visible transition-all duration-200 border-gray-200 hover:border-blue-300 hover:shadow-md group"
             >
-              {/* Preview */}
+              {/* Preview - US Letter aspect ratio (1:1.294) with padding for shadow breathing room */}
               <div 
-                className="relative bg-gray-50 p-6 h-64 flex items-center justify-center"
+                className="relative bg-gray-50 p-4 flex items-center justify-center"
                 onMouseEnter={() => setHoveredTemplate(template.id)}
                 onMouseLeave={() => setHoveredTemplate(null)}
               >
@@ -57,41 +57,80 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                     </button>
                   </div>
                 )}
-                <div className="w-full h-full bg-white border border-gray-200 rounded p-4 overflow-hidden">
+                {/* Paper frame - US Letter: 8.5" x 11" (aspect ratio 1:1.294) */}
+                <div 
+                  className="relative bg-white shadow-lg"
+                  style={{
+                    width: '200px',
+                    aspectRatio: '8.5 / 11', // US Letter aspect ratio
+                    border: '1px solid #E5E7EB',
+                  }}
+                >
+                  {/* Thin page border lines */}
+                  <div className="absolute inset-0 border border-gray-300 pointer-events-none" style={{ borderWidth: '0.5px' }}></div>
+                  
+                  {/* Resume content - scaled to fit paper frame */}
+                  <div className="w-full h-full p-2 overflow-hidden" style={{ boxSizing: 'border-box' }}>
                   {template.id === 'compact' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="text-[8px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
-                        <div className="text-[5px] text-gray-600 text-center mb-1">Software Engineer</div>
-                        <div className="h-px my-1" style={{ backgroundColor: previewColor }}></div>
-                        <div className="flex gap-2 flex-1 mt-0.5">
-                          <div className="w-[30%] flex flex-col gap-2">
+                      <div className="w-full h-full flex flex-col text-[5px] leading-[1.15]">
+                        <div className="text-[7px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[4px] text-gray-600 text-center mb-0.5">Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                        <div className="h-px my-0.5" style={{ backgroundColor: previewColor }}></div>
+                        <div className="flex gap-1.5 flex-1 mt-0.5">
+                          <div className="w-[30%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Skills</div>
+                              <div className="text-[4px] font-bold uppercase">Skills</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">JavaScript</div>
-                              <div className="text-[4px] text-gray-600">Python</div>
-                              <div className="text-[4px] text-gray-600">React</div>
+                              <div className="text-[3.5px] text-gray-600">JavaScript</div>
+                              <div className="text-[3.5px] text-gray-600">Python</div>
+                              <div className="text-[3.5px] text-gray-600">React</div>
+                              <div className="text-[3.5px] text-gray-600">Node.js</div>
+                              <div className="text-[3.5px] text-gray-600">TypeScript</div>
+                              <div className="text-[3.5px] text-gray-600">SQL</div>
+                              <div className="text-[3.5px] text-gray-600">System Design</div>
+                              <div className="text-[3.5px] text-gray-600">Microservices</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Tools</div>
+                              <div className="text-[4px] font-bold uppercase">Tools</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Git</div>
-                              <div className="text-[4px] text-gray-600">Docker</div>
+                              <div className="text-[3.5px] text-gray-600">Git</div>
+                              <div className="text-[3.5px] text-gray-600">Docker</div>
+                              <div className="text-[3.5px] text-gray-600">AWS</div>
+                              <div className="text-[3.5px] text-gray-600">PostgreSQL</div>
+                              <div className="text-[3.5px] text-gray-600">MongoDB</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-bold uppercase">Education</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] font-semibold">BS Computer Science</div>
+                              <div className="text-[3.5px] text-gray-600">State University</div>
+                              <div className="text-[3.5px] text-gray-600">2016 - 2020</div>
                             </div>
                           </div>
-                          <div className="w-[70%] flex flex-col gap-2">
+                          <div className="w-[70%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Summary</div>
+                              <div className="text-[4px] font-bold uppercase">Summary</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                              <div className="text-[3.5px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Experience</div>
+                              <div className="text-[4px] font-bold uppercase">Experience</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] font-semibold">Senior Engineer</div>
-                              <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
+                              <div className="text-[3.5px] font-semibold">Senior Software Engineer</div>
+                              <div className="text-[3.5px] text-gray-600">Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-[3.5px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-[3.5px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-[3.5px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                              <div className="text-[3.5px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-[3.5px] text-gray-600">• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-[3.5px] font-semibold mt-0.5">Software Engineer</div>
+                              <div className="text-[3.5px] text-gray-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-[3.5px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-[3.5px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-[3.5px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+                              <div className="text-[3.5px] text-gray-600">• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime</div>
                             </div>
                           </div>
                         </div>
@@ -101,36 +140,60 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   {template.id === 'modern' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="text-[9px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
-                        <div className="text-[5px] text-gray-600 text-center mb-2">Software Engineer</div>
-                        <div className="h-px my-1" style={{ backgroundColor: previewColor }}></div>
-                        <div className="flex gap-2 flex-1 mt-1">
-                          <div className="w-[30%] flex flex-col gap-3">
-                            <div className="flex flex-col gap-1">
-                              <div className="text-[5px] font-bold uppercase">Skills</div>
+                      <div className="w-full h-full flex flex-col text-[5.5px] leading-[1.2]">
+                        <div className="text-[8px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[4.5px] text-gray-600 text-center mb-1">Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                        <div className="h-px my-0.5" style={{ backgroundColor: previewColor }}></div>
+                        <div className="flex gap-1.5 flex-1 mt-0.5">
+                          <div className="w-[30%] flex flex-col gap-1">
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4.5px] font-bold uppercase">Skills</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
                               <div className="text-[4px] text-gray-600">JavaScript</div>
                               <div className="text-[4px] text-gray-600">Python</div>
+                              <div className="text-[4px] text-gray-600">React</div>
+                              <div className="text-[4px] text-gray-600">Node.js</div>
+                              <div className="text-[4px] text-gray-600">TypeScript</div>
+                              <div className="text-[4px] text-gray-600">SQL</div>
+                              <div className="text-[4px] text-gray-600">System Design</div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                              <div className="text-[5px] font-bold uppercase">Tools</div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4.5px] font-bold uppercase">Tools</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
                               <div className="text-[4px] text-gray-600">Git</div>
+                              <div className="text-[4px] text-gray-600">Docker</div>
+                              <div className="text-[4px] text-gray-600">AWS</div>
+                              <div className="text-[4px] text-gray-600">PostgreSQL</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4.5px] font-bold uppercase">Education</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[4px] font-semibold">BS Computer Science</div>
+                              <div className="text-[4px] text-gray-600">State University</div>
+                              <div className="text-[4px] text-gray-600">2016 - 2020</div>
                             </div>
                           </div>
-                          <div className="w-[70%] flex flex-col gap-3">
-                            <div className="flex flex-col gap-1">
-                              <div className="text-[5px] font-bold uppercase">Summary</div>
+                          <div className="w-[70%] flex flex-col gap-1">
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4.5px] font-bold uppercase">Summary</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
-                              <div className="text-[4px] text-gray-600">with expertise in...</div>
+                              <div className="text-[4px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.</div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                              <div className="text-[5px] font-bold uppercase">Experience</div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4.5px] font-bold uppercase">Experience</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] font-semibold">Senior Engineer</div>
-                              <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
+                              <div className="text-[4px] font-semibold">Senior Software Engineer</div>
+                              <div className="text-[4px] text-gray-600">Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-[4px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-[4px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-[4px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices</div>
+                              <div className="text-[4px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-[4px] text-gray-600">• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-[4px] font-semibold mt-0.5">Software Engineer</div>
+                              <div className="text-[4px] text-gray-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-[4px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-[4px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-[4px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage</div>
                             </div>
                           </div>
                         </div>
@@ -140,23 +203,43 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   {template.id === 'classic' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="text-[9px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
-                        <div className="text-[5px] text-gray-600 text-center mb-2">Software Engineer</div>
-                        <div className="h-px my-1" style={{ backgroundColor: previewColor }}></div>
-                        <div className="flex flex-col gap-3">
-                          <div className="flex flex-col gap-1">
-                            <div className="text-[5px] font-bold uppercase">Summary</div>
+                      <div className="w-full h-full flex flex-col text-[5px] leading-[1.15]">
+                        <div className="text-[7px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[4px] text-gray-600 text-center mb-0.5">Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                        <div className="h-px my-0.5" style={{ backgroundColor: previewColor }}></div>
+                        <div className="flex flex-col gap-0.5 flex-1 mt-0.5">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[4px] font-bold uppercase">Summary</div>
                             <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                            <div className="text-[4px] text-gray-600">Experienced software engineer with expertise...</div>
-                            <div className="text-[4px] text-gray-600">in modern web technologies...</div>
+                            <div className="text-[3.5px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="text-[5px] font-bold uppercase">Experience</div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[4px] font-bold uppercase">Skills</div>
                             <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                            <div className="text-[4px] font-semibold">Senior Engineer</div>
-                            <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
-                            <div className="text-[4px] text-gray-600">• Led development projects</div>
+                            <div className="text-[3.5px] text-gray-600">JavaScript, Python, React, Node.js, TypeScript, SQL, System Design, Microservices, Git, Docker, AWS, PostgreSQL</div>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[4px] font-bold uppercase">Experience</div>
+                            <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                            <div className="text-[3.5px] font-semibold">Senior Software Engineer</div>
+                            <div className="text-[3.5px] text-gray-600">Tech Company Inc. | Jan 2021 - Present</div>
+                            <div className="text-[3.5px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                            <div className="text-[3.5px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                            <div className="text-[3.5px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                            <div className="text-[3.5px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                            <div className="text-[3.5px] text-gray-600">• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                            <div className="text-[3.5px] font-semibold mt-0.5">Software Engineer</div>
+                            <div className="text-[3.5px] text-gray-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                            <div className="text-[3.5px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                            <div className="text-[3.5px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                            <div className="text-[3.5px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+                            <div className="text-[3.5px] text-gray-600">• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime</div>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[4px] font-bold uppercase">Education</div>
+                            <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                            <div className="text-[3.5px] font-semibold">BS Computer Science</div>
+                            <div className="text-[3.5px] text-gray-600">State University | 2016 - 2020</div>
                           </div>
                         </div>
                       </div>
@@ -165,28 +248,61 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   {template.id === 'minimal' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="text-[8px] font-semibold text-center mb-1">Ronald Moran Jr</div>
-                        <div className="h-0.5 my-1" style={{ backgroundColor: previewColor }}></div>
-                        <div className="flex gap-2 flex-1 mt-0.5">
-                          <div className="w-[30%] flex flex-col gap-3">
+                      <div className="w-full h-full flex flex-col text-[5px] leading-[1.15]">
+                        <div className="text-[7px] font-semibold text-center mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[4px] text-gray-600 text-center mb-0.5">Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                        <div className="h-0.5 my-0.5" style={{ backgroundColor: previewColor }}></div>
+                        <div className="flex gap-1.5 flex-1 mt-0.5">
+                          <div className="w-[30%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-semibold uppercase">Skills</div>
+                              <div className="text-[4px] font-semibold uppercase">Skills</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">JavaScript</div>
-                              <div className="text-[4px] text-gray-600">Python</div>
+                              <div className="text-[3.5px] text-gray-600">JavaScript</div>
+                              <div className="text-[3.5px] text-gray-600">Python</div>
+                              <div className="text-[3.5px] text-gray-600">React</div>
+                              <div className="text-[3.5px] text-gray-600">Node.js</div>
+                              <div className="text-[3.5px] text-gray-600">TypeScript</div>
+                              <div className="text-[3.5px] text-gray-600">SQL</div>
+                              <div className="text-[3.5px] text-gray-600">System Design</div>
+                              <div className="text-[3.5px] text-gray-600">Microservices</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-semibold uppercase">Tools</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] text-gray-600">Git</div>
+                              <div className="text-[3.5px] text-gray-600">Docker</div>
+                              <div className="text-[3.5px] text-gray-600">AWS</div>
+                              <div className="text-[3.5px] text-gray-600">PostgreSQL</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-semibold uppercase">Education</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] font-semibold">BS Computer Science</div>
+                              <div className="text-[3.5px] text-gray-600">State University</div>
+                              <div className="text-[3.5px] text-gray-600">2016 - 2020</div>
                             </div>
                           </div>
-                          <div className="w-[70%] flex flex-col gap-3">
+                          <div className="w-[70%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-semibold uppercase">Summary</div>
+                              <div className="text-[4px] font-semibold uppercase">Summary</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Experienced engineer...</div>
+                              <div className="text-[3.5px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-semibold uppercase">Experience</div>
+                              <div className="text-[4px] font-semibold uppercase">Experience</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Senior Engineer at Tech Co.</div>
+                              <div className="text-[3.5px] font-semibold">Senior Software Engineer</div>
+                              <div className="text-[3.5px] text-gray-600">Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-[3.5px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-[3.5px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-[3.5px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices</div>
+                              <div className="text-[3.5px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-[3.5px] text-gray-600">• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-[3.5px] font-semibold mt-0.5">Software Engineer</div>
+                              <div className="text-[3.5px] text-gray-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-[3.5px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-[3.5px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-[3.5px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage</div>
                             </div>
                           </div>
                         </div>
@@ -196,38 +312,61 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   {template.id === 'corporate' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="text-[10px] font-bold mb-0.5">Ronald Moran Jr</div>
-                        <div className="text-[6px] text-gray-700 mb-1">Software Engineer</div>
-                        <div className="h-0.5 w-1/4 mb-1" style={{ backgroundColor: previewColor }}></div>
-                        <div className="flex gap-2 flex-1">
-                          <div className="w-[35%] flex flex-col gap-2">
+                      <div className="w-full h-full flex flex-col text-[5px] leading-[1.15]">
+                        <div className="text-[8px] font-bold mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[4.5px] text-gray-700 mb-0.5">Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                        <div className="h-0.5 w-1/4 mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                        <div className="flex gap-1.5 flex-1">
+                          <div className="w-[35%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase text-blue-600">Education</div>
+                              <div className="text-[4px] font-bold uppercase text-blue-600">Education</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] font-semibold">Bachelor of Science</div>
-                              <div className="text-[4px] text-gray-600">State University</div>
-                              <div className="text-[4px] text-gray-500">2016 - 2020</div>
+                              <div className="text-[3.5px] font-semibold">BS Computer Science</div>
+                              <div className="text-[3.5px] text-gray-600">State University</div>
+                              <div className="text-[3.5px] text-gray-500">2016 - 2020</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase text-blue-600">Skills</div>
+                              <div className="text-[4px] font-bold uppercase text-blue-600">Skills</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">• JavaScript</div>
-                              <div className="text-[4px] text-gray-600">• Python</div>
+                              <div className="text-[3.5px] text-gray-600">• JavaScript</div>
+                              <div className="text-[3.5px] text-gray-600">• Python</div>
+                              <div className="text-[3.5px] text-gray-600">• React</div>
+                              <div className="text-[3.5px] text-gray-600">• Node.js</div>
+                              <div className="text-[3.5px] text-gray-600">• TypeScript</div>
+                              <div className="text-[3.5px] text-gray-600">• SQL</div>
+                              <div className="text-[3.5px] text-gray-600">• System Design</div>
+                              <div className="text-[3.5px] text-gray-600">• Microservices</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-bold uppercase text-blue-600">Tools</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] text-gray-600">• Git</div>
+                              <div className="text-[3.5px] text-gray-600">• Docker</div>
+                              <div className="text-[3.5px] text-gray-600">• AWS</div>
+                              <div className="text-[3.5px] text-gray-600">• PostgreSQL</div>
                             </div>
                           </div>
-                          <div className="w-[65%] flex flex-col gap-2">
+                          <div className="w-[65%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase text-blue-600">Summary</div>
+                              <div className="text-[4px] font-bold uppercase text-blue-600">Summary</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                              <div className="text-[3.5px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase text-blue-600">Work History</div>
+                              <div className="text-[4px] font-bold uppercase text-blue-600">Work History</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] font-semibold">Senior Engineer</div>
-                              <div className="text-[4px] text-blue-600">Tech Company Inc.</div>
-                              <div className="text-[4px] text-gray-600">• Led development projects</div>
+                              <div className="text-[3.5px] font-semibold">Senior Software Engineer</div>
+                              <div className="text-[3.5px] text-blue-600">Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-[3.5px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-[3.5px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-[3.5px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                              <div className="text-[3.5px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-[3.5px] text-gray-600">• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-[3.5px] font-semibold mt-0.5">Software Engineer</div>
+                              <div className="text-[3.5px] text-blue-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-[3.5px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-[3.5px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-[3.5px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage</div>
                             </div>
                           </div>
                         </div>
@@ -237,44 +376,74 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   {template.id === 'with-image' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     return (
-                      <div className="w-full h-full flex flex-col text-[6px] leading-tight">
-                        <div className="mb-1.5 pb-1 border-b" style={{ borderColor: previewColor }}>
+                      <div className="w-full h-full flex flex-col text-[5px] leading-[1.15]">
+                        <div className="mb-1 pb-0.5 border-b" style={{ borderColor: previewColor }}>
                           <div className="text-[7px] font-bold mb-0.5">Ronald Moran Jr</div>
-                          <div className="text-[5px] text-gray-600 mb-0.5">Software Engineer</div>
-                          <div className="text-[4px] text-gray-500">email@example.com | +1 (555) 000-0000</div>
+                          <div className="text-[4px] text-gray-600 mb-0.5">Software Engineer</div>
+                          <div className="text-[3.5px] text-gray-500">email@example.com | +1 (555) 000-0000</div>
                         </div>
                         <div className="flex gap-1.5 flex-1">
-                          <div className="w-[28%] flex flex-col gap-2">
+                          <div className="w-[28%] flex flex-col gap-0.5">
                             <img 
                               src={logoImage} 
                               alt="Profile" 
-                              className="w-full aspect-square object-cover rounded border border-gray-200"
+                              className="w-full aspect-square object-cover rounded border border-gray-200 mb-0.5"
                             />
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Skills</div>
+                              <div className="text-[4px] font-bold uppercase">Skills</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">JavaScript</div>
-                              <div className="text-[4px] text-gray-600">Python</div>
+                              <div className="text-[3.5px] text-gray-600">JavaScript</div>
+                              <div className="text-[3.5px] text-gray-600">Python</div>
+                              <div className="text-[3.5px] text-gray-600">React</div>
+                              <div className="text-[3.5px] text-gray-600">Node.js</div>
+                              <div className="text-[3.5px] text-gray-600">TypeScript</div>
+                              <div className="text-[3.5px] text-gray-600">SQL</div>
+                              <div className="text-[3.5px] text-gray-600">System Design</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-bold uppercase">Tools</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] text-gray-600">Git</div>
+                              <div className="text-[3.5px] text-gray-600">Docker</div>
+                              <div className="text-[3.5px] text-gray-600">AWS</div>
+                              <div className="text-[3.5px] text-gray-600">PostgreSQL</div>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <div className="text-[4px] font-bold uppercase">Education</div>
+                              <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
+                              <div className="text-[3.5px] font-semibold">BS Computer Science</div>
+                              <div className="text-[3.5px] text-gray-600">State University</div>
+                              <div className="text-[3.5px] text-gray-600">2016 - 2020</div>
                             </div>
                           </div>
-                          <div className="w-[72%] flex flex-col gap-2">
+                          <div className="w-[72%] flex flex-col gap-0.5">
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Summary</div>
+                              <div className="text-[4px] font-bold uppercase">Summary</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                              <div className="text-[3.5px] text-gray-600">Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.</div>
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <div className="text-[5px] font-bold uppercase">Experience</div>
+                              <div className="text-[4px] font-bold uppercase">Experience</div>
                               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-                              <div className="text-[4px] font-semibold">Senior Engineer</div>
-                              <div className="text-[4px] text-blue-600">Tech Company Inc.</div>
-                              <div className="text-[4px] text-gray-600">• Led development projects</div>
+                              <div className="text-[3.5px] font-semibold">Senior Software Engineer</div>
+                              <div className="text-[3.5px] text-blue-600">Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-[3.5px] text-gray-600">• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-[3.5px] text-gray-600">• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-[3.5px] text-gray-600">• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                              <div className="text-[3.5px] text-gray-600">• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-[3.5px] text-gray-600">• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-[3.5px] font-semibold mt-0.5">Software Engineer</div>
+                              <div className="text-[3.5px] text-blue-600">Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-[3.5px] text-gray-600">• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-[3.5px] text-gray-600">• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-[3.5px] text-gray-600">• Implemented automated testing suite achieving 85% code coverage</div>
                             </div>
                           </div>
                         </div>
                       </div>
                     )
                   })()}
+                  </div>
                 </div>
               </div>
 

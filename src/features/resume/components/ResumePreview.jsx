@@ -5,7 +5,7 @@ import Icon from '../../../components/common/Icon'
 import { fonts } from '../../../constants/fonts'
 import { getColorScheme } from '../../../constants/colors'
 
-function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont = 'inter', selectedColor = 'black', onDownloadReady }) {
+function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont = 'inter', selectedColor = 'black', themeColor = '#F2F2F2', onDownloadReady }) {
   const resumeRef = useRef(null)
   const colorScheme = getColorScheme(selectedColor)
 
@@ -153,7 +153,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
         style={{
           width: '100%',
           height: '0.75pt',
-          backgroundColor: '#E5E7EB',
+          backgroundColor: themeColor,
           marginTop: '8pt',
           marginBottom: '8pt',
           border: 'none',
@@ -277,7 +277,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
       'with-image': 'text-[10pt] font-bold uppercase tracking-wide mb-1',
     }
     const headerColor = selectedTemplate === 'corporate' 
-      ? colorScheme.colors.accent 
+      ? themeColor 
       : colorScheme.colors.primary
     return (
       <>
@@ -444,7 +444,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                             <h3 className="text-[9.5pt] font-bold m-0 mb-0 leading-[1.2]" style={{ color: colorScheme.colors.primary }}>
                               {exp.position || 'Position'}
                             </h3>
-                            <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: colorScheme.colors.accent }}>
+                            <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: themeColor }}>
                               {exp.company || 'Company'}
                             </div>
                           </div>
@@ -577,7 +577,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                             ))}
                           </ul>
                         )}
-                        <div className="flex gap-2.5 mt-0 text-[7.5pt]" style={{ color: colorScheme.colors.accent }}>
+                        <div className="flex gap-2.5 mt-0 text-[7.5pt]" style={{ color: themeColor }}>
                           {project.link && <span>{project.link}</span>}
                           {project.github && <span>{project.github}</span>}
                         </div>
@@ -650,7 +650,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                             <h3 className="text-[9.5pt] font-bold m-0 mb-0 leading-[1.2]" style={{ color: colorScheme.colors.primary }}>
                               {edu.degree || 'Degree'}
                             </h3>
-                            <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: colorScheme.colors.accent }}>
+                            <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: themeColor }}>
                               {edu.school || 'School'}
                             </div>
                             {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary }}>{edu.field}</div>}
@@ -725,7 +725,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                       <h3 className="text-[9.5pt] font-bold m-0 mb-0 leading-[1.2]" style={{ color: colorScheme.colors.primary }}>
                         {exp.position || 'Position'}
                       </h3>
-                      <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: colorScheme.colors.accent }}>
+                      <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: themeColor }}>
                         {exp.company || 'Company'}
                       </div>
                     </div>
@@ -858,7 +858,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                       ))}
                     </ul>
                   )}
-                  <div className="flex gap-2.5 mt-0 text-[7.5pt]" style={{ color: colorScheme.colors.accent }}>
+                  <div className="flex gap-2.5 mt-0 text-[7.5pt]" style={{ color: themeColor }}>
                     {project.link && <span>{project.link}</span>}
                     {project.github && <span>{project.github}</span>}
                   </div>
@@ -931,7 +931,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                       <h3 className="text-[9.5pt] font-bold m-0 mb-0 leading-[1.2]" style={{ color: colorScheme.colors.primary }}>
                         {edu.degree || 'Degree'}
                       </h3>
-                      <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: colorScheme.colors.accent }}>
+                      <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: themeColor }}>
                         {edu.school || 'School'}
                       </div>
                       {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary }}>{edu.field}</div>}
@@ -1095,7 +1095,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                     <h3 className="text-[10pt] font-semibold mb-0.5 leading-tight" style={{ color: colorScheme.colors.primary }}>
                       {edu.degree || 'Degree'}
                     </h3>
-                    <div className="text-[9pt] mb-0.5" style={{ color: colorScheme.colors.accent }}>{edu.school || 'School'}</div>
+                    <div className="text-[9pt] mb-0.5" style={{ color: themeColor }}>{edu.school || 'School'}</div>
                     {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary }}>{edu.field}</div>}
                     <div className="text-[8.5pt] mt-0.5" style={{ color: colorScheme.colors.muted }}>
                       {edu.startDate} - {edu.endDate}
@@ -1174,7 +1174,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                         <h3 className="text-[10.5pt] font-semibold mb-0.5" style={{ color: colorScheme.colors.primary }}>
                           {exp.position || 'Position'}
                         </h3>
-                        <div className="text-[9.5pt] font-medium" style={{ color: colorScheme.colors.accent }}>
+                        <div className="text-[9.5pt] font-medium" style={{ color: themeColor }}>
                           {exp.company || 'Company'}
                         </div>
                       </div>
@@ -1189,7 +1189,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                       <ul className="list-none p-0 m-0 mt-1">
                         {exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
                           <li key={idx} className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4]" style={{ color: colorScheme.colors.secondary }}>
-                            <span className="absolute left-0" style={{ color: colorScheme.colors.accent }}>•</span>
+                            <span className="absolute left-0" style={{ color: themeColor }}>•</span>
                             {line.trim().replace(/^[•\-]\s*/, '')}
                           </li>
                         ))}
@@ -1397,7 +1397,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                         <h3 className="text-[10pt] font-bold mb-0 leading-tight" style={{ color: colorScheme.colors.primary }}>
                           {exp.position || 'Position'}
                         </h3>
-                        <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: colorScheme.colors.accent }}>
+                        <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: themeColor }}>
                           {exp.company || 'Company'}
                         </div>
                       </div>
@@ -1471,7 +1471,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
                     <h3 className="text-[10pt] font-bold mb-0 leading-tight" style={{ color: colorScheme.colors.primary }}>
                       {edu.degree || 'Degree'}
                     </h3>
-                    <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: colorScheme.colors.accent }}>
+                    <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: themeColor }}>
                       {edu.school || 'School'}
                     </div>
                     {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary }}>{edu.field}</div>}
@@ -1565,7 +1565,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
             '--color-primary': colorScheme.colors.primary,
             '--color-secondary': colorScheme.colors.secondary,
             '--color-tertiary': colorScheme.colors.tertiary,
-            '--color-accent': colorScheme.colors.accent,
+            '--color-accent': themeColor,
             '--color-muted': colorScheme.colors.muted,
             '--color-light': colorScheme.colors.light,
           }}

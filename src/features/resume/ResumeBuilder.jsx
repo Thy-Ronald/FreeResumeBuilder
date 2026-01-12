@@ -31,7 +31,7 @@ const getSectionsForTemplate = (template) => {
   }
 }
 
-function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }) {
+function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeColor = '#F2F2F2', onBack }) {
   const [resumeData, setResumeData] = useState(initialResumeData)
   const [currentSection, setCurrentSection] = useState(0)
   const [selectedTemplate, setSelectedTemplate] = useState(initialTemplate)
@@ -465,6 +465,7 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', onBack }
           selectedTemplate={selectedTemplate}
           selectedFont={selectedFont}
           selectedColor={selectedColor}
+          themeColor={themeColor}
           onDownloadReady={(downloadFn) => {
             downloadPDFRef.current = downloadFn
           }}

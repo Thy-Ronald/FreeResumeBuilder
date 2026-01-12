@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Icon from '../../components/common/Icon'
 import { templates } from '../../constants/templates'
+import logoImage from '../../assets/logo.jpg'
 
 function TemplateSelection({ onSelectTemplate }) {
   const [selectedTemplate, setSelectedTemplate] = useState('compact')
@@ -38,109 +39,199 @@ function TemplateSelection({ onSelectTemplate }) {
               <div className="relative bg-gray-50 p-6 h-64 flex items-center justify-center">
                 <div className="w-full h-full bg-white border border-gray-200 rounded p-4 overflow-hidden">
                   {template.id === 'compact' && (
-                    <div className="w-full h-full flex flex-col">
-                      <div className="h-3 bg-gray-900 rounded mb-1"></div>
-                      <div className="h-2 bg-gray-500 rounded w-3/5 mb-2"></div>
-                      <div className="h-px bg-gray-300 my-2"></div>
-                      <div className="flex gap-3 flex-1 mt-1">
-                        <div className="w-[30%] flex flex-col gap-3">
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="text-[8px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                      <div className="text-[5px] text-gray-600 text-center mb-1">Software Engineer</div>
+                      <div className="h-px bg-gray-300 my-1"></div>
+                      <div className="flex gap-2 flex-1 mt-0.5">
+                        <div className="w-[30%] flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Skills</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">JavaScript</div>
+                            <div className="text-[4px] text-gray-600">Python</div>
+                            <div className="text-[4px] text-gray-600">React</div>
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Tools</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Git</div>
+                            <div className="text-[4px] text-gray-600">Docker</div>
                           </div>
                         </div>
-                        <div className="w-[70%] flex flex-col gap-3">
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                        <div className="w-[70%] flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Summary</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded w-4/5"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Experience</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] font-semibold">Senior Engineer</div>
+                            <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
                   {template.id === 'modern' && (
-                    <div className="w-full h-full flex flex-col">
-                      <div className="h-3 bg-gray-900 rounded mb-1"></div>
-                      <div className="h-2 bg-gray-500 rounded w-3/5 mb-3"></div>
-                      <div className="h-px bg-gray-300 my-2"></div>
-                      <div className="flex gap-3 flex-1 mt-2">
-                        <div className="w-[30%] flex flex-col gap-4">
-                          <div className="flex flex-col gap-1.5">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="text-[9px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                      <div className="text-[5px] text-gray-600 text-center mb-2">Software Engineer</div>
+                      <div className="h-px bg-gray-300 my-1"></div>
+                      <div className="flex gap-2 flex-1 mt-1">
+                        <div className="w-[30%] flex flex-col gap-3">
+                          <div className="flex flex-col gap-1">
+                            <div className="text-[5px] font-bold uppercase">Skills</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">JavaScript</div>
+                            <div className="text-[4px] text-gray-600">Python</div>
                           </div>
-                          <div className="flex flex-col gap-1.5">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                          <div className="flex flex-col gap-1">
+                            <div className="text-[5px] font-bold uppercase">Tools</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Git</div>
                           </div>
                         </div>
-                        <div className="w-[70%] flex flex-col gap-4">
-                          <div className="flex flex-col gap-1.5">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                        <div className="w-[70%] flex flex-col gap-3">
+                          <div className="flex flex-col gap-1">
+                            <div className="text-[5px] font-bold uppercase">Summary</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                            <div className="text-[4px] text-gray-600">with expertise in...</div>
                           </div>
-                          <div className="flex flex-col gap-1.5">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded w-4/5"></div>
+                          <div className="flex flex-col gap-1">
+                            <div className="text-[5px] font-bold uppercase">Experience</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] font-semibold">Senior Engineer</div>
+                            <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
                   {template.id === 'classic' && (
-                    <div className="w-full h-full flex flex-col">
-                      <div className="h-3 bg-gray-900 rounded mb-1"></div>
-                      <div className="h-2 bg-gray-500 rounded w-3/5 mb-3"></div>
-                      <div className="h-px bg-gray-300 my-2"></div>
-                      <div className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-1.5">
-                          <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                          <div className="h-1 bg-gray-400 rounded w-4/5"></div>
-                          <div className="h-1 bg-gray-400 rounded"></div>
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="text-[9px] font-bold text-center mb-0.5">Ronald Moran Jr</div>
+                      <div className="text-[5px] text-gray-600 text-center mb-2">Software Engineer</div>
+                      <div className="h-px bg-gray-300 my-1"></div>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-1">
+                          <div className="text-[5px] font-bold uppercase">Summary</div>
+                          <div className="h-px bg-gray-300 mb-0.5"></div>
+                          <div className="text-[4px] text-gray-600">Experienced software engineer with expertise...</div>
+                          <div className="text-[4px] text-gray-600">in modern web technologies...</div>
                         </div>
-                        <div className="flex flex-col gap-1.5">
-                          <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                          <div className="h-1 bg-gray-400 rounded"></div>
-                          <div className="h-1 bg-gray-400 rounded"></div>
+                        <div className="flex flex-col gap-1">
+                          <div className="text-[5px] font-bold uppercase">Experience</div>
+                          <div className="h-px bg-gray-300 mb-0.5"></div>
+                          <div className="text-[4px] font-semibold">Senior Engineer</div>
+                          <div className="text-[4px] text-gray-600">Tech Company Inc.</div>
+                          <div className="text-[4px] text-gray-600">• Led development projects</div>
                         </div>
                       </div>
                     </div>
                   )}
                   {template.id === 'minimal' && (
-                    <div className="w-full h-full flex flex-col">
-                      <div className="h-3 bg-gray-900 rounded mb-2"></div>
-                      <div className="h-0.5 bg-gray-300 my-2"></div>
-                      <div className="flex gap-3 flex-1 mt-1">
-                        <div className="w-[30%] flex flex-col gap-4">
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="text-[8px] font-semibold text-center mb-1">Ronald Moran Jr</div>
+                      <div className="h-0.5 bg-gray-300 my-1"></div>
+                      <div className="flex gap-2 flex-1 mt-0.5">
+                        <div className="w-[30%] flex flex-col gap-3">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-semibold uppercase">Skills</div>
+                            <div className="h-px bg-gray-200 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">JavaScript</div>
+                            <div className="text-[4px] text-gray-600">Python</div>
                           </div>
                         </div>
-                        <div className="w-[70%] flex flex-col gap-4">
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded"></div>
+                        <div className="w-[70%] flex flex-col gap-3">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-semibold uppercase">Summary</div>
+                            <div className="h-px bg-gray-200 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Experienced engineer...</div>
                           </div>
-                          <div className="flex flex-col gap-1">
-                            <div className="h-1.5 bg-gray-900 rounded w-2/3"></div>
-                            <div className="h-1 bg-gray-400 rounded w-4/5"></div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-semibold uppercase">Experience</div>
+                            <div className="h-px bg-gray-200 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Senior Engineer at Tech Co.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {template.id === 'corporate' && (
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="text-[10px] font-bold mb-0.5">Ronald Moran Jr</div>
+                      <div className="text-[6px] text-gray-700 mb-1">Software Engineer</div>
+                      <div className="h-0.5 bg-blue-500 w-1/4 mb-1"></div>
+                      <div className="flex gap-2 flex-1">
+                        <div className="w-[35%] flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase text-blue-600">Education</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] font-semibold">Bachelor of Science</div>
+                            <div className="text-[4px] text-gray-600">State University</div>
+                            <div className="text-[4px] text-gray-500">2016 - 2020</div>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase text-blue-600">Skills</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">• JavaScript</div>
+                            <div className="text-[4px] text-gray-600">• Python</div>
+                          </div>
+                        </div>
+                        <div className="w-[65%] flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase text-blue-600">Summary</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase text-blue-600">Work History</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] font-semibold">Senior Engineer</div>
+                            <div className="text-[4px] text-blue-600">Tech Company Inc.</div>
+                            <div className="text-[4px] text-gray-600">• Led development projects</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {template.id === 'with-image' && (
+                    <div className="w-full h-full flex flex-col text-[6px] leading-tight">
+                      <div className="mb-1.5 pb-1 border-b border-gray-300">
+                        <div className="text-[7px] font-bold mb-0.5">Ronald Moran Jr</div>
+                        <div className="text-[5px] text-gray-600 mb-0.5">Software Engineer</div>
+                        <div className="text-[4px] text-gray-500">email@example.com | +1 (555) 000-0000</div>
+                      </div>
+                      <div className="flex gap-1.5 flex-1">
+                        <div className="w-[28%] flex flex-col gap-2">
+                          <img 
+                            src={logoImage} 
+                            alt="Profile" 
+                            className="w-full aspect-square object-cover rounded border border-gray-200"
+                          />
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Skills</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">JavaScript</div>
+                            <div className="text-[4px] text-gray-600">Python</div>
+                          </div>
+                        </div>
+                        <div className="w-[72%] flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Summary</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] text-gray-600">Experienced software engineer...</div>
+                          </div>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="text-[5px] font-bold uppercase">Experience</div>
+                            <div className="h-px bg-gray-300 mb-0.5"></div>
+                            <div className="text-[4px] font-semibold">Senior Engineer</div>
+                            <div className="text-[4px] text-blue-600">Tech Company Inc.</div>
+                            <div className="text-[4px] text-gray-600">• Led development projects</div>
                           </div>
                         </div>
                       </div>

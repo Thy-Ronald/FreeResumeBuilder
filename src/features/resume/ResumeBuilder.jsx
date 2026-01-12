@@ -313,6 +313,7 @@ function ResumeBuilder({ selectedTemplate = 'compact', onBack }) {
           resumeData={resumeData}
           currentSection={currentSection}
           setCurrentSection={setCurrentSection}
+          selectedTemplate={selectedTemplate}
           updatePersonalInfo={updatePersonalInfo}
           updateSummary={updateSummary}
           addExperience={addExperience}

@@ -8,6 +8,7 @@ export const initialResumeData = {
     linkedin: '',
     github: '',
     website: '',
+    profilePhoto: '',
   },
   summary: '',
   experience: [],

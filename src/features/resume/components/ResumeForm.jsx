@@ -13,6 +13,7 @@ function ResumeForm({
   resumeData,
   currentSection,
   setCurrentSection,
+  selectedTemplate = 'compact',
   updatePersonalInfo,
   updateSummary,
   addExperience,
@@ -235,6 +236,37 @@ function ResumeForm({
                     className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
+                {selectedTemplate === 'with-image' && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Profile Photo <span className="text-gray-400 font-normal">(optional)</span>
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files[0]
+                          if (file) {
+                            const reader = new FileReader()
+                            reader.onloadend = () => {
+                              updatePersonalInfo('profilePhoto', reader.result)
+                            }
+                            reader.readAsDataURL(file)
+                          }
+                        }}
+                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      {resumeData.personalInfo.profilePhoto && (
+                        <img 
+                          src={resumeData.personalInfo.profilePhoto} 
+                          alt="Profile preview" 
+                          className="w-16 h-16 object-cover rounded-lg border-2 border-gray-200"
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700">
                     Email <span className="text-red-500">*</span>

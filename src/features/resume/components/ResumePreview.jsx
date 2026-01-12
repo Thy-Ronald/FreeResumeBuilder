@@ -10,35 +10,109 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
     if (!resumeRef.current) return
 
     try {
-      // Wait a bit for fonts to load
-      await new Promise(resolve => setTimeout(resolve, 300))
+      // Wait for fonts to fully load
+      await document.fonts.ready
+      await new Promise(resolve => setTimeout(resolve, 500))
 
-      const canvas = await html2canvas(resumeRef.current, {
-        scale: 3,
+      const element = resumeRef.current
+      
+      // US Letter dimensions in mm: 215.9mm x 279.4mm
+      // Convert to pixels at 96 DPI: 1mm = 3.779527559px
+      const mmToPx = 3.779527559
+      const targetWidthPx = 215.9 * mmToPx  // ~816px
+      const targetHeightPx = 279.4 * mmToPx // ~1056px
+      
+      // Use high scale for pixel-perfect quality
+      const scale = 3
+
+      const canvas = await html2canvas(element, {
+        scale: scale,
         useCORS: true,
         logging: false,
         backgroundColor: '#ffffff',
-        windowWidth: 816, // US Letter width in pixels at 96 DPI (8.5" x 96)
-        windowHeight: 1056, // US Letter height in pixels at 96 DPI (11" x 96)
-        scrollY: -window.scrollY,
-        scrollX: -window.scrollX,
+        width: targetWidthPx,
+        height: targetHeightPx,
+        windowWidth: targetWidthPx,
+        windowHeight: targetHeightPx,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
         allowTaint: true,
         foreignObjectRendering: false,
+        removeContainer: false,
+        imageTimeout: 0,
+        onclone: (clonedDoc) => {
+          // Find the cloned resume element
+          const clonedElement = clonedDoc.querySelector('[data-resume-content]')
+          if (clonedElement) {
+            // Get the parent wrapper (the scaled div)
+            const clonedParent = clonedElement.parentElement
+            
+            // Remove all scaling transforms from the parent
+            if (clonedParent) {
+              clonedParent.style.transform = 'none'
+              clonedParent.style.scale = 'none'
+              clonedParent.className = ''
+            }
+            
+            // Get computed styles from original element to preserve padding/margins
+            const originalElement = resumeRef.current
+            const computedStyle = window.getComputedStyle(originalElement)
+            
+            // Ensure the element has exact dimensions
+            clonedElement.style.width = `${targetWidthPx}px`
+            clonedElement.style.height = `${targetHeightPx}px`
+            clonedElement.style.minWidth = `${targetWidthPx}px`
+            clonedElement.style.minHeight = `${targetHeightPx}px`
+            clonedElement.style.maxWidth = `${targetWidthPx}px`
+            clonedElement.style.maxHeight = `${targetHeightPx}px`
+            clonedElement.style.margin = '0'
+            // Preserve padding from computed styles (from Tailwind classes)
+            clonedElement.style.padding = computedStyle.padding
+            clonedElement.style.boxSizing = computedStyle.boxSizing || 'border-box'
+            clonedElement.style.overflow = 'hidden'
+            clonedElement.style.display = 'block'
+            clonedElement.style.position = 'relative'
+            clonedElement.style.backgroundColor = computedStyle.backgroundColor || '#ffffff'
+            
+            // Ensure all images are loaded and visible
+            const images = clonedElement.querySelectorAll('img')
+            images.forEach(img => {
+              if (img.src) {
+                img.style.display = 'block'
+                img.style.maxWidth = '100%'
+                img.style.height = 'auto'
+              }
+            })
+          }
+        }
       })
 
-      const imgData = canvas.toDataURL('image/png', 1.0)
+      // Create PDF with exact US Letter dimensions
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: 'letter', // US Letter format (8.5" x 11")
-        compress: true,
+        format: [215.9, 279.4], // Exact US Letter dimensions in mm
+        compress: false, // Disable compression for pixel-perfect quality
+        precision: 16 // High precision for exact dimensions
       })
 
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = pdf.internal.pageSize.getHeight()
+      const pdfWidth = 215.9 // mm
+      const pdfHeight = 279.4 // mm
 
-      // Add image to fill the entire page
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, '', 'FAST')
+      // Add image at exact position with exact dimensions - 1:1 mapping
+      pdf.addImage(
+        canvas.toDataURL('image/png', 1.0),
+        'PNG',
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        'FAST'
+      )
+
       pdf.save(`${resumeData.personalInfo.fullName || 'resume'}-resume.pdf`)
     } catch (error) {
       console.error('Error generating PDF:', error)
@@ -63,6 +137,8 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
       modern: `${base} text-[9.5pt] leading-[1.35] p-[9mm_11mm]`,
       classic: `${base} text-[9pt] leading-[1.32] p-[9mm_12mm]`,
       minimal: `${base} text-[9pt] leading-[1.4] p-[8mm_10mm]`,
+      corporate: `${base} text-[10pt] leading-[1.5] p-[12mm_15mm]`,
+      'with-image': `${base} text-[9.5pt] leading-[1.4] p-[10mm_12mm]`,
     }
     return styles[selectedTemplate] || styles.compact
   }
@@ -73,25 +149,34 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
       modern: 'text-center mb-2 pb-1.5 border-b-2 border-gray-400',
       classic: 'text-center mb-2 pb-1.5 border-b border-gray-300',
       minimal: 'text-center mb-1.5 pb-0.5 border-b border-gray-200',
+      corporate: 'mb-3 pb-2',
+      'with-image': 'mb-3 pb-2',
     }
     const nameStyles = {
       compact: 'text-[17pt] font-bold tracking-wider mb-0.5 text-black uppercase',
       modern: 'text-[18pt] font-bold tracking-wide mb-1 text-black',
       classic: 'text-[18pt] font-bold tracking-normal mb-1 text-black',
       minimal: 'text-[16pt] font-semibold tracking-wide mb-0.5 text-black',
+      corporate: 'text-[22pt] font-bold mb-1 text-black',
+      'with-image': 'text-[20pt] font-bold mb-1 text-black',
     }
     const titleStyles = {
       compact: 'text-[9.5pt] font-medium mb-1 text-gray-600',
       modern: 'text-[10pt] font-medium mb-1.5 text-gray-600',
       classic: 'text-[10pt] font-medium mb-1.5 text-gray-600',
       minimal: 'text-[9pt] font-normal mb-1 text-gray-500',
+      corporate: 'text-[11pt] font-medium mb-2 text-gray-700',
+      'with-image': 'text-[10pt] font-medium mb-1.5 text-gray-600',
     }
     const contactStyles = {
       compact: 'flex justify-center flex-wrap gap-1 text-[8pt] text-gray-600',
       modern: 'flex justify-center flex-wrap gap-2 text-[8.5pt] text-gray-600',
       classic: 'flex justify-center flex-wrap gap-2 text-[8.5pt] text-gray-600',
       minimal: 'flex justify-center flex-wrap gap-1 text-[7.5pt] text-gray-500',
+      corporate: 'flex flex-wrap gap-2 text-[9pt] text-gray-600',
+      'with-image': 'flex flex-wrap gap-2 text-[8.5pt] text-gray-600',
     }
+
 
     return (
       <header className={headerStyles[selectedTemplate] || headerStyles.compact}>
@@ -109,25 +194,41 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
           )}
           {resumeData.personalInfo.phone && (
             <>
-              <span className="text-gray-300">|</span>
+              {selectedTemplate === 'corporate' ? (
+                <span className="text-gray-400">•</span>
+              ) : (
+                <span className="text-gray-300">|</span>
+              )}
               <span className="inline-block">{resumeData.personalInfo.phone}</span>
             </>
           )}
           {resumeData.personalInfo.location && (
             <>
-              <span className="text-gray-300">|</span>
+              {selectedTemplate === 'corporate' ? (
+                <span className="text-gray-400">•</span>
+              ) : (
+                <span className="text-gray-300">|</span>
+              )}
               <span className="inline-block">{resumeData.personalInfo.location}</span>
             </>
           )}
           {resumeData.personalInfo.linkedin && (
             <>
-              <span className="text-gray-300">|</span>
+              {selectedTemplate === 'corporate' ? (
+                <span className="text-gray-400">•</span>
+              ) : (
+                <span className="text-gray-300">|</span>
+              )}
               <span className="inline-block">{resumeData.personalInfo.linkedin}</span>
             </>
           )}
           {resumeData.personalInfo.github && (
             <>
-              <span className="text-gray-300">|</span>
+              {selectedTemplate === 'corporate' ? (
+                <span className="text-gray-400">•</span>
+              ) : (
+                <span className="text-gray-300">|</span>
+              )}
               <span className="inline-block">{resumeData.personalInfo.github}</span>
             </>
           )}
@@ -142,12 +243,16 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
       modern: 'text-[10pt] font-bold uppercase tracking-wide mb-0.5 text-black',
       classic: 'text-[10pt] font-bold uppercase tracking-wide mb-0.5 text-black',
       minimal: 'text-[9pt] font-semibold uppercase tracking-wide mb-0.5 text-gray-800',
+      corporate: 'text-[10pt] font-bold uppercase tracking-[0.1em] mb-1.5 text-blue-600',
+      'with-image': 'text-[10pt] font-bold uppercase tracking-wide mb-1 text-gray-900',
     }
     const dividerStyles = {
       compact: 'h-[0.5px] bg-gray-300 mb-1',
       modern: 'h-[1px] bg-gray-400 mb-1',
       classic: 'h-[1px] bg-gray-300 mb-1',
       minimal: 'h-[0.5px] bg-gray-200 mb-0.5',
+      corporate: 'h-[0.5px] bg-gray-300 mb-2',
+      'with-image': 'h-[1px] bg-gray-300 mb-2',
     }
     return (
       <>
@@ -947,6 +1052,473 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
     </div>
   )
 
+  const renderCorporateLayout = () => (
+    <div className="flex gap-6 mt-3">
+      {/* Left Column - Education and Skills */}
+      <aside className="w-[35%] flex-shrink-0">
+        {/* Education */}
+        {(resumeData.education.length > 0 || true) && (
+          <section className="mb-4">
+            {renderSectionHeader('Education')}
+            <div className="flex flex-col gap-2.5">
+              {resumeData.education.length > 0 ? (
+                resumeData.education.map(edu => (
+                  <div key={edu.id} className="mb-1">
+                    <h3 className="text-[10pt] font-semibold text-gray-900 mb-0.5 leading-tight">
+                      {edu.degree || 'Degree'}
+                    </h3>
+                    <div className="text-[9pt] text-gray-700 mb-0.5">{edu.school || 'School'}</div>
+                    {edu.field && <div className="text-[8.5pt] text-gray-600 italic">{edu.field}</div>}
+                    <div className="text-[8.5pt] text-gray-500 mt-0.5">
+                      {edu.startDate} - {edu.endDate}
+                    </div>
+                    {edu.gpa && <div className="text-[8.5pt] text-gray-500">GPA: {edu.gpa}</div>}
+                  </div>
+                ))
+              ) : (
+                <div className="mb-1">
+                  <h3 className="text-[10pt] font-semibold text-gray-400 italic mb-0.5 leading-tight">
+                    Bachelor of Science
+                  </h3>
+                  <div className="text-[9pt] text-gray-400 italic mb-0.5">State University</div>
+                  <div className="text-[8.5pt] text-gray-400 italic">Computer Science</div>
+                  <div className="text-[8.5pt] text-gray-400 italic mt-0.5">2016 - 2020</div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Skills */}
+        {(resumeData.skills.length > 0 || true) && (
+          <section className="mb-4">
+            {renderSectionHeader('Skills')}
+            <ul className="list-none p-0 m-0">
+              {resumeData.skills.length > 0 ? (
+                resumeData.skills.map(skill => (
+                  <li key={skill.id} className="py-0.5 text-[9pt] leading-[1.4] text-gray-700">
+                    • {skill.name}
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• JavaScript</li>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• Python</li>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• React</li>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• Node.js</li>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• SQL</li>
+                  <li className="py-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">• System Design</li>
+                </>
+              )}
+            </ul>
+          </section>
+        )}
+      </aside>
+
+      {/* Right Column - Summary and Work History */}
+      <main className="w-[65%] flex-grow">
+        {/* Professional Summary */}
+        {(resumeData.summary || true) && (
+          <section className="mb-4">
+            {renderSectionHeader('Professional Summary')}
+            <p className="m-0 text-[9.5pt] leading-[1.5] text-gray-700 text-justify">
+              {resumeData.summary ? (
+                <span>{resumeData.summary}</span>
+              ) : (
+                <span className="text-gray-400 italic">
+                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.
+                </span>
+              )}
+            </p>
+          </section>
+        )}
+
+        {/* Work History */}
+        {(resumeData.experience.length > 0 || true) && (
+          <section className="mb-4">
+            {renderSectionHeader('Work History')}
+            <div className="flex flex-col gap-3">
+              {resumeData.experience.length > 0 ? (
+                resumeData.experience.map(exp => (
+                  <div key={exp.id} className="mb-1">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex-1">
+                        <h3 className="text-[10.5pt] font-semibold text-gray-900 mb-0.5">
+                          {exp.position || 'Position'}
+                        </h3>
+                        <div className="text-[9.5pt] text-blue-600 font-medium">
+                          {exp.company || 'Company'}
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        {exp.location && <div className="text-[8.5pt] text-gray-500">{exp.location}</div>}
+                        <div className="text-[8.5pt] text-gray-600 font-medium">
+                          {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                        </div>
+                      </div>
+                    </div>
+                    {exp.description && (
+                      <ul className="list-none p-0 m-0 mt-1">
+                        {exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+                          <li key={idx} className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-700">
+                            <span className="absolute left-0 text-blue-600">•</span>
+                            {line.trim().replace(/^[•\-]\s*/, '')}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="mb-1">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex-1">
+                        <h3 className="text-[10.5pt] font-semibold text-gray-400 italic mb-0.5">
+                          Senior Software Engineer
+                        </h3>
+                        <div className="text-[9.5pt] text-gray-400 italic font-medium">
+                          Tech Company Inc.
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="text-[8.5pt] text-gray-400 italic">San Francisco, CA</div>
+                        <div className="text-[8.5pt] text-gray-400 italic font-medium">
+                          Jan 2021 - Present
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="list-none p-0 m-0 mt-1">
+                      <li className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">
+                        <span className="absolute left-0 text-gray-400">•</span>
+                        Led development of microservices architecture serving 2M+ daily active users
+                      </li>
+                      <li className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">
+                        <span className="absolute left-0 text-gray-400">•</span>
+                        Architected real-time data processing pipeline handling 50K requests/second
+                      </li>
+                      <li className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">
+                        <span className="absolute left-0 text-gray-400">•</span>
+                        Mentored team of 5 junior engineers, establishing code review practices
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="mb-1">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex-1">
+                        <h3 className="text-[10.5pt] font-semibold text-gray-400 italic mb-0.5">
+                          Software Engineer
+                        </h3>
+                        <div className="text-[9.5pt] text-gray-400 italic font-medium">
+                          Startup Solutions
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="text-[8.5pt] text-gray-400 italic">New York, NY</div>
+                        <div className="text-[8.5pt] text-gray-400 italic font-medium">
+                          Jun 2019 - Dec 2020
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="list-none p-0 m-0 mt-1">
+                      <li className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">
+                        <span className="absolute left-0 text-gray-400">•</span>
+                        Developed full-stack web applications using React, Node.js, and PostgreSQL
+                      </li>
+                      <li className="relative pl-4 mb-0.5 text-[9pt] leading-[1.4] text-gray-400 italic">
+                        <span className="absolute left-0 text-gray-400">•</span>
+                        Built RESTful APIs and GraphQL endpoints supporting mobile and web clients
+                      </li>
+                    </ul>
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+        )}
+      </main>
+    </div>
+  )
+
+  const renderImageLayout = () => (
+    <div className="flex gap-5 mt-2">
+      {/* Left Column - Photo and Sidebar Info */}
+      <aside className="w-[28%] flex-shrink-0">
+        {/* Profile Photo */}
+        {(resumeData.personalInfo.profilePhoto || true) && (
+          <div className="mb-3">
+            {resumeData.personalInfo.profilePhoto ? (
+              <img 
+                src={resumeData.personalInfo.profilePhoto} 
+                alt="Profile" 
+                className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
+              />
+            ) : (
+              <div className="w-full aspect-square bg-gray-200 rounded-lg border-2 border-gray-300 flex items-center justify-center">
+                <span className="text-[8pt] text-gray-400 italic">Profile Photo</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Skills */}
+        {(resumeData.skills.length > 0 || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Skills')}
+            <ul className="list-none p-0 m-0">
+              {resumeData.skills.length > 0 ? (
+                resumeData.skills.map(skill => (
+                  <li key={skill.id} className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-700">
+                    {skill.name}
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-400 italic">JavaScript</li>
+                  <li className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-400 italic">Python</li>
+                  <li className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-400 italic">React</li>
+                  <li className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-400 italic">Node.js</li>
+                  <li className="py-0.5 text-[8.5pt] leading-[1.3] text-gray-400 italic">SQL</li>
+                </>
+              )}
+            </ul>
+          </section>
+        )}
+
+        {/* Languages */}
+        {(resumeData.languages.length > 0 || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Languages')}
+            <ul className="list-none p-0 m-0">
+              {resumeData.languages.length > 0 ? (
+                resumeData.languages.map(lang => (
+                  <li key={lang.id} className="py-0.5 flex justify-between items-center text-[8.5pt] leading-[1.3]">
+                    <span className="font-medium text-gray-900">{lang.name}</span>
+                    <span className="text-[7.5pt] text-gray-500">{lang.proficiency}</span>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="py-0.5 flex justify-between items-center text-[8.5pt] leading-[1.3]">
+                    <span className="font-medium text-gray-400 italic">English</span>
+                    <span className="text-[7.5pt] text-gray-400 italic">Native</span>
+                  </li>
+                  <li className="py-0.5 flex justify-between items-center text-[8.5pt] leading-[1.3]">
+                    <span className="font-medium text-gray-400 italic">Spanish</span>
+                    <span className="text-[7.5pt] text-gray-400 italic">Fluent</span>
+                  </li>
+                </>
+              )}
+            </ul>
+          </section>
+        )}
+
+        {/* Certifications */}
+        {(resumeData.certifications.length > 0 || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Certifications')}
+            <div className="flex flex-col gap-1.5">
+              {resumeData.certifications.length > 0 ? (
+                resumeData.certifications.map(cert => (
+                  <div key={cert.id} className="leading-[1.3]">
+                    <div className="text-[8.5pt] font-semibold text-gray-900 mb-0">{cert.name}</div>
+                    {cert.issuer && <div className="text-[8pt] text-gray-600">{cert.issuer}</div>}
+                    {cert.date && <div className="text-[7.5pt] text-gray-500">{cert.date}</div>}
+                  </div>
+                ))
+              ) : (
+                <div className="leading-[1.3]">
+                  <div className="text-[8.5pt] font-semibold text-gray-400 italic mb-0">AWS Certified</div>
+                  <div className="text-[8pt] text-gray-400 italic">Amazon Web Services</div>
+                  <div className="text-[7.5pt] text-gray-400 italic">Jan 2023</div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+      </aside>
+
+      {/* Right Column - Main Content */}
+      <main className="w-[72%] flex-grow">
+        {/* Professional Summary */}
+        {(resumeData.summary || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Professional Summary')}
+            <p className="m-0 text-[9pt] leading-[1.4] text-gray-700 text-justify">
+              {resumeData.summary ? (
+                <span>{resumeData.summary}</span>
+              ) : (
+                <span className="text-gray-400 italic">
+                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users.
+                </span>
+              )}
+            </p>
+          </section>
+        )}
+
+        {/* Experience */}
+        {(resumeData.experience.length > 0 || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Experience')}
+            <div className="flex flex-col gap-2">
+              {resumeData.experience.length > 0 ? (
+                resumeData.experience.map(exp => (
+                  <div key={exp.id} className="mb-1">
+                    <div className="flex justify-between items-start mb-0.5">
+                      <div className="flex-1">
+                        <h3 className="text-[10pt] font-bold text-gray-900 mb-0 leading-tight">
+                          {exp.position || 'Position'}
+                        </h3>
+                        <div className="text-[9.5pt] font-semibold text-blue-600 mb-0 leading-tight">
+                          {exp.company || 'Company'}
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        {exp.location && <div className="text-[8pt] text-gray-500">{exp.location}</div>}
+                        <div className="text-[8pt] text-gray-600 font-medium">
+                          {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                        </div>
+                      </div>
+                    </div>
+                    {exp.description && (
+                      <ul className="list-none p-0 m-0 mt-0.5">
+                        {exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+                          <li key={idx} className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-700">
+                            <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                            {line.trim().replace(/^[•\-]\s*/, '')}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="mb-1">
+                    <div className="flex justify-between items-start mb-0.5">
+                      <div className="flex-1">
+                        <h3 className="text-[10pt] font-bold text-gray-400 italic mb-0 leading-tight">
+                          Senior Software Engineer
+                        </h3>
+                        <div className="text-[9.5pt] font-semibold text-gray-400 italic mb-0 leading-tight">
+                          Tech Company Inc.
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="text-[8pt] text-gray-400 italic">San Francisco, CA</div>
+                        <div className="text-[8pt] text-gray-400 italic font-medium">
+                          Jan 2021 - Present
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="list-none p-0 m-0 mt-0.5">
+                      <li className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-400 italic">
+                        <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                        Led development of microservices architecture serving 2M+ daily active users
+                      </li>
+                      <li className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-400 italic">
+                        <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                        Architected real-time data processing pipeline handling 50K requests/second
+                      </li>
+                      <li className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-400 italic">
+                        <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                        Mentored team of 5 junior engineers, establishing code review practices
+                      </li>
+                    </ul>
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Education */}
+        {(resumeData.education.length > 0 || true) && (
+          <section className="mb-3">
+            {renderSectionHeader('Education')}
+            <div className="flex flex-col gap-2">
+              {resumeData.education.length > 0 ? (
+                resumeData.education.map(edu => (
+                  <div key={edu.id} className="mb-0">
+                    <h3 className="text-[10pt] font-bold text-gray-900 mb-0 leading-tight">
+                      {edu.degree || 'Degree'}
+                    </h3>
+                    <div className="text-[9.5pt] font-semibold text-blue-600 mb-0 leading-tight">
+                      {edu.school || 'School'}
+                    </div>
+                    {edu.field && <div className="text-[8.5pt] text-gray-600 italic">{edu.field}</div>}
+                    <div className="text-[8pt] text-gray-500 mt-0.5">
+                      {edu.startDate} - {edu.endDate}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="mb-0">
+                  <h3 className="text-[10pt] font-bold text-gray-400 italic mb-0 leading-tight">
+                    Bachelor of Science
+                  </h3>
+                  <div className="text-[9.5pt] font-semibold text-gray-400 italic mb-0 leading-tight">
+                    State University
+                  </div>
+                  <div className="text-[8.5pt] text-gray-400 italic">Computer Science</div>
+                  <div className="text-[8pt] text-gray-400 italic mt-0.5">2016 - 2020</div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Projects */}
+        {(resumeData.projects.length > 0 || true) && (
+          <section className="mb-0">
+            {renderSectionHeader('Projects')}
+            <div className="flex flex-col gap-2">
+              {resumeData.projects.length > 0 ? (
+                resumeData.projects.map(project => (
+                  <div key={project.id} className="mb-0">
+                    <div className="flex justify-between items-baseline mb-0.5">
+                      <h3 className="text-[10pt] font-bold text-gray-900 leading-tight">
+                        {project.name || 'Project Name'}
+                      </h3>
+                      {project.technologies && (
+                        <span className="text-[7.5pt] text-gray-500 italic">{project.technologies}</span>
+                      )}
+                    </div>
+                    {project.description && (
+                      <ul className="list-none p-0 m-0 mt-0">
+                        {project.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+                          <li key={idx} className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-700">
+                            <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                            {line.trim().replace(/^[•\-]\s*/, '')}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="mb-0">
+                  <div className="flex justify-between items-baseline mb-0.5">
+                    <h3 className="text-[10pt] font-bold text-gray-400 italic leading-tight">
+                      E-Commerce Platform
+                    </h3>
+                    <span className="text-[7.5pt] text-gray-400 italic">React, Node.js</span>
+                  </div>
+                  <ul className="list-none p-0 m-0 mt-0">
+                    <li className="relative pl-3 mb-0 text-[8.5pt] leading-[1.35] text-gray-400 italic">
+                      <span className="absolute left-1 text-gray-400 font-bold text-[7pt]">•</span>
+                      Built scalable e-commerce platform with payment integration
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+      </main>
+    </div>
+  )
+
   return (
     <div className="h-full min-h-[calc(100vh-57px)] overflow-hidden flex flex-col justify-start items-center pt-10" data-resume-preview>
       {/* Scaled preview wrapper - maintains true US Letter aspect ratio (8.5:11) */}
@@ -956,13 +1528,22 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', onDownloadRea
         {/* Actual resume content - true physical dimensions (215.9mm x 279.4mm = US Letter) */}
         <div 
           ref={resumeRef} 
+          data-resume-content
           className={getTemplateClasses()}
           style={{ 
-            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
+            fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif",
+            boxSizing: 'border-box',
+            margin: 0
           }}
         >
           {renderHeader()}
-          {selectedTemplate === 'classic' ? renderSingleColumnLayout() : renderTwoColumnLayout()}
+          {selectedTemplate === 'classic' 
+            ? renderSingleColumnLayout() 
+            : selectedTemplate === 'corporate'
+            ? renderCorporateLayout()
+            : selectedTemplate === 'with-image'
+            ? renderImageLayout()
+            : renderTwoColumnLayout()}
         </div>
       </div>
     </div>

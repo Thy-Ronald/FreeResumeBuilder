@@ -86,7 +86,7 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
     divider: {
       width: '100%',
       height: 0.75,
-      backgroundColor: themeColor,
+      backgroundColor: '#000000',
       marginTop: 8,
       marginBottom: 8,
     },
@@ -115,13 +115,13 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
     sectionDivider: {
       width: '100%',
       height: 0.75,
-      backgroundColor: themeColor,
+      backgroundColor: '#000000',
       marginBottom: 4,
     },
     modernSectionDivider: {
       width: '100%',
       height: 0.75,
-      backgroundColor: themeColor,
+      backgroundColor: '#000000',
       marginTop: 0,
       marginBottom: 0,
     },

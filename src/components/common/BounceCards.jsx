@@ -33,11 +33,11 @@ const renderTemplatePreview = (template, isMobile = false) => {
       <div className="w-full h-full flex flex-col leading-[1.25] flex-1" style={{ padding: '2px', fontSize: getSize(3.5) }}>
         <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(5.5) }}>Ronald Moran Jr</div>
         <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(3) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: '#000000' }}></div>
         <div className="flex gap-0.5 flex-1 mt-0.5">
           <div className="w-[30%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Skills</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 {isMobile ? (
@@ -62,7 +62,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Tools</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Git</div>
@@ -73,7 +73,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Education</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>BS Computer Science</div>
@@ -83,7 +83,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
             {!isMobile && (
               <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-                <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+                <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
                 <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Certifications</div>
                 <div style={{ paddingTop: '1px', margin: 0 }}>
                   <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>AWS Certified Solutions Architect</div>
@@ -96,7 +96,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
           </div>
           <div className="w-[70%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Summary</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
@@ -108,7 +108,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col flex-1" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Experience</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
@@ -157,10 +157,10 @@ const renderTemplatePreview = (template, isMobile = false) => {
       <div className="w-full h-full flex flex-col leading-[1.2] flex-1" style={{ padding: '2px', fontSize: getSize(3.5) }}>
         <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(5.5) }}>Ronald Moran Jr</div>
         <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(3) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: '#000000' }}></div>
         <div className="flex flex-col gap-0.5 flex-1 mt-0.5">
           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-            <div className="h-px" style={{ backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+            <div className="h-px" style={{ backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
             <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Summary</div>
             <div style={{ paddingTop: '1px', margin: 0 }}>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
@@ -172,7 +172,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
           </div>
           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-            <div className="h-px" style={{ backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+            <div className="h-px" style={{ backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
             <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Skills</div>
             <div style={{ paddingTop: '1px', margin: 0 }}>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
@@ -184,7 +184,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
           </div>
           <div className="flex flex-col flex-1" style={{ margin: 0, padding: 0 }}>
-            <div className="h-px" style={{ backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+            <div className="h-px" style={{ backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
             <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Experience</div>
             <div style={{ paddingTop: '1px', margin: 0 }}>
             <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
@@ -223,7 +223,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
           </div>
           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-            <div className="h-px" style={{ backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+            <div className="h-px" style={{ backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
             <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Education</div>
             <div style={{ paddingTop: '1px', margin: 0 }}>
               <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>BS Computer Science</div>
@@ -232,7 +232,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
           </div>
           {!isMobile && (
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Certifications</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>AWS Certified Solutions Architect</div>
@@ -252,11 +252,11 @@ const renderTemplatePreview = (template, isMobile = false) => {
       <div className="w-full h-full flex flex-col leading-[1.2] flex-1" style={{ padding: '2px', fontSize: getSize(3.5) }}>
         <div className="font-semibold text-center mb-0.5" style={{ fontSize: getSize(5.5) }}>Ronald Moran Jr</div>
         <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(3) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: '#000000' }}></div>
         <div className="flex gap-0.5 flex-1 mt-0.5">
           <div className="w-[30%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Skills</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 {isMobile ? (
@@ -281,7 +281,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Tools</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Git</div>
@@ -291,7 +291,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Education</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>BS Computer Science</div>
@@ -301,7 +301,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
             {!isMobile && (
               <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-                <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+                <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
                 <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Certifications</div>
                 <div style={{ paddingTop: '1px', margin: 0 }}>
                   <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>AWS Certified Solutions Architect</div>
@@ -314,7 +314,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
           </div>
           <div className="w-[70%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Summary</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
@@ -326,7 +326,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col flex-1" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Experience</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
@@ -371,16 +371,17 @@ const renderTemplatePreview = (template, isMobile = false) => {
   }
 
   if (template.id === 'corporate') {
+    const sectionHeaderColor = '#2563eb' // Blue color for corporate section headers
     return (
       <div className="w-full h-full flex flex-col leading-[1.2] flex-1" style={{ padding: '2px', fontSize: getSize(3.5) }}>
         <div className="font-bold mb-0.5" style={{ fontSize: getSize(6) }}>Ronald Moran Jr</div>
         <div className="text-gray-700 mb-0.5" style={{ fontSize: getSize(3) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-        <div className="w-1/4 mb-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+        <div className="w-1/4 mb-0.5" style={{ height: '0.5px', backgroundColor: '#000000' }}></div>
         <div className="flex gap-0.5 flex-1">
           <div className="w-[35%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-              <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Education</div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+              <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Education</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>BS Computer Science</div>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>State University</div>
@@ -389,8 +390,8 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
             {!isMobile && (
               <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-                <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Certifications</div>
+                <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+                <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Certifications</div>
                 <div style={{ paddingTop: '1px', margin: 0 }}>
                   <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>AWS Certified Solutions Architect</div>
                   <div className="text-gray-500" style={{ fontSize: getSize(2.5) }}>2022</div>
@@ -400,8 +401,8 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             )}
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-              <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Skills</div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+              <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Skills</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 {isMobile ? (
                   <>
@@ -425,8 +426,8 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-              <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Tools</div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+              <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Tools</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Git</div>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Docker</div>
@@ -437,8 +438,8 @@ const renderTemplatePreview = (template, isMobile = false) => {
           </div>
           <div className="w-[65%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-              <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Summary</div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+              <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Professional Summary</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
                   {isMobile 
@@ -449,8 +450,8 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col flex-1" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-              <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Work History</div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
+              <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Work History</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
                 <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
@@ -509,7 +510,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               className="w-full aspect-square object-cover rounded border border-gray-200 mb-0.5"
             />
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Skills</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 {isMobile ? (
@@ -533,7 +534,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Tools</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Git</div>
@@ -543,7 +544,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Education</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>BS Computer Science</div>
@@ -553,7 +554,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
             </div>
             {!isMobile && (
               <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-                <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+                <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
                 <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Certifications</div>
                 <div style={{ paddingTop: '1px', margin: 0 }}>
                   <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>AWS Certified Solutions Architect</div>
@@ -566,7 +567,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
           </div>
           <div className="w-[72%] flex flex-col gap-0.5">
             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Summary</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
@@ -578,7 +579,7 @@ const renderTemplatePreview = (template, isMobile = false) => {
               </div>
             </div>
             <div className="flex flex-col flex-1" style={{ margin: 0, padding: 0 }}>
-              <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+              <div style={{ height: '0.5px', backgroundColor: '#000000', margin: 0, padding: 0 }}></div>
               <div className="font-bold uppercase" style={{ fontSize: getSize(3), margin: 0, paddingTop: '1px' }}>Experience</div>
               <div style={{ paddingTop: '1px', margin: 0 }}>
                 <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>

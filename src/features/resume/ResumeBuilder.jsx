@@ -1152,12 +1152,12 @@ function ResumeBuilder({
                 </svg>
               </button>
             </div>
-            <div className="flex-1 overflow-hidden p-2 sm:p-3 md:p-4 lg:p-6 bg-gray-50 flex items-center justify-center min-h-0">
+            <div className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 bg-gray-50 flex items-center justify-center min-h-0">
               <div className="w-full h-full flex justify-center items-center">
-                {/* Scaled preview wrapper - maintains true US Letter aspect ratio (8.5:11) */}
-                {/* Scale calculated to fit perfectly within modal without scrolling */}
+                {/* Scaled preview wrapper - scales for display but resume is always 816x1056px at 1:1 */}
+                {/* The ResumePreview component always renders at exact 816x1056px internally */}
                 <div className="transform scale-[0.4] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.65] xl:scale-[0.7] origin-center">
-                  {/* Actual resume content - true physical dimensions (215.9mm x 279.4mm = US Letter) */}
+                  {/* Actual resume content - always 816x1056px (US Letter at 96 DPI) for pixel-perfect WYSIWYG */}
                   <ResumePreview
                     resumeData={resumeData}
                     selectedTemplate={selectedTemplate}

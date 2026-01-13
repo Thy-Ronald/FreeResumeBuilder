@@ -1,13 +1,24 @@
-import { useRef, useEffect } from 'react'
-import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
+import { useRef, useEffect, useCallback } from 'react'
+import { pdf } from '@react-pdf/renderer'
 import Icon from '../../../components/common/Icon'
 import { fonts } from '../../../constants/fonts'
 import { getColorScheme } from '../../../constants/colors'
+import ResumePDF from './ResumePDF'
 
 function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont = 'inter', selectedColor = 'black', themeColor = '#F2F2F2', onDownloadReady, inModal = false }) {
+  // US Letter dimensions at 96 DPI: 816px x 1056px (exact 1:1 scale)
+  // This ensures pixel-perfect WYSIWYG between preview and PDF
+  const US_LETTER_WIDTH_PX = 816
+  const US_LETTER_HEIGHT_PX = 1056
+  
   const resumeRef = useRef(null)
+  const resumeDataRef = useRef(resumeData)
   const colorScheme = getColorScheme(selectedColor)
+
+  // Keep ref in sync with latest resumeData
+  useEffect(() => {
+    resumeDataRef.current = resumeData
+  }, [resumeData])
 
   // Text flow normalization styles - match Word/Google Docs rendering
   const textFlowStyles = {
@@ -18,135 +29,49 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
     textAlign: 'left'
   }
 
-  const downloadPDF = async () => {
-    if (!resumeRef.current) return
-
+  const downloadPDF = useCallback(async () => {
     try {
-      // Wait for fonts to fully load
-      await document.fonts.ready
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const element = resumeRef.current
-      
-      // US Letter dimensions in mm: 215.9mm x 279.4mm
-      // Convert to pixels at 96 DPI: 1mm = 3.779527559px
-      const mmToPx = 3.779527559
-      const targetWidthPx = 215.9 * mmToPx  // ~816px
-      const targetHeightPx = 279.4 * mmToPx // ~1056px
-      
-      // Use high scale for pixel-perfect quality
-      const scale = 3
-
-      const canvas = await html2canvas(element, {
-        scale: scale,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-        width: targetWidthPx,
-        height: targetHeightPx,
-        windowWidth: targetWidthPx,
-        windowHeight: targetHeightPx,
-        x: 0,
-        y: 0,
-        scrollX: 0,
-        scrollY: 0,
-        allowTaint: true,
-        foreignObjectRendering: false,
-        removeContainer: false,
-        imageTimeout: 0,
-        onclone: (clonedDoc) => {
-          // Find the cloned resume element
-          const clonedElement = clonedDoc.querySelector('[data-resume-content]')
-          if (clonedElement) {
-            // Get the parent wrapper (the scaled div)
-            const clonedParent = clonedElement.parentElement
-            
-            // Remove all scaling transforms from the parent
-            if (clonedParent) {
-              clonedParent.style.transform = 'none'
-              clonedParent.style.scale = 'none'
-              clonedParent.className = ''
-            }
-            
-            // Get computed styles from original element to preserve padding/margins
-            const originalElement = resumeRef.current
-            const computedStyle = window.getComputedStyle(originalElement)
-            
-            // Ensure the element has exact dimensions
-            clonedElement.style.width = `${targetWidthPx}px`
-            clonedElement.style.height = `${targetHeightPx}px`
-            clonedElement.style.minWidth = `${targetWidthPx}px`
-            clonedElement.style.minHeight = `${targetHeightPx}px`
-            clonedElement.style.maxWidth = `${targetWidthPx}px`
-            clonedElement.style.maxHeight = `${targetHeightPx}px`
-            clonedElement.style.margin = '0'
-            // Preserve padding from computed styles (from Tailwind classes)
-            clonedElement.style.padding = computedStyle.padding
-            clonedElement.style.boxSizing = computedStyle.boxSizing || 'border-box'
-            clonedElement.style.overflow = 'hidden'
-            clonedElement.style.display = 'block'
-            clonedElement.style.position = 'relative'
-            clonedElement.style.backgroundColor = computedStyle.backgroundColor || '#ffffff'
-            
-            // Ensure all images are loaded and visible
-            const images = clonedElement.querySelectorAll('img')
-            images.forEach(img => {
-              if (img.src) {
-                img.style.display = 'block'
-                img.style.maxWidth = '100%'
-                img.style.height = 'auto'
-              }
-            })
-          }
-        }
-      })
-
-      // Create PDF with exact US Letter dimensions
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: [215.9, 279.4], // Exact US Letter dimensions in mm
-        compress: false, // Disable compression for pixel-perfect quality
-        precision: 16 // High precision for exact dimensions
-      })
-
-      const pdfWidth = 215.9 // mm
-      const pdfHeight = 279.4 // mm
-
-      // Add image at exact position with exact dimensions - 1:1 mapping
-      pdf.addImage(
-        canvas.toDataURL('image/png', 1.0),
-        'PNG',
-        0,
-        0,
-        pdfWidth,
-        pdfHeight,
-        undefined,
-        'FAST'
+      // Generate true vector PDF using @react-pdf/renderer
+      // This creates a native PDF with embedded fonts and vector graphics
+      const pdfDoc = (
+        <ResumePDF
+          resumeData={resumeDataRef.current}
+          selectedTemplate={selectedTemplate}
+          selectedFont={selectedFont}
+          selectedColor={selectedColor}
+          themeColor={themeColor}
+        />
       )
 
-      pdf.save(`${resumeData.personalInfo.fullName || 'resume'}-resume.pdf`)
+      // Generate PDF blob
+      const blob = await pdf(pdfDoc).toBlob()
+      
+      // Create download link
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      const fileName = resumeDataRef.current?.personalInfo?.fullName || 'resume'
+      link.download = `${fileName}-resume.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Error generating PDF:', error)
       throw error // Re-throw so loading state can be handled
     }
-  }
+  }, [selectedTemplate, selectedFont, selectedColor, themeColor])
 
   useEffect(() => {
     if (onDownloadReady) {
       onDownloadReady(downloadPDF)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [onDownloadReady, downloadPDF])
 
   const getTemplateClasses = () => {
-    // US Letter: 8.5" x 11" = 215.9mm x 279.4mm (aspect ratio 1:1.294)
-    // Maintaining true physical dimensions for PDF export
-    // Reduced padding to maximize content density
-    // For modal display, use pixel-based dimensions that scale better
-    const base = inModal 
-      ? "bg-white font-sans text-gray-900 overflow-hidden"
-      : "bg-white w-[215.9mm] h-[279.4mm] font-sans text-gray-900 overflow-hidden"
+    // Always use exact pixel dimensions for pixel-perfect rendering
+    // US Letter: 8.5" x 11" = 215.9mm x 279.4mm = 816px x 1056px at 96 DPI
+    const base = "bg-white font-sans text-gray-900 overflow-hidden"
     const styles = {
       compact: `${base} text-[9pt] leading-[1.28] p-[8mm_10mm]`,
       modern: `${base} text-[9.5pt] leading-[1.35] p-[9mm_11mm]`,
@@ -1597,17 +1522,28 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
         fontFamily: fonts.find(f => f.id === selectedFont)?.family || fonts[0].family,
         boxSizing: 'border-box',
         margin: 0,
-        width: inModal ? '816px' : undefined, // US Letter width in pixels at 96 DPI
-        height: inModal ? '1056px' : undefined, // US Letter height in pixels at 96 DPI
-        aspectRatio: inModal ? '8.5 / 11' : undefined,
+        // ALWAYS use exact US Letter dimensions at 1:1 scale for pixel-perfect WYSIWYG
+        width: `${US_LETTER_WIDTH_PX}px`,
+        height: `${US_LETTER_HEIGHT_PX}px`,
+        minWidth: `${US_LETTER_WIDTH_PX}px`,
+        minHeight: `${US_LETTER_HEIGHT_PX}px`,
+        maxWidth: `${US_LETTER_WIDTH_PX}px`,
+        maxHeight: `${US_LETTER_HEIGHT_PX}px`,
         // Text flow normalization - match Word/Google Docs rendering
         whiteSpace: 'normal',
         wordBreak: 'normal',
         overflowWrap: 'break-word',
         letterSpacing: 'normal',
         textAlign: 'left',
-        // Prevent column overflow
+        // Prevent column overflow and content shifts
         overflow: 'hidden',
+        position: 'relative',
+        // Font rendering optimization for pixel-perfect match
+        fontSynthesis: 'none',
+        textRendering: 'optimizeLegibility',
+        webkitFontSmoothing: 'antialiased',
+        mozOsxFontSmoothing: 'grayscale',
+        // CSS variables for color scheme
         '--color-primary': colorScheme.colors.primary,
         '--color-secondary': colorScheme.colors.secondary,
         '--color-tertiary': colorScheme.colors.tertiary,
@@ -1628,14 +1564,29 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
   )
 
   if (inModal) {
-    return resumeContent
+    return (
+      <div style={{ 
+        width: `${US_LETTER_WIDTH_PX}px`, 
+        height: `${US_LETTER_HEIGHT_PX}px`,
+        margin: '0 auto',
+        display: 'block'
+      }}>
+        {resumeContent}
+      </div>
+    )
   }
 
   return (
-    <div className="h-full min-h-[calc(100vh-57px)] sm:min-h-[calc(100vh-65px)] overflow-hidden flex flex-col justify-start items-center pt-6 sm:pt-8 md:pt-10 hidden lg:flex" data-resume-preview>
-      {/* Scaled preview wrapper - maintains true US Letter aspect ratio (8.5:11) */}
+    <div className="h-full min-h-[calc(100vh-57px)] sm:min-h-[calc(100vh-65px)] overflow-auto flex flex-col justify-start items-center pt-6 sm:pt-8 md:pt-10 hidden lg:flex" data-resume-preview>
+      {/* Preview wrapper - scales for display but element itself is always 816x1056px */}
+      {/* The actual resumeContent is always rendered at 1:1 scale (816x1056px) */}
+      {/* We scale the wrapper for display, but PDF export captures the element at 1:1 */}
       <div 
-        className="scale-[0.4] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.7] xl:scale-[0.75] origin-top"
+        className="origin-top"
+        style={{
+          transform: 'scale(0.7)', // Scale for display only
+          transformOrigin: 'top center',
+        }}
       >
         {resumeContent}
       </div>

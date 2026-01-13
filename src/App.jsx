@@ -54,7 +54,10 @@ function App() {
           <ResumeBuilder 
             selectedTemplate={selectedTemplate} 
             themeColor={getTemplateColorWithDefault(selectedTemplate)} 
-            onBack={() => setSelectedTemplate(null)} 
+            onBack={() => setSelectedTemplate(null)}
+            templateColors={templateColors}
+            onTemplateColorChange={handleTemplateColorChange}
+            getTemplateColor={getTemplateColor}
           />
         </Suspense>
       )}

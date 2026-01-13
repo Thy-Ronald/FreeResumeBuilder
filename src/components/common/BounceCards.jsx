@@ -16,8 +16,8 @@ const getPreviewColor = (templateId) => {
 
 const getResponsiveFontSize = (baseSize, isMobile = false) => {
   if (isMobile) {
-    // Scale up font sizes for mobile to maintain readability
-    return `${baseSize * 1.4}px`;
+    // Scale down font sizes for mobile to fit more content
+    return `${baseSize * 0.85}px`;
   }
   return `${baseSize}px`;
 };
@@ -39,14 +39,25 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Skills</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Microservices</div>
+              {isMobile ? (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Microservices</div>
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Tools</div>
@@ -69,24 +80,31 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Summary</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+                {isMobile 
+                  ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
+                  : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.'
+                }
+              </div>
             </div>
             <div className="flex flex-col gap-0.5 flex-1">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Experience</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
               <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
               <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40% through optimized caching and load balancing strategies</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime and sub-100ms response times</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices, technical standards, and career development programs</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Optimized database queries and caching strategies, improving API response time by 60% and reducing infrastructure costs by 30%</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25% and revenue by 15%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
               <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Software Engineer</div>
               <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users with responsive design and mobile optimization</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users</div>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients, handling 10K+ requests per day</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50% and improving code quality</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime and implementing monitoring and alerting systems</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Junior Software Engineer</div>
+              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Startup | Aug 2018 - May 2019</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built responsive web interfaces using React and Redux, improving user experience and page load times by 35%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Participated in code reviews and contributed to improving team coding standards and best practices</div>
             </div>
           </div>
         </div>
@@ -104,35 +122,40 @@ const renderTemplatePreview = (template, isMobile = false) => {
           <div className="flex flex-col gap-0.5">
             <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Summary</div>
             <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to achieve technical excellence and career growth.</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+              {isMobile 
+                ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
+                : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to achieve technical excellence and career growth.'
+              }
+            </div>
           </div>
           <div className="flex flex-col gap-0.5">
             <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Skills</div>
             <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>JavaScript, Python, React, Node.js, TypeScript, SQL, System Design, Microservices, GraphQL, Git, Docker, AWS, PostgreSQL, MongoDB, Kubernetes</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+              {isMobile 
+                ? 'JavaScript, Python, React, Node.js'
+                : 'JavaScript, Python, React, Node.js, TypeScript, SQL, System Design, Microservices, GraphQL, Git, Docker, AWS, PostgreSQL, MongoDB, Kubernetes'
+              }
+            </div>
           </div>
           <div className="flex flex-col gap-0.5 flex-1">
             <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Experience</div>
             <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
             <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
             <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40% through optimized caching and load balancing strategies</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime and sub-100ms response times</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices, technical standards, and career development programs</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Optimized database queries and caching strategies, improving API response time by 60% and reducing infrastructure costs by 30%</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25% and revenue by 15%</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes, improving team productivity</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
             <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Software Engineer</div>
             <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users with responsive design and mobile optimization</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users</div>
             <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients, handling 10K+ requests per day</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50% and improving code quality</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime and implementing monitoring and alerting systems</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Designed and implemented payment processing system handling $5M+ in transactions monthly with PCI compliance and fraud detection</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
             <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Junior Software Engineer</div>
             <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Startup | Aug 2018 - May 2019</div>
             <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built responsive web interfaces using React and Redux, improving user experience and page load times by 35%</div>
-            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production systems</div>
+            <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production</div>
             <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Participated in code reviews and contributed to improving team coding standards and best practices</div>
           </div>
           <div className="flex flex-col gap-0.5">
@@ -157,14 +180,25 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3) }}>Skills</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Microservices</div>
+              {isMobile ? (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Microservices</div>
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-0.5">
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3) }}>Tools</div>
@@ -186,24 +220,31 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3) }}>Summary</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+                {isMobile 
+                  ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
+                  : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.'
+                }
+              </div>
             </div>
             <div className="flex flex-col gap-0.5 flex-1">
               <div className="font-semibold uppercase" style={{ fontSize: getSize(3) }}>Experience</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
               <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
               <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40% through optimized caching and load balancing strategies</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime and sub-100ms response times</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices, technical standards, and career development programs</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Optimized database queries and caching strategies, improving API response time by 60% and reducing infrastructure costs by 30%</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25% and revenue by 15%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
               <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Software Engineer</div>
               <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users with responsive design and mobile optimization</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users</div>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients, handling 10K+ requests per day</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50% and improving code quality</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime and implementing monitoring and alerting systems</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Junior Software Engineer</div>
+              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Tech Startup | Aug 2018 - May 2019</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built responsive web interfaces using React and Redux, improving user experience and page load times by 35%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Participated in code reviews and contributed to improving team coding standards and best practices</div>
             </div>
           </div>
         </div>
@@ -229,14 +270,25 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3) }}>Skills</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• JavaScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Python</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• React</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Node.js</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• TypeScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• SQL</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• System Design</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Microservices</div>
+              {isMobile ? (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Node.js</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Node.js</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• TypeScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• SQL</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• System Design</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>• Microservices</div>
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3) }}>Tools</div>
@@ -251,24 +303,31 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3) }}>Summary</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+                {isMobile 
+                  ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
+                  : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.'
+                }
+              </div>
             </div>
             <div className="flex flex-col gap-0.5 flex-1">
               <div className="font-bold uppercase text-blue-600" style={{ fontSize: getSize(3) }}>Work History</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
               <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
               <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40% through optimized caching and load balancing strategies</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime and sub-100ms response times</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices, technical standards, and career development programs</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Optimized database queries and caching strategies, improving API response time by 60% and reducing infrastructure costs by 30%</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25% and revenue by 15%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
               <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Software Engineer</div>
               <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users with responsive design and mobile optimization</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users</div>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients, handling 10K+ requests per day</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50% and improving code quality</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime and implementing monitoring and alerting systems</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Junior Software Engineer</div>
+              <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Tech Startup | Aug 2018 - May 2019</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built responsive web interfaces using React and Redux, improving user experience and page load times by 35%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Participated in code reviews and contributed to improving team coding standards and best practices</div>
             </div>
           </div>
         </div>
@@ -294,13 +353,24 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Skills</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
-              <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
+              {isMobile ? (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                </>
+              ) : (
+                <>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>JavaScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Python</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>React</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>Node.js</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>TypeScript</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>SQL</div>
+                  <div className="text-gray-600" style={{ fontSize: getSize(2.5) }}>System Design</div>
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Tools</div>
@@ -322,24 +392,31 @@ const renderTemplatePreview = (template, isMobile = false) => {
             <div className="flex flex-col gap-0.5">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Summary</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>
+                {isMobile 
+                  ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
+                  : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users with high availability and performance. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.'
+                }
+              </div>
             </div>
             <div className="flex flex-col gap-0.5 flex-1">
               <div className="font-bold uppercase" style={{ fontSize: getSize(3) }}>Experience</div>
               <div className="h-px mb-0.5" style={{ backgroundColor: previewColor }}></div>
               <div className="font-semibold" style={{ fontSize: getSize(2.5) }}>Senior Software Engineer</div>
               <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40% through optimized caching and load balancing strategies</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime and sub-100ms response times</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices, technical standards, and career development programs</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Optimized database queries and caching strategies, improving API response time by 60% and reducing infrastructure costs by 30%</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25% and revenue by 15%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Architected real-time data processing pipeline handling 50K requests/second with 99.9% uptime</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
               <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Software Engineer</div>
               <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users with responsive design and mobile optimization</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL serving 100K+ users</div>
               <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients, handling 10K+ requests per day</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50% and improving code quality</div>
-              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Deployed applications on AWS using Docker and Kubernetes, ensuring 99.9% uptime and implementing monitoring and alerting systems</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Implemented automated testing suite achieving 85% code coverage, reducing production bugs by 50%</div>
+              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(2.5) }}>Junior Software Engineer</div>
+              <div className="text-blue-600" style={{ fontSize: getSize(2.5) }}>Tech Startup | Aug 2018 - May 2019</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Built responsive web interfaces using React and Redux, improving user experience and page load times by 35%</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Collaborated with cross-functional teams to implement new features and fix critical bugs in production</div>
+              <div className="text-gray-600 leading-tight" style={{ fontSize: getSize(2.5) }}>• Participated in code reviews and contributed to improving team coding standards and best practices</div>
             </div>
           </div>
         </div>

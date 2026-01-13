@@ -768,6 +768,9 @@ export default function BounceCards({
           }}
           onMouseEnter={() => pushSiblings(idx)}
           onMouseLeave={resetSiblings}
+          onTouchStart={() => pushSiblings(idx)}
+          onTouchEnd={resetSiblings}
+          onTouchCancel={resetSiblings}
         >
           {/* Paper frame - US Letter: 8.5" × 11" */}
           <div 

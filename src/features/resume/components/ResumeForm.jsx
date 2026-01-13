@@ -420,9 +420,9 @@ function ResumeForm({
       case 'personal':
         return (
           <>
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Personal Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Personal Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700">
                     Full Name <span className="text-red-500">*</span>
@@ -588,8 +588,8 @@ function ResumeForm({
                 </div>
               </div>
             </div>
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Professional Summary</h2>
+            <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Professional Summary</h2>
               <div className="flex flex-col gap-2">
                 <textarea
                   placeholder="Write a brief summary of your professional background and key achievements..."
@@ -605,10 +605,10 @@ function ResumeForm({
 
       case 'education':
         return (
-          <div className="bg-white border border-gray-200 rounded-xl p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Education</h2>
-              <button onClick={addEducation} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Education</h2>
+              <button onClick={addEducation} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                 Add Education
               </button>
             </div>
@@ -623,8 +623,8 @@ function ResumeForm({
               </div>
             )}
             {resumeData.education.map((edu) => (
-              <div key={edu.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div key={edu.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-medium text-gray-700">
                       School/University <span className="text-red-500">*</span>
@@ -780,10 +780,10 @@ function ResumeForm({
 
       case 'experience':
         return (
-          <div className="bg-white border border-gray-200 rounded-xl p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Experience</h2>
-              <button onClick={addExperience} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Experience</h2>
+              <button onClick={addExperience} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                 Add Experience
               </button>
             </div>
@@ -798,8 +798,8 @@ function ResumeForm({
               </div>
             )}
             {resumeData.experience.map((exp) => (
-              <div key={exp.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div key={exp.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-medium text-gray-700">
                       Company <span className="text-red-500">*</span>
@@ -954,10 +954,10 @@ function ResumeForm({
       case 'skills':
         return (
           <>
-            <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-xl font-semibold text-gray-900">Skills</h2>
-                <button onClick={addSkill} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+            <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-2">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Skills</h2>
+                <button onClick={addSkill} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                   Add Skill
                 </button>
               </div>
@@ -973,7 +973,7 @@ function ResumeForm({
                 </div>
               )}
               {resumeData.skills.map((skill) => (
-                <div key={skill.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3 flex items-center gap-3">
+                <div key={skill.id} className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-2 sm:mb-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                   <div className="flex-1">
                     <input
                       type="text"
@@ -995,7 +995,7 @@ function ResumeForm({
                       <p className="text-xs text-red-500 mt-1">{errors[`skill_${skill.id}`]}</p>
                     )}
                   </div>
-                  <button onClick={() => removeSkill(skill.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors whitespace-nowrap">
+                  <button onClick={() => removeSkill(skill.id)} className="px-3 sm:px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 active:bg-gray-100 transition-colors whitespace-nowrap w-full sm:w-auto">
                     Remove
                   </button>
                 </div>
@@ -1004,10 +1004,10 @@ function ResumeForm({
 
             {/* Tools - Hidden for corporate and with-image templates */}
             {selectedTemplate !== 'corporate' && selectedTemplate !== 'with-image' && (
-              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-xl font-semibold text-gray-900">Tools & Technologies</h2>
-                  <button onClick={addTool} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-2">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Tools & Technologies</h2>
+                  <button onClick={addTool} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                     Add Tool
                   </button>
                 </div>
@@ -1018,7 +1018,7 @@ function ResumeForm({
                   </div>
                 )}
                 {resumeData.tools.map((tool) => (
-                  <div key={tool.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3 flex items-center gap-3">
+                  <div key={tool.id} className="bg-gray-50 border border-gray-200 rounded-lg p-3 sm:p-4 mb-2 sm:mb-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                     <div className="flex-1">
                       <input
                         type="text"
@@ -1040,7 +1040,7 @@ function ResumeForm({
                         <p className="text-xs text-red-500 mt-1">{errors[`tool_${tool.id}`]}</p>
                       )}
                     </div>
-                    <button onClick={() => removeTool(tool.id)} className="px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-colors whitespace-nowrap">
+                    <button onClick={() => removeTool(tool.id)} className="px-3 sm:px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 active:bg-gray-100 transition-colors whitespace-nowrap w-full sm:w-auto">
                       Remove
                     </button>
                   </div>
@@ -1050,10 +1050,10 @@ function ResumeForm({
 
             {/* Languages - Hidden for corporate template */}
             {selectedTemplate !== 'corporate' && (
-              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-xl font-semibold text-gray-900">Languages</h2>
-                  <button onClick={addLanguage} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-2">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Languages</h2>
+                  <button onClick={addLanguage} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                     Add Language
                   </button>
                 </div>
@@ -1064,8 +1064,8 @@ function ResumeForm({
                   </div>
                 )}
                 {resumeData.languages.map((lang) => (
-                  <div key={lang.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                  <div key={lang.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium text-gray-700">Language</label>
                         <input
@@ -1113,10 +1113,10 @@ function ResumeForm({
 
             {/* Certifications - Hidden for corporate template */}
             {selectedTemplate !== 'corporate' && (
-              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-xl font-semibold text-gray-900">Certifications</h2>
-                  <button onClick={addCertification} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+              <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-2">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Certifications</h2>
+                  <button onClick={addCertification} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                     Add Certification
                   </button>
                 </div>
@@ -1127,8 +1127,8 @@ function ResumeForm({
                   </div>
                 )}
                 {resumeData.certifications.map((cert) => (
-                  <div key={cert.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                  <div key={cert.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium text-gray-700">Certification Name</label>
                         <input
@@ -1184,10 +1184,10 @@ function ResumeForm({
 
       case 'projects':
         return (
-          <div className="bg-white border border-gray-200 rounded-xl p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Projects</h2>
-              <button onClick={addProject} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Projects</h2>
+              <button onClick={addProject} className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-800 active:bg-gray-700 transition-colors w-full sm:w-auto">
                 Add Project
               </button>
             </div>
@@ -1202,8 +1202,8 @@ function ResumeForm({
               </div>
             )}
             {resumeData.projects.map((project) => (
-              <div key={project.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div key={project.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-medium text-gray-700">
                       Project Name <span className="text-red-500">*</span>
@@ -1301,7 +1301,7 @@ function ResumeForm({
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8 overflow-y-auto">
+    <div className="bg-gray-100 min-h-screen py-6 sm:py-8 md:py-10 px-3 sm:px-4 md:px-6 lg:px-8 overflow-y-auto">
       <div className="max-w-4xl mx-auto flex flex-col">
         {/* Current Section Content */}
         <div className="flex-1">
@@ -1309,34 +1309,34 @@ function ResumeForm({
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+        <div className="flex justify-between items-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200 gap-3">
           <button
             onClick={prevSection}
             disabled={currentSection === 0}
-            className={`px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+            className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium transition-colors flex items-center gap-1.5 sm:gap-2 ${
               currentSection === 0
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100'
             }`}
           >
-            <span>←</span>
-            Previous
+            <span className="text-base sm:text-lg">←</span>
+            <span className="hidden xs:inline">Previous</span>
           </button>
           {currentSection === sections.length - 1 ? (
             <button
               onClick={handleFinish}
-              className="px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 bg-green-600 text-white hover:bg-green-700"
+              className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium transition-colors flex items-center gap-1.5 sm:gap-2 bg-green-600 text-white hover:bg-green-700 active:bg-green-800"
             >
-              Finish
-              <span>✓</span>
+              <span className="hidden xs:inline">Finish</span>
+              <span className="text-base sm:text-lg">✓</span>
             </button>
           ) : (
             <button
               onClick={nextSection}
-              className="px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+              className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-medium transition-colors flex items-center gap-1.5 sm:gap-2 bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800"
             >
-              Next
-              <span>→</span>
+              <span className="hidden xs:inline">Next</span>
+              <span className="text-base sm:text-lg">→</span>
             </button>
           )}
         </div>

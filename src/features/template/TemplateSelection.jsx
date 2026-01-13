@@ -21,47 +21,46 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-gray-900 mb-4 tracking-tight">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 mb-2 sm:mb-3 md:mb-4 tracking-tight px-2">
             Choose Your Resume Template
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-2">
             Select a professionally designed template. All templates are ATS-friendly and optimized for one-page resumes.
           </p>
         </div>
 
         {/* Template Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12">
           {templates.map((template) => (
             <div
               key={template.id}
-              className="relative bg-white border-2 rounded-xl overflow-visible transition-all duration-200 border-gray-200 hover:border-blue-300 hover:shadow-md group"
+              className="relative bg-white border-2 rounded-lg sm:rounded-xl overflow-visible transition-all duration-200 border-gray-200 hover:border-blue-300 hover:shadow-md group"
             >
               {/* Preview - US Letter aspect ratio (1:1.294) with padding for shadow breathing room */}
               <div 
-                className="relative bg-gray-50 p-4 flex items-center justify-center"
+                className="relative bg-gray-50 p-2 sm:p-3 md:p-4 flex items-center justify-center"
                 onMouseEnter={() => setHoveredTemplate(template.id)}
                 onMouseLeave={() => setHoveredTemplate(null)}
               >
                 {/* Hover Overlay with Use Template Button */}
                 {hoveredTemplate === template.id && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 rounded-t-xl transition-opacity duration-200">
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 rounded-t-lg sm:rounded-t-xl transition-opacity duration-200">
                     <button
                       onClick={() => onSelectTemplate(template.id)}
-                      className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 shadow-lg"
+                      className="px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 flex items-center gap-1.5 sm:gap-2 shadow-lg text-sm sm:text-base"
                     >
                       Use Template
-                      <Icon name="briefcase" className="text-white" />
+                      <Icon name="briefcase" className="text-white w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                   </div>
                 )}
                 {/* Paper frame - US Letter: 8.5" x 11" (aspect ratio 1:1.294) */}
                 <div 
-                  className="relative bg-white shadow-lg"
+                  className="relative bg-white shadow-lg w-full max-w-[140px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[200px]"
                   style={{
-                    width: '200px',
                     aspectRatio: '8.5 / 11', // US Letter aspect ratio
                     border: '1px solid #E5E7EB',
                   }}
@@ -449,14 +448,14 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
 
               {/* Info */}
               <div 
-                className="p-5"
+                className="p-3 sm:p-4 md:p-5"
                 onMouseEnter={() => setHoveredTemplate(null)}
                 onMouseLeave={() => setHoveredTemplate(null)}
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">{template.name}</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 text-center">{template.name}</h3>
                 
                 {/* Color Palette Picker */}
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                   {themeColors.map((color) => {
                     const templateColor = getTemplateColor(template.id)
                     const isSelected = templateColor !== null && templateColor === color.hex
@@ -467,7 +466,7 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                           e.stopPropagation()
                           onTemplateColorChange(template.id, color.hex)
                         }}
-                        className={`relative w-8 h-8 rounded-full transition-all duration-200 ${
+                        className={`relative w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full transition-all duration-200 ${
                           isSelected
                             ? 'ring-2 ring-offset-1'
                             : 'ring-1 ring-transparent hover:ring-gray-300'
@@ -477,25 +476,35 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                           ringColor: isSelected ? '#E5E7EB' : 'transparent',
                         }}
                         title={`Select ${color.hex}`}
+                        aria-label={`Select ${color.hex}`}
                       >
                         {isSelected && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-white opacity-80"></div>
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white opacity-80"></div>
                           </div>
                         )}
                       </button>
                     )
                   })}
                 </div>
+                
+                {/* Mobile-friendly Use Template Button */}
+                <button
+                  onClick={() => onSelectTemplate(template.id)}
+                  className="mt-3 sm:mt-4 w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 flex items-center justify-center gap-2 shadow-md sm:hidden"
+                >
+                  Use Template
+                  <Icon name="briefcase" className="text-white w-4 h-4" />
+                </button>
               </div>
             </div>
           ))}
         </div>
 
         {/* Footer */}
-        <div className="flex justify-center items-center gap-3 bg-gray-50 rounded-lg p-6">
-          <i className="fi fi-rr-info text-blue-500"></i>
-          <span className="text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 bg-gray-50 rounded-lg p-4 sm:p-5 md:p-6 mx-2 sm:mx-0">
+          <i className="fi fi-rr-info text-blue-500 text-base sm:text-lg"></i>
+          <span className="text-xs sm:text-sm text-gray-600 text-center sm:text-left">
             You can switch templates anytime. Your content will be preserved.
           </span>
         </div>

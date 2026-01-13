@@ -1548,7 +1548,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'compact', selectedFont 
   )
 
   return (
-    <div className="h-full min-h-[calc(100vh-57px)] overflow-hidden flex flex-col justify-start items-center pt-10" data-resume-preview>
+    <div className="h-full min-h-[calc(100vh-57px)] sm:min-h-[calc(100vh-65px)] overflow-hidden flex flex-col justify-start items-center pt-6 sm:pt-8 md:pt-10 hidden lg:flex" data-resume-preview>
       {/* Scaled preview wrapper - maintains true US Letter aspect ratio (8.5:11) */}
       <div 
         className="scale-[0.4] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.7] xl:scale-[0.75] origin-top"

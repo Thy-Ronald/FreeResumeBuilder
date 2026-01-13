@@ -42,6 +42,7 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
   const [showFontModal, setShowFontModal] = useState(false)
   const [showColorModal, setShowColorModal] = useState(false)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(false)
   const downloadPDFRef = useRef(null)
 
   // Scroll to top when component mounts
@@ -329,25 +330,17 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header with Back Button and Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-6 py-3 z-10">
-        <div className="flex items-center gap-6">
-          <button
-            onClick={handleGoBack}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
-          >
-            <Icon name="arrowLeft" className="text-lg" />
-            <span className="text-sm font-medium">Go Back</span>
-          </button>
-          
+      {/* Header with Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 px-3 sm:px-4 md:px-6 py-2 sm:py-3 z-10">
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
           {/* Progress Bar - Centered */}
-          <div className="flex-1 flex justify-center">
-            <div className="max-w-md w-full">
-              <div className="flex items-center justify-between mb-1.5">
+          <div className="flex-1 flex justify-center min-w-0">
+            <div className="max-w-[200px] sm:max-w-[280px] md:max-w-md w-full">
+              <div className="flex items-center justify-between mb-1 sm:mb-1.5 gap-1">
               {sections.map((section, index) => (
                 <div
                   key={section.id}
-                  className={`flex flex-col items-center gap-0.5 transition-all cursor-default ${
+                  className={`flex flex-col items-center gap-0.5 transition-all cursor-default flex-shrink-0 ${
                     index === currentSection
                       ? 'text-gray-900'
                       : index < currentSection
@@ -356,7 +349,7 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
                   }`}
                 >
                   <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center border-2 transition-all ${
+                    className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 transition-all ${
                       index === currentSection
                         ? 'bg-gray-900 text-white border-gray-900'
                         : index < currentSection
@@ -364,9 +357,9 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
                         : 'bg-white border-gray-300'
                     }`}
                   >
-                    <Icon name={section.icon} className="text-[8px]" />
+                    <Icon name={section.icon} className="text-[7px] sm:text-[8px]" />
                   </div>
-                  <span className="text-[9px] font-medium hidden sm:block">{section.label}</span>
+                  <span className="text-[8px] sm:text-[9px] font-medium hidden sm:block">{section.label}</span>
                 </div>
               ))}
             </div>
@@ -376,21 +369,32 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
-            <div className="text-center mt-0.5 text-[9px] text-gray-600">
+            <div className="text-center mt-0.5 text-[8px] sm:text-[9px] text-gray-600 px-1">
               Step {currentSection + 1} of {sections.length}: {sections[currentSection].label}
             </div>
             </div>
           </div>
 
-          {/* Font, Color and Template Buttons - Right Corner */}
-          <div className="flex items-center gap-3 ml-auto">
+          {/* Hamburger Menu Button - Mobile Only */}
+          <button
+            onClick={() => setShowSidebar(true)}
+            className="lg:hidden flex items-center justify-center text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0 p-1.5"
+            aria-label="Open menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          {/* Font, Color and Template Buttons - Desktop Only */}
+          <div className="hidden lg:flex items-center gap-2 md:gap-3 ml-auto flex-shrink-0">
             <button
               onClick={() => setShowFontModal(true)}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
               title="Change Font"
             >
               <Icon name="font" className="text-lg" />
-              <span className="text-sm font-medium hidden sm:inline">Font</span>
+              <span className="text-sm font-medium">Font</span>
             </button>
             <button
               onClick={() => setShowColorModal(true)}
@@ -400,34 +404,128 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
-              <span className="text-sm font-medium hidden sm:inline">Color</span>
+              <span className="text-sm font-medium">Color</span>
             </button>
             <button
               onClick={() => setShowTemplateModal(true)}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
             >
               <Icon name="template" className="text-lg" />
-              <span className="text-sm font-medium hidden sm:inline">Template</span>
+              <span className="text-sm font-medium">Template</span>
             </button>
           </div>
         </div>
       </div>
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[calc(100vh-57px)] mt-[57px]">
+      {/* Mobile Sidebar */}
+      <>
+        {/* Overlay */}
+        <div 
+          className={`fixed inset-0 bg-black z-40 lg:hidden transition-opacity duration-300 ease-in-out ${
+            showSidebar ? 'opacity-50 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={() => setShowSidebar(false)}
+        />
+        {/* Sidebar */}
+        <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-out lg:hidden ${
+          showSidebar ? 'translate-x-0' : 'translate-x-full'
+        }`}>
+          <div className="flex flex-col h-full">
+            {/* Sidebar Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
+              <button
+                onClick={() => setShowSidebar(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                aria-label="Close menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Sidebar Content */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    setShowFontModal(true)
+                    setShowSidebar(false)
+                  }}
+                  className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
+                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                  }`}
+                  style={{ transitionDelay: showSidebar ? '0.1s' : '0s' }}
+                >
+                  <Icon name="font" className="text-xl text-blue-600" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Change Font</span>
+                    <span className="text-xs text-gray-500">Select font style</span>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowColorModal(true)
+                    setShowSidebar(false)
+                  }}
+                  className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
+                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                  }`}
+                  style={{ transitionDelay: showSidebar ? '0.15s' : '0s' }}
+                >
+                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+                  <div className="flex flex-col">
+                    <span className="font-medium">Change Color</span>
+                    <span className="text-xs text-gray-500">Select text color scheme</span>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setShowTemplateModal(true)
+                    setShowSidebar(false)
+                  }}
+                  className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
+                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                  }`}
+                  style={{ transitionDelay: showSidebar ? '0.2s' : '0s' }}
+                >
+                  <Icon name="template" className="text-xl text-blue-600" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">Change Template</span>
+                    <span className="text-xs text-gray-500">Select resume template</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[calc(100vh-57px)] sm:min-h-[calc(100vh-65px)] mt-[57px] sm:mt-[65px]">
         {/* Mobile Preview Toggle - Show preview button on mobile */}
         <div className="lg:hidden fixed bottom-4 right-4 z-50">
           <button
             onClick={() => {
               const preview = document.querySelector('[data-resume-preview]')
               if (preview) {
-                preview.classList.toggle('hidden')
-                preview.classList.toggle('fixed')
-                preview.classList.add('inset-0', 'bg-white', 'z-40')
+                const isHidden = preview.classList.contains('hidden')
+                if (isHidden) {
+                  preview.classList.remove('hidden')
+                  preview.classList.add('fixed', 'inset-0', 'bg-white', 'z-40', 'overflow-y-auto')
+                } else {
+                  preview.classList.add('hidden')
+                  preview.classList.remove('fixed', 'inset-0', 'bg-white', 'z-40', 'overflow-y-auto')
+                }
               }
             }}
-            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium shadow-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
+            className="px-3 sm:px-4 py-2 bg-gray-900 text-white rounded-lg text-xs sm:text-sm font-medium shadow-lg hover:bg-gray-800 active:bg-gray-700 transition-colors flex items-center gap-1.5 sm:gap-2"
           >
-            <Icon name="preview" className="text-sm" />
-            Preview
+            <Icon name="preview" className="text-xs sm:text-sm" />
+            <span className="hidden xs:inline">Preview</span>
           </button>
         </div>
         <ResumeForm
@@ -474,27 +572,27 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
 
       {/* Template Change Modal */}
       {showTemplateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-7xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-4xl font-semibold text-gray-900 mb-4 tracking-tight">Change Template</h2>
-                <p className="text-lg text-gray-600 max-w-2xl">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-7xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
+              <div className="flex-1">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 mb-2 sm:mb-3 md:mb-4 tracking-tight">Change Template</h2>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl">
                   Select a different template. Your current data will be preserved.
                 </p>
               </div>
               <button
                 onClick={() => setShowTemplateModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 self-end sm:self-auto"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
             {/* Template Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-6">
               {templates.map((template) => (
                 <div
                   key={template.id}
@@ -716,14 +814,14 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
                   </div>
 
                   {/* Info */}
-                  <div className="p-5">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{template.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">{template.description}</p>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="p-4 sm:p-5">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">{template.name}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600 mb-3 leading-relaxed">{template.description}</p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {template.features.map((feature, idx) => (
                         <span
                           key={idx}
-                          className={`text-xs px-2 py-1 rounded font-medium ${
+                          className={`text-[10px] sm:text-xs px-2 py-1 rounded font-medium ${
                             selectedTemplate === template.id
                               ? 'bg-blue-100 text-blue-700'
                               : 'bg-gray-100 text-gray-600'
@@ -743,23 +841,23 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
 
       {/* Font Selection Modal */}
       {showFontModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Select Font Style</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Select Font Style</h2>
               <button
                 onClick={() => setShowFontModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
               Choose a font style for your resume. The selected font will be applied to all text elements.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {fonts.map((font) => (
                 <button
                   key={font.id}
@@ -797,23 +895,23 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
 
       {/* Color Selection Modal */}
       {showColorModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Select Text Color Scheme</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Select Text Color Scheme</h2>
               <button
                 onClick={() => setShowColorModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
               Choose a color scheme for your resume. The selected colors will be applied to all text elements.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {textColors.map((colorScheme) => (
                 <button
                   key={colorScheme.id}
@@ -881,24 +979,24 @@ function ResumeBuilder({ selectedTemplate: initialTemplate = 'compact', themeCol
 
       {/* Download Modal */}
       {showDownloadModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Download Resume</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Download Resume</h2>
               <button
                 onClick={() => setShowDownloadModal(false)}
                 disabled={isGeneratingPDF}
-                className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+                className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 flex-shrink-0"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
               Your resume is ready! Click the button below to download it as a PDF.
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
                 onClick={() => setShowDownloadModal(false)}
                 disabled={isGeneratingPDF}

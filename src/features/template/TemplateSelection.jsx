@@ -1,27 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Icon from '../../components/common/Icon'
 import { templates } from '../../constants/templates'
 import logoImage from '../../assets/logo.jpg'
-
-const themeColors = [
-  { id: 'light-gray', hex: '#F2F2F2' },
-  { id: 'dark-gray', hex: '#333333' },
-  { id: 'navy-blue', hex: '#345271' },
-  { id: 'sky-blue', hex: '#4B9AB8' },
-  { id: 'teal', hex: '#68C2AD' },
-]
+import { themeColors } from '../../constants/themeColors'
+import { debounce } from '../../utils/debounce'
 
 function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorChange, getTemplateColor }) {
   const [hoveredTemplate, setHoveredTemplate] = useState(null)
   const [isMobile, setIsMobile] = useState(false)
   
   useEffect(() => {
-    const checkMobile = () => {
+    const debouncedCheckMobile = debounce(() => {
       setIsMobile(window.innerWidth < 640)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    }, 150)
+    
+    setIsMobile(window.innerWidth < 640)
+    window.addEventListener('resize', debouncedCheckMobile)
+    return () => window.removeEventListener('resize', debouncedCheckMobile)
   }, [])
   
   const getPreviewColor = (templateId) => {

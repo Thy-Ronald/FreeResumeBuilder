@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import Icon from '../../../components/common/Icon'
+import { validatePersonal, validateEducation, validateExperience, validateSkills, validateProjects } from '../../../utils/validation'
 
 const allSections = [
   { id: 'personal', label: 'Personal Info', icon: 'user' },
@@ -68,150 +69,25 @@ function ResumeForm({
   
   const currentSectionId = sections[currentSection]?.id
 
-  // Validation functions
-  const validatePersonal = () => {
-    const newErrors = {}
-    if (!resumeData.personalInfo.fullName?.trim()) {
-      newErrors.fullName = 'Full name is required'
-    }
-    if (!resumeData.personalInfo.email?.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(resumeData.personalInfo.email)) {
-      newErrors.email = 'Please enter a valid email address'
-    }
-    if (!resumeData.personalInfo.phone?.trim()) {
-      newErrors.phone = 'Phone is required'
-    }
-    if (!resumeData.personalInfo.location?.trim()) {
-      newErrors.location = 'Location is required'
-    }
-    return newErrors
-  }
-
-  const validateEducation = () => {
-    const newErrors = {}
-    if (resumeData.education.length === 0) {
-      newErrors.education_general = 'At least one education entry is required'
-      return newErrors
-    }
-    resumeData.education.forEach((edu, index) => {
-      if (!edu.school?.trim()) {
-        newErrors[`education_${edu.id}_school`] = 'School/University is required'
-      }
-      if (!edu.degree?.trim()) {
-        newErrors[`education_${edu.id}_degree`] = 'Degree is required'
-      }
-      if (!edu.field?.trim()) {
-        newErrors[`education_${edu.id}_field`] = 'Field of study is required'
-      }
-      if (!edu.startDate?.trim()) {
-        newErrors[`education_${edu.id}_startDate`] = 'Start date is required'
-      }
-      if (!edu.endDate?.trim()) {
-        newErrors[`education_${edu.id}_endDate`] = 'End date is required'
-      }
-    })
-    return newErrors
-  }
-
-  const validateExperience = () => {
-    const newErrors = {}
-    if (resumeData.experience.length === 0) {
-      newErrors.experience_general = 'At least one experience entry is required'
-      return newErrors
-    }
-    resumeData.experience.forEach((exp, index) => {
-      if (!exp.company?.trim()) {
-        newErrors[`experience_${exp.id}_company`] = 'Company is required'
-      }
-      if (!exp.position?.trim()) {
-        newErrors[`experience_${exp.id}_position`] = 'Position is required'
-      }
-      if (!exp.startDate?.trim()) {
-        newErrors[`experience_${exp.id}_startDate`] = 'Start date is required'
-      }
-      if (!exp.current && !exp.endDate?.trim()) {
-        newErrors[`experience_${exp.id}_endDate`] = 'End date is required (or check "Currently working here")'
-      }
-      if (!exp.description?.trim()) {
-        newErrors[`experience_${exp.id}_description`] = 'Description is required'
-      }
-    })
-    return newErrors
-  }
-
-  const validateSkills = () => {
-    const newErrors = {}
-    
-    // Validate Skills
-    if (resumeData.skills.length === 0) {
-      newErrors.skills_general = 'At least one skill is required'
-      return newErrors
-    }
-    resumeData.skills.forEach((skill) => {
-      if (!skill.name?.trim()) {
-        newErrors[`skill_${skill.id}`] = 'Skill name is required'
-      }
-    })
-    
-    // Validate Tools - if tools exist, each must have a name
-    resumeData.tools.forEach((tool) => {
-      if (!tool.name?.trim()) {
-        newErrors[`tool_${tool.id}`] = 'Tool name is required'
-      }
-    })
-    
-    // Validate Languages - if languages exist, each must have a name
-    resumeData.languages.forEach((lang) => {
-      if (!lang.name?.trim()) {
-        newErrors[`language_${lang.id}_name`] = 'Language name is required'
-      }
-    })
-    
-    // Validate Certifications - if certifications exist, each must have a name
-    resumeData.certifications.forEach((cert) => {
-      if (!cert.name?.trim()) {
-        newErrors[`certification_${cert.id}_name`] = 'Certification name is required'
-      }
-    })
-    
-    return newErrors
-  }
-
-  const validateProjects = () => {
-    const newErrors = {}
-    if (resumeData.projects.length === 0) {
-      newErrors.projects_general = 'At least one project is required'
-      return newErrors
-    }
-    resumeData.projects.forEach((project) => {
-      if (!project.name?.trim()) {
-        newErrors[`project_${project.id}_name`] = 'Project name is required'
-      }
-      if (!project.description?.trim()) {
-        newErrors[`project_${project.id}_description`] = 'Project description is required'
-      }
-    })
-    return newErrors
-  }
+  // Validation functions - using imported utilities
 
   const validateCurrentSection = () => {
     let newErrors = {}
     switch (currentSectionId) {
       case 'personal':
-        newErrors = validatePersonal()
+        newErrors = validatePersonal(resumeData.personalInfo)
         break
       case 'education':
-        newErrors = validateEducation()
+        newErrors = validateEducation(resumeData.education)
         break
       case 'experience':
-        newErrors = validateExperience()
+        newErrors = validateExperience(resumeData.experience)
         break
       case 'skills':
-        newErrors = validateSkills()
+        newErrors = validateSkills(resumeData.skills, resumeData.tools, resumeData.languages, resumeData.certifications)
         break
       case 'projects':
-        newErrors = validateProjects()
+        newErrors = validateProjects(resumeData.projects)
         break
       default:
         break
@@ -225,24 +101,24 @@ function ResumeForm({
     const allErrors = {}
     
     // Validate personal info (always present)
-    const personalErrors = validatePersonal()
+    const personalErrors = validatePersonal(resumeData.personalInfo)
     Object.assign(allErrors, personalErrors)
     
     // Validate education (always present)
-    const educationErrors = validateEducation()
+    const educationErrors = validateEducation(resumeData.education)
     Object.assign(allErrors, educationErrors)
     
     // Validate experience (always present)
-    const experienceErrors = validateExperience()
+    const experienceErrors = validateExperience(resumeData.experience)
     Object.assign(allErrors, experienceErrors)
     
     // Validate skills (always present)
-    const skillsErrors = validateSkills()
+    const skillsErrors = validateSkills(resumeData.skills, resumeData.tools, resumeData.languages, resumeData.certifications)
     Object.assign(allErrors, skillsErrors)
     
     // Validate projects (only if in template)
     if (selectedTemplate !== 'corporate') {
-      const projectsErrors = validateProjects()
+      const projectsErrors = validateProjects(resumeData.projects)
       Object.assign(allErrors, projectsErrors)
     }
     
@@ -361,19 +237,19 @@ function ResumeForm({
     let newErrors = {}
     switch (currentSectionId) {
       case 'personal':
-        newErrors = validatePersonal()
+        newErrors = validatePersonal(resumeData.personalInfo)
         break
       case 'education':
-        newErrors = validateEducation()
+        newErrors = validateEducation(resumeData.education)
         break
       case 'experience':
-        newErrors = validateExperience()
+        newErrors = validateExperience(resumeData.experience)
         break
       case 'skills':
-        newErrors = validateSkills()
+        newErrors = validateSkills(resumeData.skills, resumeData.tools, resumeData.languages, resumeData.certifications)
         break
       case 'projects':
-        newErrors = validateProjects()
+        newErrors = validateProjects(resumeData.projects)
         break
       default:
         break

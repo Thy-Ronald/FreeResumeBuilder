@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useMemo } from 'react'
 import { pdf } from '@react-pdf/renderer'
 import Icon from '../../../components/common/Icon'
 import { fonts } from '../../../constants/fonts'
@@ -13,7 +13,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
   
   const resumeRef = useRef(null)
   const resumeDataRef = useRef(resumeData)
-  const colorScheme = getColorScheme(selectedColor)
+  const colorScheme = useMemo(() => getColorScheme(selectedColor), [selectedColor])
 
   // Keep ref in sync with latest resumeData
   useEffect(() => {
@@ -68,7 +68,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
     }
   }, [onDownloadReady, downloadPDF])
 
-  const getTemplateClasses = () => {
+  const templateClasses = useMemo(() => {
     // Always use exact pixel dimensions for pixel-perfect rendering
     // US Letter: 8.5" x 11" = 215.9mm x 279.4mm = 816px x 1056px at 96 DPI
     const base = "bg-white font-sans text-gray-900 overflow-hidden"
@@ -81,7 +81,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
       'with-image': `${base} text-[9.5pt] leading-[1.4] p-[10mm_12mm]`,
     }
     return styles[selectedTemplate] || styles.modern
-  }
+  }, [selectedTemplate])
 
   // Standardized divider element for PDF-safe rendering
   const renderDivider = () => {
@@ -1595,7 +1595,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
     <div 
       ref={resumeRef} 
       data-resume-content
-      className={getTemplateClasses()}
+      className={templateClasses}
       style={{ 
         fontFamily: fonts.find(f => f.id === selectedFont)?.family || fonts[0].family,
         boxSizing: 'border-box',

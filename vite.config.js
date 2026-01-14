@@ -13,14 +13,15 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'pdf-vendor': ['jspdf', 'html2canvas'],
+          'pdf-vendor': ['@react-pdf/renderer', 'jspdf', 'html2canvas'],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
     sourcemap: false,
+    cssCodeSplit: true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'jspdf', 'html2canvas'],
+    include: ['react', 'react-dom', '@react-pdf/renderer', 'jspdf', 'html2canvas'],
   },
 })

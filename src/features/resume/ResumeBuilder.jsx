@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import ResumeForm from './components/ResumeForm'
 import ResumePreview from './components/ResumePreview'
 import { initialResumeData } from '../../constants/resume'
@@ -7,14 +7,7 @@ import { fonts } from '../../constants/fonts'
 import { textColors, getColorScheme } from '../../constants/colors'
 import logoImage from '../../assets/logo.jpg'
 import Icon from '../../components/common/Icon'
-
-const themeColors = [
-  { id: 'light-gray', hex: '#F2F2F2' },
-  { id: 'dark-gray', hex: '#333333' },
-  { id: 'navy-blue', hex: '#345271' },
-  { id: 'sky-blue', hex: '#4B9AB8' },
-  { id: 'teal', hex: '#68C2AD' },
-]
+import { themeColors } from '../../constants/themeColors'
 
 // Sections will be filtered in ResumeForm based on template
 // This is just for the progress bar - actual sections come from ResumeForm
@@ -96,18 +89,18 @@ function ResumeBuilder({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplate])
 
-  const updatePersonalInfo = (field, value) => {
+  const updatePersonalInfo = useCallback((field, value) => {
     setResumeData(prev => ({
       ...prev,
       personalInfo: { ...prev.personalInfo, [field]: value }
     }))
-  }
+  }, [])
 
-  const updateSummary = (value) => {
+  const updateSummary = useCallback((value) => {
     setResumeData(prev => ({ ...prev, summary: value }))
-  }
+  }, [])
 
-  const addExperience = () => {
+  const addExperience = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       experience: [...prev.experience, {
@@ -121,25 +114,25 @@ function ResumeBuilder({
         description: '',
       }]
     }))
-  }
+  }, [])
 
-  const updateExperience = (id, field, value) => {
+  const updateExperience = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       experience: prev.experience.map(exp =>
         exp.id === id ? { ...exp, [field]: value } : exp
       )
     }))
-  }
+  }, [])
 
-  const removeExperience = (id) => {
+  const removeExperience = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       experience: prev.experience.filter(exp => exp.id !== id)
     }))
-  }
+  }, [])
 
-  const addEducation = () => {
+  const addEducation = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       education: [...prev.education, {
@@ -153,48 +146,48 @@ function ResumeBuilder({
         gpa: '',
       }]
     }))
-  }
+  }, [])
 
-  const updateEducation = (id, field, value) => {
+  const updateEducation = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       education: prev.education.map(edu =>
         edu.id === id ? { ...edu, [field]: value } : edu
       )
     }))
-  }
+  }, [])
 
-  const removeEducation = (id) => {
+  const removeEducation = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       education: prev.education.filter(edu => edu.id !== id)
     }))
-  }
+  }, [])
 
-  const addSkill = () => {
+  const addSkill = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       skills: [...prev.skills, { id: Date.now(), name: '', level: 5 }]
     }))
-  }
+  }, [])
 
-  const updateSkill = (id, field, value) => {
+  const updateSkill = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       skills: prev.skills.map(skill =>
         skill.id === id ? { ...skill, [field]: value } : skill
       )
     }))
-  }
+  }, [])
 
-  const removeSkill = (id) => {
+  const removeSkill = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       skills: prev.skills.filter(skill => skill.id !== id)
     }))
-  }
+  }, [])
 
-  const addProject = () => {
+  const addProject = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       projects: [...prev.projects, {
@@ -206,102 +199,102 @@ function ResumeBuilder({
         github: '',
       }]
     }))
-  }
+  }, [])
 
-  const updateProject = (id, field, value) => {
+  const updateProject = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       projects: prev.projects.map(project =>
         project.id === id ? { ...project, [field]: value } : project
       )
     }))
-  }
+  }, [])
 
-  const removeProject = (id) => {
+  const removeProject = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       projects: prev.projects.filter(project => project.id !== id)
     }))
-  }
+  }, [])
 
-  const addTool = () => {
+  const addTool = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       tools: [...prev.tools, { id: Date.now(), name: '' }]
     }))
-  }
+  }, [])
 
-  const updateTool = (id, value) => {
+  const updateTool = useCallback((id, value) => {
     setResumeData(prev => ({
       ...prev,
       tools: prev.tools.map(tool =>
         tool.id === id ? { ...tool, name: value } : tool
       )
     }))
-  }
+  }, [])
 
-  const removeTool = (id) => {
+  const removeTool = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       tools: prev.tools.filter(tool => tool.id !== id)
     }))
-  }
+  }, [])
 
-  const addLanguage = () => {
+  const addLanguage = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       languages: [...prev.languages, { id: Date.now(), name: '', proficiency: 'Fluent' }]
     }))
-  }
+  }, [])
 
-  const updateLanguage = (id, field, value) => {
+  const updateLanguage = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       languages: prev.languages.map(lang =>
         lang.id === id ? { ...lang, [field]: value } : lang
       )
     }))
-  }
+  }, [])
 
-  const removeLanguage = (id) => {
+  const removeLanguage = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       languages: prev.languages.filter(lang => lang.id !== id)
     }))
-  }
+  }, [])
 
-  const addCertification = () => {
+  const addCertification = useCallback(() => {
     setResumeData(prev => ({
       ...prev,
       certifications: [...prev.certifications, { id: Date.now(), name: '', issuer: '', date: '' }]
     }))
-  }
+  }, [])
 
-  const updateCertification = (id, field, value) => {
+  const updateCertification = useCallback((id, field, value) => {
     setResumeData(prev => ({
       ...prev,
       certifications: prev.certifications.map(cert =>
         cert.id === id ? { ...cert, [field]: value } : cert
       )
     }))
-  }
+  }, [])
 
-  const removeCertification = (id) => {
+  const removeCertification = useCallback((id) => {
     setResumeData(prev => ({
       ...prev,
       certifications: prev.certifications.filter(cert => cert.id !== id)
     }))
-  }
+  }, [])
 
-  const sections = getSectionsForTemplate(selectedTemplate)
-  const progress = ((currentSection + 1) / sections.length) * 100
+  const sections = useMemo(() => getSectionsForTemplate(selectedTemplate), [selectedTemplate])
+  const progress = useMemo(() => ((currentSection + 1) / sections.length) * 100, [currentSection, sections.length])
 
   const goToSection = (index) => {
     setCurrentSection(index)
   }
 
   // Check if form has any input data
-  const hasFormData = () => {
+  const hasFormData = useMemo(() => {
     // Check personal info
     const hasPersonalInfo = Object.values(resumeData.personalInfo).some(value => 
       value && value.toString().trim() !== ''
@@ -321,11 +314,11 @@ function ResumeBuilder({
       resumeData.projects.length > 0
     
     return hasPersonalInfo || hasSummary || hasArrays
-  }
+  }, [resumeData])
 
   // Handle go back with confirmation
-  const handleGoBack = () => {
-    if (hasFormData()) {
+  const handleGoBack = useCallback(() => {
+    if (hasFormData) {
       const confirmed = window.confirm(
         'You have unsaved changes in your form. Going back will reset all your input.\n\nDo you want to continue?'
       )
@@ -335,12 +328,12 @@ function ResumeBuilder({
     } else {
       onBack()
     }
-  }
+  }, [hasFormData, onBack])
 
   // Handle finish button click
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     setShowDownloadModal(true)
-  }
+  }, [])
 
   // Handle download PDF with loading state
   const handleDownloadPDF = async () => {
@@ -360,10 +353,10 @@ function ResumeBuilder({
   }
 
   // Handle template change
-  const handleTemplateChange = (templateId) => {
+  const handleTemplateChange = useCallback((templateId) => {
     setSelectedTemplate(templateId)
     setShowTemplateModal(false)
-  }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-100">

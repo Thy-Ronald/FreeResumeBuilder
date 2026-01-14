@@ -1,21 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Icon from '../../components/common/Icon'
 import BounceCards from '../../components/common/BounceCards'
 import { templates } from '../../constants/templates'
+import { debounce } from '../../utils/debounce'
 
 function LandingPage({ onGetStarted }) {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
   useEffect(() => {
-    const handleResize = () => {
+    const debouncedHandleResize = debounce(() => {
       setWindowWidth(window.innerWidth)
+    }, 150)
+    
+    window.addEventListener('resize', debouncedHandleResize)
+    return () => {
+      window.removeEventListener('resize', debouncedHandleResize)
     }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   // Responsive transform styles - smaller translations on mobile
-  const getTransformStyles = () => {
+  const transformStyles = useMemo(() => {
     if (windowWidth < 640) {
       // Mobile: smaller translations
       return [
@@ -43,19 +47,17 @@ function LandingPage({ onGetStarted }) {
       'rotate(-10deg) translate(90px)',
       'rotate(2deg) translate(180px)'
     ]
-  }
+  }, [windowWidth])
 
   // Responsive container dimensions
-  const getContainerDimensions = () => {
+  const containerDims = useMemo(() => {
     if (windowWidth < 640) {
       return { width: 320, height: 350 }
     } else if (windowWidth < 1024) {
       return { width: 450, height: 400 }
     }
     return { width: 600, height: 500 }
-  }
-
-  const containerDims = getContainerDimensions()
+  }, [windowWidth])
 
   return (
     <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -83,7 +85,7 @@ function LandingPage({ onGetStarted }) {
             <div className="w-full max-w-full overflow-visible">
               <BounceCards
                 templates={templates}
-                transformStyles={getTransformStyles()}
+                transformStyles={transformStyles}
                 containerWidth={containerDims.width}
                 containerHeight={containerDims.height}
                 enableHover={windowWidth >= 640}

@@ -2,7 +2,7 @@
  * Two Column Layout Component
  * Used for modern, compact, and minimal templates
  */
-import { renderSectionHeader, textFlowStyles } from './layoutUtils'
+import { renderSectionHeader, textFlowStyles, hasContent } from './layoutUtils'
 
 export default function TwoColumnLayout({
   resumeData,
@@ -15,12 +15,11 @@ export default function TwoColumnLayout({
       {/* Left Column - 30% - Fixed width in print units */}
       <aside className="flex-shrink-0" style={{ width: '30%', minWidth: 0, overflow: 'hidden' }}>
         {/* Skills */}
-        {(resumeData.skills.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <ul className="list-none p-0 m-0">
-                {resumeData.skills.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <ul className="list-none p-0 m-0">
+              {hasContent.skills(resumeData.skills) ? (
                   resumeData.skills.map(skill => (
                     <li key={skill.id} className="py-0 text-[8.5pt] leading-[1.25]" style={{ color: colorScheme.colors.secondary, ...textFlowStyles }}>
                       {skill.name}
@@ -41,15 +40,13 @@ export default function TwoColumnLayout({
               </ul>
             </div>
           </section>
-        )}
 
         {/* Tools */}
-        {(resumeData.tools.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Tools', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <ul className="list-none p-0 m-0">
-                {resumeData.tools.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Tools', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <ul className="list-none p-0 m-0">
+              {hasContent.tools(resumeData.tools) ? (
                   resumeData.tools.map(tool => (
                     <li key={tool.id} className="py-0 text-[8.5pt] leading-[1.25]" style={{ color: colorScheme.colors.secondary, ...textFlowStyles }}>
                       {tool.name}
@@ -69,15 +66,13 @@ export default function TwoColumnLayout({
               </ul>
             </div>
           </section>
-        )}
 
         {/* Languages */}
-        {(resumeData.languages.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Languages', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <ul className="list-none p-0 m-0">
-                {resumeData.languages.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Languages', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <ul className="list-none p-0 m-0">
+              {hasContent.languages(resumeData.languages) ? (
                   resumeData.languages.map(lang => (
                     <li key={lang.id} className="py-0 flex justify-between items-center text-[8.5pt] leading-[1.25]" style={textFlowStyles}>
                       <span className="font-medium" style={{ color: colorScheme.colors.primary, ...textFlowStyles }}>{lang.name}</span>
@@ -106,12 +101,11 @@ export default function TwoColumnLayout({
         )}
 
         {/* Certifications */}
-        {(resumeData.certifications.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Certifications', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-1">
-                {resumeData.certifications.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Certifications', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-1">
+              {hasContent.certifications(resumeData.certifications) ? (
                   resumeData.certifications.map(cert => (
                     <div key={cert.id} className="leading-[1.25]">
                       <div className="text-[8.5pt] font-semibold mb-0" style={{ color: colorScheme.colors.primary, ...textFlowStyles }}>{cert.name}</div>
@@ -136,18 +130,16 @@ export default function TwoColumnLayout({
               </div>
             </div>
           </section>
-        )}
       </aside>
 
       {/* Right Column - 70% - Fixed width in print units */}
       <main className="flex-grow" style={{ width: '70%', minWidth: 0, overflow: 'hidden' }}>
         {/* Professional Summary */}
-        {(resumeData.summary || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Summary', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <p className="m-0 text-[8.5pt] leading-[1.3]" style={{ whiteSpace: 'normal', wordBreak: 'normal', overflowWrap: 'break-word' }}>
-                {resumeData.summary ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Summary', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <p className="m-0 text-[8.5pt] leading-[1.3]" style={{ whiteSpace: 'normal', wordBreak: 'normal', overflowWrap: 'break-word' }}>
+              {hasContent.summary(resumeData.summary) ? (
                   <span style={{ color: colorScheme.colors.secondary, ...textFlowStyles }}>{resumeData.summary}</span>
                 ) : (
                   <span className="text-gray-400 italic">
@@ -157,15 +149,13 @@ export default function TwoColumnLayout({
               </p>
             </div>
           </section>
-        )}
 
         {/* Experience */}
-        {(resumeData.experience.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Experience', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-1">
-                {resumeData.experience.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Experience', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-1">
+              {hasContent.experience(resumeData.experience) ? (
                   resumeData.experience.map(exp => (
                     <div key={exp.id} className="break-inside-avoid">
                       <div className="flex justify-between mb-0.5">
@@ -279,15 +269,13 @@ export default function TwoColumnLayout({
               </div>
             </div>
           </section>
-        )}
 
         {/* Projects */}
-        {(resumeData.projects.length > 0 || true) && (
-          <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Projects', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-1">
-                {resumeData.projects.length > 0 ? (
+        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Projects', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-1">
+              {hasContent.projects(resumeData.projects) ? (
                   resumeData.projects.map(project => (
                     <div key={project.id} className="break-inside-avoid">
                       <div className="flex justify-between items-baseline mb-0.5">
@@ -370,12 +358,11 @@ export default function TwoColumnLayout({
         )}
 
         {/* Education */}
-        {(resumeData.education.length > 0 || true) && (
-          <section className="mb-0" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-1">
-                {resumeData.education.length > 0 ? (
+        <section className="mb-0" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-1">
+              {hasContent.education(resumeData.education) ? (
                   resumeData.education.map(edu => (
                     <div key={edu.id} className="break-inside-avoid">
                       <div className="flex justify-between mb-0">
@@ -423,7 +410,6 @@ export default function TwoColumnLayout({
               </div>
             </div>
           </section>
-        )}
       </main>
     </div>
   )

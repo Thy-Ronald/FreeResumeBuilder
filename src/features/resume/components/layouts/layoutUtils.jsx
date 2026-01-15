@@ -96,3 +96,30 @@ export const textFlowStyles = {
   letterSpacing: 'normal',
   textAlign: 'left'
 }
+
+/**
+ * Check if resume data has meaningful content (not just empty placeholders)
+ */
+export const hasContent = {
+  skills: (skills) => skills && skills.length > 0 && skills.some(skill => skill.name && skill.name.trim() !== ''),
+  tools: (tools) => tools && tools.length > 0 && tools.some(tool => tool.name && tool.name.trim() !== ''),
+  languages: (languages) => languages && languages.length > 0 && languages.some(lang => lang.name && lang.name.trim() !== ''),
+  experience: (experience) => experience && experience.length > 0 && experience.some(exp => 
+    (exp.position && exp.position.trim() !== '') || 
+    (exp.company && exp.company.trim() !== '') ||
+    (exp.description && exp.description.trim() !== '')
+  ),
+  education: (education) => education && education.length > 0 && education.some(edu => 
+    (edu.degree && edu.degree.trim() !== '') || 
+    (edu.school && edu.school.trim() !== '')
+  ),
+  projects: (projects) => projects && projects.length > 0 && projects.some(project => 
+    (project.name && project.name.trim() !== '') || 
+    (project.description && project.description.trim() !== '')
+  ),
+  certifications: (certifications) => certifications && certifications.length > 0 && certifications.some(cert => 
+    (cert.name && cert.name.trim() !== '') || 
+    (cert.issuer && cert.issuer.trim() !== '')
+  ),
+  summary: (summary) => summary && summary.trim() !== '',
+}

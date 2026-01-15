@@ -2,7 +2,7 @@
  * Single Column Layout Component
  * Used for classic template
  */
-import { renderSectionHeader, textFlowStyles } from './layoutUtils'
+import { renderSectionHeader, textFlowStyles, hasContent } from './layoutUtils'
 
 export default function SingleColumnLayout({
   resumeData,
@@ -13,30 +13,27 @@ export default function SingleColumnLayout({
   return (
     <div className="mt-1.5" style={{ overflow: 'hidden' }}>
       {/* Professional Summary */}
-      {(resumeData.summary || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Summary', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <p className="m-0 text-[8.5pt] leading-[1.3]" style={{ whiteSpace: 'normal', wordBreak: 'normal', overflowWrap: 'break-word' }}>
-              {resumeData.summary ? (
-                <span style={{ color: colorScheme.colors.secondary }}>{resumeData.summary}</span>
-              ) : (
-                <span className="text-gray-400 italic">
-                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to build high-performing engineering teams.
-                </span>
-              )}
-            </p>
-          </div>
-        </section>
-      )}
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Summary', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <p className="m-0 text-[8.5pt] leading-[1.3]" style={{ whiteSpace: 'normal', wordBreak: 'normal', overflowWrap: 'break-word' }}>
+            {hasContent.summary(resumeData.summary) ? (
+              <span style={{ color: colorScheme.colors.secondary }}>{resumeData.summary}</span>
+            ) : (
+              <span className="text-gray-400 italic">
+                Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to build high-performing engineering teams.
+              </span>
+            )}
+          </p>
+        </div>
+      </section>
 
       {/* Experience */}
-      {(resumeData.experience.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Experience', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-col gap-1">
-              {resumeData.experience.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Experience', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-col gap-1">
+            {hasContent.experience(resumeData.experience) ? (
                 resumeData.experience.map(exp => (
                   <div key={exp.id} className="break-inside-avoid">
                     <div className="flex justify-between mb-0.5">
@@ -150,15 +147,13 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Projects */}
-      {(resumeData.projects.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Projects', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-col gap-1">
-              {resumeData.projects.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Projects', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-col gap-1">
+            {hasContent.projects(resumeData.projects) ? (
                 resumeData.projects.map(project => (
                   <div key={project.id} className="break-inside-avoid">
                     <div className="flex justify-between items-baseline mb-0.5">
@@ -238,15 +233,13 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Education */}
-      {(resumeData.education.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-col gap-1">
-              {resumeData.education.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-col gap-1">
+            {hasContent.education(resumeData.education) ? (
                 resumeData.education.map(edu => (
                   <div key={edu.id} className="break-inside-avoid">
                     <div className="flex justify-between mb-0">
@@ -294,15 +287,13 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Skills */}
-      {(resumeData.skills.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-wrap gap-1.5">
-              {resumeData.skills.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-wrap gap-1.5">
+            {hasContent.skills(resumeData.skills) ? (
                 resumeData.skills.map(skill => (
                   <span key={skill.id} className="text-[8.5pt]" style={{ color: colorScheme.colors.secondary }}>
                     {skill.name}
@@ -323,15 +314,13 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Tools */}
-      {(resumeData.tools.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Tools', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-wrap gap-1.5">
-              {resumeData.tools.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Tools', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-wrap gap-1.5">
+            {hasContent.tools(resumeData.tools) ? (
                 resumeData.tools.map(tool => (
                   <span key={tool.id} className="text-[8.5pt]" style={{ color: colorScheme.colors.secondary }}>
                     {tool.name}
@@ -351,15 +340,13 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Languages */}
-      {(resumeData.languages.length > 0 || true) && (
-        <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Languages', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-wrap gap-2">
-              {resumeData.languages.length > 0 ? (
+      <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Languages', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-wrap gap-2">
+            {hasContent.languages(resumeData.languages) ? (
                 resumeData.languages.map(lang => (
                   <span key={lang.id} className="text-[8.5pt]" style={{ color: colorScheme.colors.secondary }}>
                     {lang.name} <span className="text-[7.5pt]" style={{ color: colorScheme.colors.muted }}>({lang.proficiency})</span>
@@ -378,12 +365,11 @@ export default function SingleColumnLayout({
       )}
 
       {/* Certifications */}
-      {(resumeData.certifications.length > 0 || true) && (
-        <section className="mb-0" style={{ padding: 0, margin: 0 }}>
-          {renderSectionHeader('Certifications', selectedTemplate, colorScheme, themeColor)}
-          <div style={{ paddingTop: '7pt', margin: 0 }}>
-            <div className="flex flex-col gap-1">
-              {resumeData.certifications.length > 0 ? (
+      <section className="mb-0" style={{ padding: 0, margin: 0 }}>
+        {renderSectionHeader('Certifications', selectedTemplate, colorScheme, themeColor)}
+        <div style={{ paddingTop: '7pt', margin: 0 }}>
+          <div className="flex flex-col gap-1">
+            {hasContent.certifications(resumeData.certifications) ? (
                 resumeData.certifications.map(cert => (
                   <div key={cert.id} className="leading-[1.25]">
                     <div className="text-[8.5pt] font-semibold mb-0" style={{ color: colorScheme.colors.primary }}>{cert.name}</div>
@@ -408,7 +394,6 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
     </div>
   )
 }

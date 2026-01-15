@@ -250,8 +250,8 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
         // Font rendering optimization for pixel-perfect match
         fontSynthesis: 'none',
         textRendering: 'optimizeLegibility',
-        webkitFontSmoothing: 'antialiased',
-        mozOsxFontSmoothing: 'grayscale',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
         // CSS variables for color scheme
         '--color-primary': colorScheme.colors.primary,
         '--color-secondary': colorScheme.colors.secondary,

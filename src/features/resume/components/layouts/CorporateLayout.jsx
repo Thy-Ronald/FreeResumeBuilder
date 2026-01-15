@@ -2,7 +2,7 @@
  * Corporate Layout Component
  * Used for corporate template
  */
-import { renderSectionHeader, textFlowStyles } from './layoutUtils'
+import { renderSectionHeader, textFlowStyles, hasContent } from './layoutUtils'
 
 export default function CorporateLayout({
   resumeData,
@@ -15,12 +15,11 @@ export default function CorporateLayout({
       {/* Left Column - Education and Skills - Fixed width in print units */}
       <aside className="flex-shrink-0" style={{ width: '35%', minWidth: 0, overflow: 'hidden' }}>
         {/* Education */}
-        {(resumeData.education.length > 0 || true) && (
-          <section className="mb-4" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-2.5">
-                {resumeData.education.length > 0 ? (
+        <section className="mb-4" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Education', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-2.5">
+              {hasContent.education(resumeData.education) ? (
                   resumeData.education.map(edu => (
                     <div key={edu.id} className="mb-1">
                       <h3 className="text-[10pt] font-semibold mb-0.5 leading-tight text-gray-900" style={textFlowStyles}>
@@ -47,15 +46,13 @@ export default function CorporateLayout({
               </div>
             </div>
           </section>
-        )}
 
         {/* Skills */}
-        {(resumeData.skills.length > 0 || true) && (
-          <section className="mb-4" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <ul className="list-none p-0 m-0">
-                {resumeData.skills.length > 0 ? (
+        <section className="mb-4" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Skills', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <ul className="list-none p-0 m-0">
+              {hasContent.skills(resumeData.skills) ? (
                   resumeData.skills.map(skill => (
                     <li key={skill.id} className="py-0.5 text-[9pt] leading-[1.4] text-gray-700" style={textFlowStyles}>
                       • {skill.name}
@@ -74,7 +71,6 @@ export default function CorporateLayout({
               </ul>
             </div>
           </section>
-        )}
       </aside>
 
       {/* Right Column - Summary and Work History - Fixed width in print units */}
@@ -95,15 +91,13 @@ export default function CorporateLayout({
               </p>
             </div>
           </section>
-        )}
 
         {/* Work History */}
-        {(resumeData.experience.length > 0 || true) && (
-          <section className="mb-4" style={{ padding: 0, margin: 0 }}>
-            {renderSectionHeader('Work History', selectedTemplate, colorScheme, themeColor)}
-            <div style={{ paddingTop: '7pt', margin: 0 }}>
-              <div className="flex flex-col gap-3">
-                {resumeData.experience.length > 0 ? (
+        <section className="mb-4" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Work History', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-3">
+              {hasContent.experience(resumeData.experience) ? (
                   resumeData.experience.map(exp => (
                     <div key={exp.id} className="mb-1">
                       <div className="flex justify-between items-start mb-1">
@@ -201,7 +195,6 @@ export default function CorporateLayout({
               </div>
             </div>
           </section>
-        )}
       </main>
     </div>
   )

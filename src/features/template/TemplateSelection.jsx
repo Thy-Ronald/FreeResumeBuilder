@@ -73,94 +73,87 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                   }}
                 >
                   {/* Resume content - scaled to fit paper frame and fill vertically */}
-                  <div className="w-full h-full p-1.5 sm:p-2 overflow-hidden flex flex-col" style={{ boxSizing: 'border-box' }}>
+                  <div className="w-full h-full p-1 sm:p-1.5 overflow-hidden flex flex-col" style={{ boxSizing: 'border-box' }}>
                   {template.id === 'modern' && (() => {
                     const previewColor = getPreviewColor(template.id)
                     const getSize = (base) => getResponsiveFontSize(base)
                     return (
-                      <div className="w-full h-full flex flex-col leading-[1.2] flex-1" style={{ fontSize: getSize(5.5) }}>
-                        <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(8) }}>Ronald Moran Jr</div>
-                        <div className="text-gray-600 text-center mb-1" style={{ fontSize: getSize(4.5) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-                        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
-                        <div className="flex gap-1.5 flex-1 mt-0.5">
-                          <div className="w-[30%] flex flex-col gap-1">
+                      <div className="w-full h-full flex flex-col leading-[1.15] flex-1 justify-between" style={{ fontSize: getSize(5) }}>
+                        <div>
+                          <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(7.5) }}>Ronald Moran Jr</div>
+                          <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(4) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                          <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+                        </div>
+                        <div className="flex gap-1 flex-1 mt-0.5">
+                          <div className="w-[30%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4.5), margin: 0, paddingTop: '2px' }}>Skills</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                {isMobile ? (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Node.js</div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Node.js</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>TypeScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>SQL</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>System Design</div>
-                                  </>
-                                )}
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '1px' }}>Skills</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>JavaScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Python</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>React</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Node.js</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>TypeScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>SQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>System Design</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Microservices</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4.5), margin: 0, paddingTop: '2px' }}>Tools</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Git</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Docker</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>AWS</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>PostgreSQL</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '1px' }}>Tools</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Git</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Docker</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>AWS</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Kubernetes</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4.5), margin: 0, paddingTop: '2px' }}>Education</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(4) }}>BS Computer Science</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>State University</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>2016 - 2020</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '1px' }}>Education</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>BS Computer Science</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>State University</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>2016 - 2020</div>
                               </div>
                             </div>
                           </div>
-                          <div className="w-[70%] flex flex-col gap-1">
+                          <div className="w-[70%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4.5), margin: 0, paddingTop: '2px' }}>Summary</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>
-                                  {isMobile 
-                                    ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
-                                    : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.'
-                                  }
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '1px' }}>Summary</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
+                                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.
                                 </div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4.5), margin: 0, paddingTop: '2px' }}>Experience</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(4) }}>Senior Software Engineer</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Tech Company Inc. | Jan 2021 - Present</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Mentored team of 5 junior engineers, establishing code review practices</div>
-                                {!isMobile && (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
-                                  </>
-                                )}
-                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(4) }}>Software Engineer</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(4) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '1px' }}>Experience</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>Senior Software Engineer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Mentored team of 5 junior engineers, establishing code review practices</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Designed and developed responsive UI components used across 10+ product features</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Junior Developer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Digital Agency | Aug 2018 - May 2019</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Created responsive web applications for client projects using modern JavaScript frameworks</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with designers to implement pixel-perfect UI mockups</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Participated in code reviews and contributed to team knowledge sharing sessions</div>
                               </div>
                             </div>
                           </div>
@@ -172,63 +165,62 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                     const previewColor = getPreviewColor(template.id)
                     const getSize = (base) => getResponsiveFontSize(base)
                     return (
-                      <div className="w-full h-full flex flex-col leading-[1.15] flex-1" style={{ fontSize: getSize(5) }}>
-                        <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(7) }}>Ronald Moran Jr</div>
-                        <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(4) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-                        <div className="my-0.5" style={{ height: '0.2px', backgroundColor: previewColor }}></div>
+                      <div className="w-full h-full flex flex-col leading-[1.1] flex-1 justify-between" style={{ fontSize: getSize(4.5) }}>
+                        <div>
+                          <div className="font-bold text-center mb-0.5" style={{ fontSize: getSize(6.5) }}>Ronald Moran Jr</div>
+                          <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                          <div className="my-0.5" style={{ height: '0.2px', backgroundColor: previewColor }}></div>
+                        </div>
                         <div className="flex flex-col gap-0.5 flex-1 mt-0.5">
                           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                             <div style={{ height: '0.2px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                            <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Summary</div>
-                            <div style={{ paddingTop: '2px', margin: 0 }}>
-                            <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
-                              {isMobile 
-                                ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
-                                : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.'
-                              }
-                            </div>
-                            </div>
-                          </div>
-                          <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
-                            <div style={{ height: '0.2px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                            <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Skills</div>
-                            <div style={{ paddingTop: '2px', margin: 0 }}>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
-                                {isMobile 
-                                  ? 'JavaScript, Python, React, Node.js'
-                                  : 'JavaScript, Python, React, Node.js, TypeScript, SQL, System Design, Microservices, Git, Docker, AWS, PostgreSQL'
-                                }
+                            <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Summary</div>
+                            <div style={{ paddingTop: '1px', margin: 0 }}>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>
+                                Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to build high-performing engineering teams.
                               </div>
                             </div>
                           </div>
                           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                             <div style={{ height: '0.2px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                            <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Experience</div>
-                            <div style={{ paddingTop: '2px', margin: 0 }}>
-                              <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>Senior Software Engineer</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
-                              {!isMobile && (
-                                <>
-                                  <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
-                                  <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
-                                </>
-                              )}
-                              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                            <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Skills</div>
+                            <div style={{ paddingTop: '1px', margin: 0 }}>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>
+                                JavaScript, Python, React, Node.js, TypeScript, SQL, System Design, Microservices, Git, Docker, AWS, PostgreSQL, Kubernetes, MongoDB
+                              </div>
                             </div>
                           </div>
                           <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                             <div style={{ height: '0.2px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                            <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Education</div>
-                            <div style={{ paddingTop: '2px', margin: 0 }}>
-                              <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>BS Computer Science</div>
-                              <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>State University | 2016 - 2020</div>
+                            <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Experience</div>
+                            <div style={{ paddingTop: '1px', margin: 0 }}>
+                              <div className="font-semibold" style={{ fontSize: getSize(3) }}>Senior Software Engineer</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Tech Company Inc. | Jan 2021 - Present</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes</div>
+                              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Software Engineer</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Designed and developed responsive UI components used across 10+ product features</div>
+                              <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Junior Developer</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Digital Agency | Aug 2018 - May 2019</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Created responsive web applications for client projects using modern JavaScript frameworks</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with designers to implement pixel-perfect UI mockups</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Participated in code reviews and contributed to team knowledge sharing sessions</div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
+                            <div style={{ height: '0.2px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
+                            <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Education</div>
+                            <div style={{ paddingTop: '1px', margin: 0 }}>
+                              <div className="font-semibold" style={{ fontSize: getSize(3) }}>BS Computer Science</div>
+                              <div className="text-gray-600" style={{ fontSize: getSize(3) }}>State University | 2016 - 2020</div>
                             </div>
                           </div>
                         </div>
@@ -239,90 +231,82 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                     const previewColor = getPreviewColor(template.id)
                     const getSize = (base) => getResponsiveFontSize(base)
                     return (
-                      <div className="w-full h-full flex flex-col leading-[1.15] flex-1" style={{ fontSize: getSize(5) }}>
-                        <div className="font-semibold text-center mb-0.5" style={{ fontSize: getSize(7) }}>Ronald Moran Jr</div>
-                        <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(4) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-                        <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
-                        <div className="flex gap-1.5 flex-1 mt-0.5">
+                      <div className="w-full h-full flex flex-col leading-[1.1] flex-1 justify-between" style={{ fontSize: getSize(4.5) }}>
+                        <div>
+                          <div className="font-semibold text-center mb-0.5" style={{ fontSize: getSize(6.5) }}>Ronald Moran Jr</div>
+                          <div className="text-gray-600 text-center mb-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                          <div className="my-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+                        </div>
+                        <div className="flex gap-1 flex-1 mt-0.5">
                           <div className="w-[30%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-semibold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Skills</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                {isMobile ? (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Node.js</div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Node.js</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>TypeScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>SQL</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>System Design</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Microservices</div>
-                                  </>
-                                )}
+                              <div className="font-semibold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Skills</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>JavaScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Python</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>React</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Node.js</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>TypeScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>SQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>System Design</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Microservices</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-semibold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Tools</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Git</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Docker</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>AWS</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>PostgreSQL</div>
+                              <div className="font-semibold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Tools</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Git</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Docker</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>AWS</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Kubernetes</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-semibold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Education</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>BS Computer Science</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>State University</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>2016 - 2020</div>
+                              <div className="font-semibold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Education</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>BS Computer Science</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>State University</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>2016 - 2020</div>
                               </div>
                             </div>
                           </div>
                           <div className="w-[70%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-semibold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Summary</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
-                                  {isMobile 
-                                    ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
-                                    : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.'
-                                  }
+                              <div className="font-semibold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Summary</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>
+                                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.
                                 </div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-semibold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Experience</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>Senior Software Engineer</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Mentored team of 5 junior engineers, establishing code review practices</div>
-                                {!isMobile && (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
-                                  </>
-                                )}
-                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                              <div className="font-semibold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Experience</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>Senior Software Engineer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Tech Company Inc. | Jan 2021 - Present</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Mentored team of 5 junior engineers, establishing code review practices</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with product teams to deliver features increasing user engagement by 25%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Software Engineer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Designed and developed responsive UI components used across 10+ product features</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Junior Developer</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Digital Agency | Aug 2018 - May 2019</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Created responsive web applications for client projects using modern JavaScript frameworks</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with designers to implement pixel-perfect UI mockups</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Participated in code reviews and contributed to team knowledge sharing sessions</div>
                               </div>
                             </div>
                           </div>
@@ -335,90 +319,83 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                     const sectionHeaderColor = '#2563eb' // Blue color for corporate section headers
                     const getSize = (base) => getResponsiveFontSize(base)
                     return (
-                      <div className="w-full h-full flex flex-col leading-[1.15] flex-1" style={{ fontSize: getSize(5) }}>
-                        <div className="font-bold mb-0.5" style={{ fontSize: getSize(8) }}>Ronald Moran Jr</div>
-                        <div className="text-gray-700 mb-0.5" style={{ fontSize: getSize(4.5) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
-                        <div className="w-1/4 mb-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
-                        <div className="flex gap-1.5 flex-1">
+                      <div className="w-full h-full flex flex-col leading-[1.1] flex-1 justify-between" style={{ fontSize: getSize(4.5) }}>
+                        <div>
+                          <div className="font-bold mb-0.5" style={{ fontSize: getSize(7) }}>Ronald Moran Jr</div>
+                          <div className="text-gray-700 mb-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer | email@example.com | +1 (555) 000-0000</div>
+                          <div className="w-1/4 mb-0.5" style={{ height: '0.5px', backgroundColor: previewColor }}></div>
+                        </div>
+                        <div className="flex gap-1 flex-1">
                           <div className="w-[35%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px', color: sectionHeaderColor }}>Education</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>BS Computer Science</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>State University</div>
-                                <div className="text-gray-500" style={{ fontSize: getSize(3.5) }}>2016 - 2020</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Education</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>BS Computer Science</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>State University</div>
+                                <div className="text-gray-500" style={{ fontSize: getSize(3) }}>2016 - 2020</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px', color: sectionHeaderColor }}>Skills</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                {isMobile ? (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Node.js</div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Node.js</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• TypeScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• SQL</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• System Design</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Microservices</div>
-                                  </>
-                                )}
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Skills</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• JavaScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Python</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• React</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Node.js</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• TypeScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• SQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• System Design</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Microservices</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• GraphQL</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px', color: sectionHeaderColor }}>Tools</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Git</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Docker</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• AWS</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• PostgreSQL</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Tools</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Git</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Docker</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• AWS</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Kubernetes</div>
                               </div>
                             </div>
                           </div>
                           <div className="w-[65%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px', color: sectionHeaderColor }}>Professional Summary</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
-                                  {isMobile 
-                                    ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
-                                    : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.'
-                                  }
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Professional Summary</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>
+                                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers to build high-performing engineering teams.
                                 </div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px', color: sectionHeaderColor }}>Work History</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>Senior Software Engineer</div>
-                                <div className="text-blue-600" style={{ fontSize: getSize(3.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
-                                {!isMobile && (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
-                                  </>
-                                )}
-                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
-                                <div className="text-blue-600" style={{ fontSize: getSize(3.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px', color: sectionHeaderColor }}>Work History</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>Senior Software Engineer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Tech Company Inc. | Jan 2021 - Present</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Software Engineer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Designed and developed responsive UI components used across 10+ product features</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Junior Developer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Digital Agency | Aug 2018 - May 2019</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Created responsive web applications for client projects using modern JavaScript frameworks</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with designers to implement pixel-perfect UI mockups</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Participated in code reviews and contributed to team knowledge sharing sessions</div>
                               </div>
                             </div>
                           </div>
@@ -430,96 +407,88 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
                     const previewColor = getPreviewColor(template.id)
                     const getSize = (base) => getResponsiveFontSize(base)
                     return (
-                      <div className="w-full h-full flex flex-col leading-[1.15] flex-1" style={{ fontSize: getSize(5) }}>
-                        <div className="mb-1 pb-0.5 border-b" style={{ borderColor: previewColor }}>
-                          <div className="font-bold mb-0.5" style={{ fontSize: getSize(7) }}>Ronald Moran Jr</div>
-                          <div className="text-gray-600 mb-0.5" style={{ fontSize: getSize(4) }}>Software Engineer</div>
-                          <div className="text-gray-500" style={{ fontSize: getSize(3.5) }}>email@example.com | +1 (555) 000-0000</div>
+                      <div className="w-full h-full flex flex-col leading-[1.1] flex-1 justify-between" style={{ fontSize: getSize(4.5) }}>
+                        <div className="mb-0.5 pb-0.5 border-b" style={{ borderColor: previewColor }}>
+                          <div className="font-bold mb-0.5" style={{ fontSize: getSize(6.5) }}>Ronald Moran Jr</div>
+                          <div className="text-gray-600 mb-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
+                          <div className="text-gray-500" style={{ fontSize: getSize(3) }}>email@example.com | +1 (555) 000-0000</div>
                         </div>
-                        <div className="flex gap-1.5 flex-1">
+                        <div className="flex gap-1 flex-1">
                           <div className="w-[28%] flex flex-col gap-0.5">
                             <img 
                               src={logoImage} 
                               alt="Profile" 
                               className="w-full aspect-square object-cover rounded border border-gray-200 mb-0.5"
+                              style={{ maxHeight: '60px' }}
                             />
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Skills</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                {isMobile ? (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Node.js</div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>JavaScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Python</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>React</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Node.js</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>TypeScript</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>SQL</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>System Design</div>
-                                  </>
-                                )}
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Skills</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>JavaScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Python</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>React</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Node.js</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>TypeScript</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>SQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>System Design</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Microservices</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Tools</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Git</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>Docker</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>AWS</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>PostgreSQL</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Tools</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Git</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Docker</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>AWS</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>Kubernetes</div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Education</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>BS Computer Science</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>State University</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>2016 - 2020</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Education</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>BS Computer Science</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>State University</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>2016 - 2020</div>
                               </div>
                             </div>
                           </div>
                           <div className="w-[72%] flex flex-col gap-0.5">
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Summary</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>
-                                {isMobile 
-                                  ? 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure.'
-                                  : 'Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies.'
-                                }
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Summary</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>
+                                  Experienced software engineer with 5+ years of expertise in full-stack development, specializing in modern web technologies and cloud infrastructure. Proven track record of delivering scalable applications serving millions of users. Strong background in system architecture, performance optimization, and agile methodologies. Passionate about writing clean, maintainable code and mentoring junior developers.
                                 </div>
                               </div>
                             </div>
                             <div className="flex flex-col" style={{ margin: 0, padding: 0 }}>
                               <div style={{ height: '0.5px', backgroundColor: previewColor, margin: 0, padding: 0 }}></div>
-                              <div className="font-bold uppercase" style={{ fontSize: getSize(4), margin: 0, paddingTop: '2px' }}>Experience</div>
-                              <div style={{ paddingTop: '2px', margin: 0 }}>
-                                <div className="font-semibold" style={{ fontSize: getSize(3.5) }}>Senior Software Engineer</div>
-                                <div className="text-blue-600" style={{ fontSize: getSize(3.5) }}>Tech Company Inc. | Jan 2021 - Present</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
-                                {!isMobile && (
-                                  <>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
-                                    <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
-                                  </>
-                                )}
-                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3.5) }}>Software Engineer</div>
-                                <div className="text-blue-600" style={{ fontSize: getSize(3.5) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
-                                <div className="text-gray-600" style={{ fontSize: getSize(3.5) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                              <div className="font-bold uppercase" style={{ fontSize: getSize(3.5), margin: 0, paddingTop: '1px' }}>Experience</div>
+                              <div style={{ paddingTop: '1px', margin: 0 }}>
+                                <div className="font-semibold" style={{ fontSize: getSize(3) }}>Senior Software Engineer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Tech Company Inc. | Jan 2021 - Present</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Led development of microservices architecture serving 2M+ daily active users, reducing latency by 40%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Architected real-time data processing pipeline handling 50K requests/second</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Mentored team of 5 junior engineers, establishing code review practices and technical standards</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Optimized database queries and caching strategies, improving API response time by 60%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with product and design teams to deliver features increasing user engagement by 25%</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented CI/CD pipelines reducing deployment time from 2 hours to 15 minutes</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Software Engineer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Startup Solutions | Jun 2019 - Dec 2020</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Developed full-stack web applications using React, Node.js, and PostgreSQL</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Built RESTful APIs and GraphQL endpoints supporting mobile and web clients</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Implemented automated testing suite achieving 85% code coverage</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Designed and developed responsive UI components used across 10+ product features</div>
+                                <div className="font-semibold mt-0.5" style={{ fontSize: getSize(3) }}>Junior Developer</div>
+                                <div className="text-blue-600" style={{ fontSize: getSize(3) }}>Digital Agency | Aug 2018 - May 2019</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Created responsive web applications for client projects using modern JavaScript frameworks</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Collaborated with designers to implement pixel-perfect UI mockups</div>
+                                <div className="text-gray-600" style={{ fontSize: getSize(3) }}>• Participated in code reviews and contributed to team knowledge sharing sessions</div>
                               </div>
                             </div>
                           </div>

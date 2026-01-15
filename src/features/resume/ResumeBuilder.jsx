@@ -78,6 +78,7 @@ function ResumeBuilder({
     addProject,
     updateProject,
     removeProject,
+    resetResumeData,
   } = resumeDataHook
 
   const {
@@ -97,7 +98,17 @@ function ResumeBuilder({
 
   // Handle go back with confirmation
   const handleGoBack = useCallback(() => {
-    if (hasFormData) {
+    // If on the first section, reset the form
+    if (currentSection === 0) {
+      const confirmed = window.confirm(
+        'Are you sure you want to go back?\n\nThis will reset all form data and you will lose all your progress.\n\nDo you want to continue?'
+      )
+      if (confirmed) {
+        resetResumeData()
+        setCurrentSection(0)
+        onBack()
+      }
+    } else if (hasFormData) {
       const confirmed = window.confirm(
         'Your progress has been saved. Going back will take you to template selection.\n\nYou can return to continue editing your resume later.\n\nDo you want to continue?'
       )
@@ -107,7 +118,7 @@ function ResumeBuilder({
     } else {
       onBack()
     }
-  }, [hasFormData, onBack])
+  }, [currentSection, hasFormData, onBack, resetResumeData, setCurrentSection])
 
   // Handle finish button click
   const handleFinish = useCallback(() => {

@@ -40,11 +40,46 @@ function ResumeBuilder({
   onTemplateColorChange,
   getTemplateColor: getTemplateColorProp
 }) {
-  const [resumeData, setResumeData] = useState(initialResumeData)
-  const [currentSection, setCurrentSection] = useState(0)
+  // Load saved data from localStorage on mount
+  const [resumeData, setResumeData] = useState(() => {
+    try {
+      const saved = localStorage.getItem('resumeBuilder_resumeData')
+      return saved ? JSON.parse(saved) : initialResumeData
+    } catch (error) {
+      console.error('Error loading resume data from localStorage:', error)
+      return initialResumeData
+    }
+  })
+  
+  const [currentSection, setCurrentSection] = useState(() => {
+    try {
+      const saved = localStorage.getItem('resumeBuilder_currentSection')
+      return saved ? parseInt(saved, 10) : 0
+    } catch (error) {
+      return 0
+    }
+  })
+  
   const [selectedTemplate, setSelectedTemplate] = useState(initialTemplate)
-  const [selectedFont, setSelectedFont] = useState('inter')
-  const [selectedColor, setSelectedColor] = useState('black')
+  
+  const [selectedFont, setSelectedFont] = useState(() => {
+    try {
+      const saved = localStorage.getItem('resumeBuilder_selectedFont')
+      return saved || 'inter'
+    } catch (error) {
+      return 'inter'
+    }
+  })
+  
+  const [selectedColor, setSelectedColor] = useState(() => {
+    try {
+      const saved = localStorage.getItem('resumeBuilder_selectedColor')
+      return saved || 'black'
+    } catch (error) {
+      return 'black'
+    }
+  })
+  
   const [showDownloadModal, setShowDownloadModal] = useState(false)
   const [showTemplateModal, setShowTemplateModal] = useState(false)
   const [showFontModal, setShowFontModal] = useState(false)
@@ -74,6 +109,42 @@ function ResumeBuilder({
 
   // Get the current theme color for the selected template
   const currentThemeColor = getTemplateColor(selectedTemplate) || themeColor || '#F2F2F2'
+
+  // Save resumeData to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('resumeBuilder_resumeData', JSON.stringify(resumeData))
+    } catch (error) {
+      console.error('Error saving resume data to localStorage:', error)
+    }
+  }, [resumeData])
+
+  // Save currentSection to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('resumeBuilder_currentSection', currentSection.toString())
+    } catch (error) {
+      console.error('Error saving current section to localStorage:', error)
+    }
+  }, [currentSection])
+
+  // Save selectedFont to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('resumeBuilder_selectedFont', selectedFont)
+    } catch (error) {
+      console.error('Error saving selected font to localStorage:', error)
+    }
+  }, [selectedFont])
+
+  // Save selectedColor to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('resumeBuilder_selectedColor', selectedColor)
+    } catch (error) {
+      console.error('Error saving selected color to localStorage:', error)
+    }
+  }, [selectedColor])
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -320,7 +391,7 @@ function ResumeBuilder({
   const handleGoBack = useCallback(() => {
     if (hasFormData) {
       const confirmed = window.confirm(
-        'You have unsaved changes in your form. Going back will reset all your input.\n\nDo you want to continue?'
+        'Your progress has been saved. Going back will take you to template selection.\n\nYou can return to continue editing your resume later.\n\nDo you want to continue?'
       )
       if (confirmed) {
         onBack()

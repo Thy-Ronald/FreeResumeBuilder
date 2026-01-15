@@ -1,36 +1,22 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import ResumeForm from './components/ResumeForm'
 import ResumePreview from './components/ResumePreview'
-import { initialResumeData } from '../../constants/resume'
 import { templates } from '../../constants/templates'
 import { fonts } from '../../constants/fonts'
-import { textColors, getColorScheme } from '../../constants/colors'
+import { textColors } from '../../constants/colors'
 import logoImage from '../../assets/logo.jpg'
 import Icon from '../../components/common/Icon'
 import { themeColors } from '../../constants/themeColors'
-
-// Sections will be filtered in ResumeForm based on template
-// This is just for the progress bar - actual sections come from ResumeForm
-const getSectionsForTemplate = (template) => {
-  const baseSections = [
-    { id: 'personal', label: 'Personal Info', icon: 'user' },
-    { id: 'education', label: 'Education', icon: 'education' },
-    { id: 'experience', label: 'Experience', icon: 'briefcase' },
-  ]
-  
-  if (template === 'corporate') {
-    return [
-      ...baseSections,
-      { id: 'skills', label: 'Skills & More', icon: 'skills' },
-    ]
-  } else {
-    return [
-      ...baseSections,
-      { id: 'skills', label: 'Skills & More', icon: 'skills' },
-      { id: 'projects', label: 'Projects', icon: 'project' },
-    ]
-  }
-}
+import { useResumeData } from '../../hooks/useResumeData'
+import { useResumeSections } from '../../hooks/useResumeSections'
+import { useTemplateColors } from '../../hooks/useTemplateColors'
+import { useModals } from '../../hooks/useModals'
+import { usePDFGeneration } from '../../hooks/usePDFGeneration'
+import { useFontAndColor } from '../../hooks/useFontAndColor'
+import DownloadModal from './components/modals/DownloadModal'
+import FontModal from './components/modals/FontModal'
+import ColorModal from './components/modals/ColorModal'
+import PreviewModal from './components/modals/PreviewModal'
 
 function ResumeBuilder({ 
   selectedTemplate: initialTemplate = 'modern', 
@@ -40,432 +26,74 @@ function ResumeBuilder({
   onTemplateColorChange,
   getTemplateColor: getTemplateColorProp
 }) {
-  // Load saved data from localStorage on mount
-  const [resumeData, setResumeData] = useState(() => {
-    try {
-      const saved = localStorage.getItem('resumeBuilder_resumeData')
-      if (saved) {
-        const parsed = JSON.parse(saved)
-        // Ensure all array sections have at least one default entry
-        if (!parsed.experience || parsed.experience.length === 0) {
-          parsed.experience = [{
-            id: Date.now(),
-            company: '',
-            position: '',
-            location: '',
-            startDate: '',
-            endDate: '',
-            current: false,
-            description: '',
-          }]
-        }
-        if (!parsed.education || parsed.education.length === 0) {
-          parsed.education = [{
-            id: Date.now(),
-            school: '',
-            degree: '',
-            field: '',
-            location: '',
-            startDate: '',
-            endDate: '',
-            gpa: '',
-          }]
-        }
-        if (!parsed.skills || parsed.skills.length === 0) {
-          parsed.skills = [{ id: Date.now(), name: '', level: 5 }]
-        }
-        if (!parsed.tools || parsed.tools.length === 0) {
-          parsed.tools = [{ id: Date.now(), name: '' }]
-        }
-        if (!parsed.languages || parsed.languages.length === 0) {
-          parsed.languages = [{ id: Date.now(), name: '', proficiency: 'Fluent' }]
-        }
-        if (!parsed.certifications || parsed.certifications.length === 0) {
-          parsed.certifications = [{ id: Date.now(), name: '', issuer: '', date: '' }]
-        }
-        if (!parsed.projects || parsed.projects.length === 0) {
-          parsed.projects = [{
-            id: Date.now(),
-            name: '',
-            description: '',
-            technologies: '',
-            link: '',
-            github: '',
-          }]
-        }
-        return parsed
-      }
-      return initialResumeData
-    } catch (error) {
-      console.error('Error loading resume data from localStorage:', error)
-      return initialResumeData
-    }
-  })
-  
-  const [currentSection, setCurrentSection] = useState(() => {
-    try {
-      const saved = localStorage.getItem('resumeBuilder_currentSection')
-      return saved ? parseInt(saved, 10) : 0
-    } catch (error) {
-      return 0
-    }
-  })
-  
   const [selectedTemplate, setSelectedTemplate] = useState(initialTemplate)
+
+  // Custom hooks
+  const resumeDataHook = useResumeData()
+  const { selectedFont, setSelectedFont, selectedColor, setSelectedColor } = useFontAndColor()
+  const modals = useModals()
+  const pdfGeneration = usePDFGeneration()
   
-  const [selectedFont, setSelectedFont] = useState(() => {
-    try {
-      const saved = localStorage.getItem('resumeBuilder_selectedFont')
-      return saved || 'inter'
-    } catch (error) {
-      return 'inter'
-    }
+  const sectionsHook = useResumeSections(selectedTemplate, resumeDataHook.resumeData, {
+    addExperience: resumeDataHook.addExperience,
+    addEducation: resumeDataHook.addEducation,
+    addSkill: resumeDataHook.addSkill,
+    addTool: resumeDataHook.addTool,
+    addLanguage: resumeDataHook.addLanguage,
+    addCertification: resumeDataHook.addCertification,
+    addProject: resumeDataHook.addProject,
   })
-  
-  const [selectedColor, setSelectedColor] = useState(() => {
-    try {
-      const saved = localStorage.getItem('resumeBuilder_selectedColor')
-      return saved || 'black'
-    } catch (error) {
-      return 'black'
-    }
-  })
-  
-  const [showDownloadModal, setShowDownloadModal] = useState(false)
-  const [showTemplateModal, setShowTemplateModal] = useState(false)
-  const [showFontModal, setShowFontModal] = useState(false)
-  const [showColorModal, setShowColorModal] = useState(false)
-  const [showPreviewModal, setShowPreviewModal] = useState(false)
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
-  const [showSidebar, setShowSidebar] = useState(false)
-  const downloadPDFRef = useRef(null)
 
-  const getTemplateColor = (templateId) => {
-    if (getTemplateColorProp) {
-      return getTemplateColorProp(templateId)
-    }
-    return templateColors[templateId] || null
-  }
+  const templateColorsHook = useTemplateColors(
+    templateColors,
+    onTemplateColorChange,
+    getTemplateColorProp,
+    selectedTemplate,
+    themeColor
+  )
 
-  const getPreviewColor = (templateId) => {
-    const color = getTemplateColor(templateId)
-    return color || '#D1D5DB' // Default gray if no color selected
-  }
+  // Destructure for easier access
+  const {
+    resumeData,
+    updatePersonalInfo,
+    updateSummary,
+    addExperience,
+    updateExperience,
+    removeExperience,
+    addEducation,
+    updateEducation,
+    removeEducation,
+    addSkill,
+    updateSkill,
+    removeSkill,
+    addTool,
+    updateTool,
+    removeTool,
+    addLanguage,
+    updateLanguage,
+    removeLanguage,
+    addCertification,
+    updateCertification,
+    removeCertification,
+    addProject,
+    updateProject,
+    removeProject,
+  } = resumeDataHook
 
-  const handleTemplateColorChange = (templateId, color) => {
-    if (onTemplateColorChange) {
-      onTemplateColorChange(templateId, color)
-    }
-  }
+  const {
+    currentSection,
+    setCurrentSection,
+    sections,
+    progress,
+    hasFormData,
+  } = sectionsHook
 
-  // Get the current theme color for the selected template
-  const currentThemeColor = getTemplateColor(selectedTemplate) || themeColor || '#F2F2F2'
-
-  // Save resumeData to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('resumeBuilder_resumeData', JSON.stringify(resumeData))
-    } catch (error) {
-      console.error('Error saving resume data to localStorage:', error)
-    }
-  }, [resumeData])
-
-  // Save currentSection to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('resumeBuilder_currentSection', currentSection.toString())
-    } catch (error) {
-      console.error('Error saving current section to localStorage:', error)
-    }
-  }, [currentSection])
-
-  // Save selectedFont to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('resumeBuilder_selectedFont', selectedFont)
-    } catch (error) {
-      console.error('Error saving selected font to localStorage:', error)
-    }
-  }, [selectedFont])
-
-  // Save selectedColor to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('resumeBuilder_selectedColor', selectedColor)
-    } catch (error) {
-      console.error('Error saving selected color to localStorage:', error)
-    }
-  }, [selectedColor])
-
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [])
-
-  // Reset current section when template changes to prevent out-of-bounds
-  useEffect(() => {
-    const sections = getSectionsForTemplate(selectedTemplate)
-    if (currentSection >= sections.length) {
-      setCurrentSection(0)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTemplate])
-
-  // Ensure all sections have at least one entry when accessed
-  useEffect(() => {
-    const sections = getSectionsForTemplate(selectedTemplate)
-    const currentSectionId = sections[currentSection]?.id
-    
-    if (currentSectionId === 'experience' && resumeData.experience.length === 0) {
-      addExperience()
-    } else if (currentSectionId === 'education' && resumeData.education.length === 0) {
-      addEducation()
-    } else if (currentSectionId === 'skills') {
-      // Skills section includes skills, tools, languages, and certifications
-      if (resumeData.skills.length === 0) {
-        addSkill()
-      }
-      if (resumeData.tools.length === 0) {
-        addTool()
-      }
-      if (resumeData.languages.length === 0) {
-        addLanguage()
-      }
-      if (resumeData.certifications.length === 0) {
-        addCertification()
-      }
-    } else if (currentSectionId === 'projects' && resumeData.projects.length === 0) {
-      addProject()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSection, selectedTemplate])
-
-  const updatePersonalInfo = useCallback((field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      personalInfo: { ...prev.personalInfo, [field]: value }
-    }))
-  }, [])
-
-  const updateSummary = useCallback((value) => {
-    setResumeData(prev => ({ ...prev, summary: value }))
-  }, [])
-
-  const addExperience = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      experience: [...prev.experience, {
-        id: Date.now(),
-        company: '',
-        position: '',
-        location: '',
-        startDate: '',
-        endDate: '',
-        current: false,
-        description: '',
-      }]
-    }))
-  }, [])
-
-  const updateExperience = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      experience: prev.experience.map(exp =>
-        exp.id === id ? { ...exp, [field]: value } : exp
-      )
-    }))
-  }, [])
-
-  const removeExperience = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      experience: prev.experience.filter(exp => exp.id !== id)
-    }))
-  }, [])
-
-  const addEducation = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      education: [...prev.education, {
-        id: Date.now(),
-        school: '',
-        degree: '',
-        field: '',
-        location: '',
-        startDate: '',
-        endDate: '',
-        gpa: '',
-      }]
-    }))
-  }, [])
-
-  const updateEducation = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      education: prev.education.map(edu =>
-        edu.id === id ? { ...edu, [field]: value } : edu
-      )
-    }))
-  }, [])
-
-  const removeEducation = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      education: prev.education.filter(edu => edu.id !== id)
-    }))
-  }, [])
-
-  const addSkill = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      skills: [...prev.skills, { id: Date.now(), name: '', level: 5 }]
-    }))
-  }, [])
-
-  const updateSkill = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      skills: prev.skills.map(skill =>
-        skill.id === id ? { ...skill, [field]: value } : skill
-      )
-    }))
-  }, [])
-
-  const removeSkill = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      skills: prev.skills.filter(skill => skill.id !== id)
-    }))
-  }, [])
-
-  const addProject = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      projects: [...prev.projects, {
-        id: Date.now(),
-        name: '',
-        description: '',
-        technologies: '',
-        link: '',
-        github: '',
-      }]
-    }))
-  }, [])
-
-  const updateProject = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      projects: prev.projects.map(project =>
-        project.id === id ? { ...project, [field]: value } : project
-      )
-    }))
-  }, [])
-
-  const removeProject = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      projects: prev.projects.filter(project => project.id !== id)
-    }))
-  }, [])
-
-  const addTool = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      tools: [...prev.tools, { id: Date.now(), name: '' }]
-    }))
-  }, [])
-
-  const updateTool = useCallback((id, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      tools: prev.tools.map(tool =>
-        tool.id === id ? { ...tool, name: value } : tool
-      )
-    }))
-  }, [])
-
-  const removeTool = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      tools: prev.tools.filter(tool => tool.id !== id)
-    }))
-  }, [])
-
-  const addLanguage = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      languages: [...prev.languages, { id: Date.now(), name: '', proficiency: 'Fluent' }]
-    }))
-  }, [])
-
-  const updateLanguage = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      languages: prev.languages.map(lang =>
-        lang.id === id ? { ...lang, [field]: value } : lang
-      )
-    }))
-  }, [])
-
-  const removeLanguage = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      languages: prev.languages.filter(lang => lang.id !== id)
-    }))
-  }, [])
-
-  const addCertification = useCallback(() => {
-    setResumeData(prev => ({
-      ...prev,
-      certifications: [...prev.certifications, { id: Date.now(), name: '', issuer: '', date: '' }]
-    }))
-  }, [])
-
-  const updateCertification = useCallback((id, field, value) => {
-    setResumeData(prev => ({
-      ...prev,
-      certifications: prev.certifications.map(cert =>
-        cert.id === id ? { ...cert, [field]: value } : cert
-      )
-    }))
-  }, [])
-
-  const removeCertification = useCallback((id) => {
-    setResumeData(prev => ({
-      ...prev,
-      certifications: prev.certifications.filter(cert => cert.id !== id)
-    }))
-  }, [])
-
-  const sections = useMemo(() => getSectionsForTemplate(selectedTemplate), [selectedTemplate])
-  const progress = useMemo(() => ((currentSection + 1) / sections.length) * 100, [currentSection, sections.length])
-
-  const goToSection = (index) => {
-    setCurrentSection(index)
-  }
-
-  // Check if form has any input data
-  const hasFormData = useMemo(() => {
-    // Check personal info
-    const hasPersonalInfo = Object.values(resumeData.personalInfo).some(value => 
-      value && value.toString().trim() !== ''
-    )
-    
-    // Check summary
-    const hasSummary = resumeData.summary && resumeData.summary.trim() !== ''
-    
-    // Check arrays
-    const hasArrays = 
-      resumeData.experience.length > 0 ||
-      resumeData.education.length > 0 ||
-      resumeData.skills.length > 0 ||
-      resumeData.tools.length > 0 ||
-      resumeData.languages.length > 0 ||
-      resumeData.certifications.length > 0 ||
-      resumeData.projects.length > 0
-    
-    return hasPersonalInfo || hasSummary || hasArrays
-  }, [resumeData])
+  const {
+    getTemplateColor,
+    getPreviewColor,
+    handleTemplateColorChange,
+    currentThemeColor,
+  } = templateColorsHook
 
   // Handle go back with confirmation
   const handleGoBack = useCallback(() => {
@@ -483,31 +111,26 @@ function ResumeBuilder({
 
   // Handle finish button click
   const handleFinish = useCallback(() => {
-    setShowDownloadModal(true)
-  }, [])
+    modals.openDownloadModal()
+  }, [modals])
 
   // Handle download PDF with loading state
-  const handleDownloadPDF = async () => {
-    if (!downloadPDFRef.current) return
-    
-    setIsGeneratingPDF(true)
+  const handleDownloadPDF = useCallback(async () => {
     try {
-      await downloadPDFRef.current()
-      // Close modal after successful download
-      setShowDownloadModal(false)
+      await pdfGeneration.handleDownloadPDF(() => {
+        // Close modal after successful download
+        modals.closeDownloadModal()
+      })
     } catch (error) {
-      console.error('Error generating PDF:', error)
-      alert('Error generating PDF. Please try again.')
-    } finally {
-      setIsGeneratingPDF(false)
+      // Error is already handled in the hook
     }
-  }
+  }, [pdfGeneration, modals])
 
   // Handle template change
   const handleTemplateChange = useCallback((templateId) => {
     setSelectedTemplate(templateId)
-    setShowTemplateModal(false)
-  }, [])
+    modals.closeTemplateModal()
+  }, [modals])
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -516,7 +139,7 @@ function ResumeBuilder({
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
           {/* Hamburger Menu Button - Mobile Only */}
           <button
-            onClick={() => setShowSidebar(true)}
+            onClick={modals.openSidebar}
             className="lg:hidden flex items-center justify-center text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0 p-1.5"
             aria-label="Open menu"
           >
@@ -569,7 +192,7 @@ function ResumeBuilder({
 
           {/* Preview Button - Mobile Only */}
           <button
-            onClick={() => setShowPreviewModal(true)}
+            onClick={modals.openPreviewModal}
             className="lg:hidden flex items-center gap-1.5 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0 p-1.5"
             aria-label="Show preview"
           >
@@ -580,7 +203,7 @@ function ResumeBuilder({
           {/* Font, Color and Template Buttons - Desktop Only */}
           <div className="hidden lg:flex items-center gap-2 md:gap-3 ml-auto flex-shrink-0">
             <button
-              onClick={() => setShowFontModal(true)}
+              onClick={modals.openFontModal}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
               title="Change Font"
             >
@@ -588,7 +211,7 @@ function ResumeBuilder({
               <span className="text-sm font-medium">Font</span>
             </button>
             <button
-              onClick={() => setShowColorModal(true)}
+              onClick={modals.openColorModal}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
               title="Change Text Color"
             >
@@ -598,7 +221,7 @@ function ResumeBuilder({
               <span className="text-sm font-medium">Color</span>
             </button>
             <button
-              onClick={() => setShowTemplateModal(true)}
+              onClick={modals.openTemplateModal}
               className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors flex-shrink-0"
             >
               <Icon name="template" className="text-lg" />
@@ -612,20 +235,20 @@ function ResumeBuilder({
         {/* Overlay */}
         <div 
           className={`fixed inset-0 bg-black z-40 lg:hidden transition-opacity duration-300 ease-in-out ${
-            showSidebar ? 'opacity-50 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            modals.showSidebar ? 'opacity-50 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
-          onClick={() => setShowSidebar(false)}
+          onClick={modals.closeSidebar}
         />
         {/* Sidebar */}
         <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-out lg:hidden ${
-          showSidebar ? 'translate-x-0' : '-translate-x-full'
+          modals.showSidebar ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="flex flex-col h-full">
             {/* Sidebar Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
               <button
-                onClick={() => setShowSidebar(false)}
+                onClick={modals.closeSidebar}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                 aria-label="Close menu"
               >
@@ -640,13 +263,13 @@ function ResumeBuilder({
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => {
-                    setShowFontModal(true)
-                    setShowSidebar(false)
+                    modals.openFontModal()
+                    modals.closeSidebar()
                   }}
                   className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
-                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                    modals.showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                   }`}
-                  style={{ transitionDelay: showSidebar ? '0.1s' : '0s' }}
+                  style={{ transitionDelay: modals.showSidebar ? '0.1s' : '0s' }}
                 >
                   <Icon name="font" className="text-xl text-blue-600" />
                   <div className="flex flex-col">
@@ -657,13 +280,13 @@ function ResumeBuilder({
                 
                 <button
                   onClick={() => {
-                    setShowColorModal(true)
-                    setShowSidebar(false)
+                    modals.openColorModal()
+                    modals.closeSidebar()
                   }}
                   className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
-                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                    modals.showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                   }`}
-                  style={{ transitionDelay: showSidebar ? '0.15s' : '0s' }}
+                  style={{ transitionDelay: modals.showSidebar ? '0.15s' : '0s' }}
                 >
                   <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -676,13 +299,13 @@ function ResumeBuilder({
                 
                 <button
                   onClick={() => {
-                    setShowTemplateModal(true)
-                    setShowSidebar(false)
+                    modals.openTemplateModal()
+                    modals.closeSidebar()
                   }}
                   className={`flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200 ${
-                    showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                    modals.showSidebar ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                   }`}
-                  style={{ transitionDelay: showSidebar ? '0.2s' : '0s' }}
+                  style={{ transitionDelay: modals.showSidebar ? '0.2s' : '0s' }}
                 >
                   <Icon name="template" className="text-xl text-blue-600" />
                   <div className="flex flex-col">
@@ -734,20 +357,18 @@ function ResumeBuilder({
           selectedFont={selectedFont}
           selectedColor={selectedColor}
           themeColor={currentThemeColor}
-          onDownloadReady={(downloadFn) => {
-            downloadPDFRef.current = downloadFn
-          }}
+          onDownloadReady={pdfGeneration.setDownloadFunction}
         />
       </div>
 
       {/* Template Change Modal */}
-      {showTemplateModal && (
+      {modals.showTemplateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
           <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-7xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-900 tracking-tight">Change Template</h2>
               <button
-                onClick={() => setShowTemplateModal(false)}
+                onClick={modals.closeTemplateModal}
                 className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 p-1"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1144,233 +765,40 @@ function ResumeBuilder({
       )}
 
       {/* Font Selection Modal */}
-      {showFontModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Select Font Style</h2>
-              <button
-                onClick={() => setShowFontModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 p-1"
-              >
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4 md:mb-6">
-              Choose a font style for your resume. The selected font will be applied to all text elements.
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-              {fonts.map((font) => (
-                <button
-                  key={font.id}
-                  onClick={() => {
-                    setSelectedFont(font.id)
-                    setShowFontModal(false)
-                  }}
-                  className={`relative p-3 sm:p-4 border-2 rounded-lg text-left transition-all duration-200 ${
-                    selectedFont === font.id
-                      ? 'border-blue-500 bg-blue-50 shadow-md'
-                      : 'border-gray-200 hover:border-blue-300 hover:shadow-sm'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900" style={{ fontFamily: font.family }}>
-                      {font.name}
-                    </h3>
-                    {selectedFont === font.id && (
-                      <div className="bg-blue-500 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600" style={{ fontFamily: font.family }}>
-                    The quick brown fox jumps over the lazy dog
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <FontModal
+        isOpen={modals.showFontModal}
+        onClose={modals.closeFontModal}
+        selectedFont={selectedFont}
+        onSelectFont={setSelectedFont}
+      />
 
       {/* Color Selection Modal */}
-      {showColorModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Select Text Color Scheme</h2>
-              <button
-                onClick={() => setShowColorModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 p-1"
-              >
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4 md:mb-6">
-              Choose a color scheme for your resume. The selected colors will be applied to all text elements.
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-              {textColors.map((colorScheme) => (
-                <button
-                  key={colorScheme.id}
-                  onClick={() => {
-                    setSelectedColor(colorScheme.id)
-                    setShowColorModal(false)
-                  }}
-                  className={`relative p-3 sm:p-4 border-2 rounded-lg text-left transition-all duration-200 ${
-                    selectedColor === colorScheme.id
-                      ? 'border-blue-500 bg-blue-50 shadow-md'
-                      : 'border-gray-200 hover:border-blue-300 hover:shadow-sm'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2 sm:mb-3">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 truncate">{colorScheme.name}</h3>
-                      <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1 line-clamp-2">{colorScheme.description}</p>
-                    </div>
-                    {selectedColor === colorScheme.id && (
-                      <div className="bg-blue-500 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center flex-shrink-0 ml-2">
-                        <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-1.5 sm:space-y-2">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div 
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded border border-gray-300 flex-shrink-0"
-                        style={{ backgroundColor: colorScheme.colors.primary }}
-                      ></div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[10px] sm:text-xs text-gray-600">Primary</div>
-                        <div className="text-[9px] sm:text-xs font-mono text-gray-500 truncate">{colorScheme.colors.primary}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div 
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded border border-gray-300 flex-shrink-0"
-                        style={{ backgroundColor: colorScheme.colors.secondary }}
-                      ></div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[10px] sm:text-xs text-gray-600">Secondary</div>
-                        <div className="text-[9px] sm:text-xs font-mono text-gray-500 truncate">{colorScheme.colors.secondary}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <div 
-                        className="w-6 h-6 sm:w-8 sm:h-8 rounded border border-gray-300 flex-shrink-0"
-                        style={{ backgroundColor: colorScheme.colors.tertiary }}
-                      ></div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-[10px] sm:text-xs text-gray-600">Tertiary</div>
-                        <div className="text-[9px] sm:text-xs font-mono text-gray-500 truncate">{colorScheme.colors.tertiary}</div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <ColorModal
+        isOpen={modals.showColorModal}
+        onClose={modals.closeColorModal}
+        selectedColor={selectedColor}
+        onSelectColor={setSelectedColor}
+      />
 
       {/* Preview Modal */}
-      {showPreviewModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-3 md:p-4">
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[95vh] md:max-h-[90vh] overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between p-2.5 sm:p-3 md:p-4 border-b border-gray-200 flex-shrink-0">
-              <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Resume Preview</h2>
-              <button
-                onClick={() => setShowPreviewModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 p-1"
-              >
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="flex-1 overflow-auto p-2 sm:p-3 md:p-4 lg:p-6 bg-gray-50 flex items-center justify-center min-h-0">
-              <div className="w-full h-full flex justify-center items-center">
-                {/* Scaled preview wrapper - scales for display but resume is always 816x1056px at 1:1 */}
-                {/* The ResumePreview component always renders at exact 816x1056px internally */}
-                <div className="transform scale-[0.4] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.65] xl:scale-[0.7] origin-center">
-                  {/* Actual resume content - always 816x1056px (US Letter at 96 DPI) for pixel-perfect WYSIWYG */}
-                  <ResumePreview
-                    resumeData={resumeData}
-                    selectedTemplate={selectedTemplate}
-                    selectedFont={selectedFont}
-                    selectedColor={selectedColor}
-                    themeColor={currentThemeColor}
-                    inModal={true}
-                    onDownloadReady={(downloadFn) => {
-                      downloadPDFRef.current = downloadFn
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <PreviewModal
+        isOpen={modals.showPreviewModal}
+        onClose={modals.closePreviewModal}
+        resumeData={resumeData}
+        selectedTemplate={selectedTemplate}
+        selectedFont={selectedFont}
+        selectedColor={selectedColor}
+        themeColor={currentThemeColor}
+        onDownloadReady={pdfGeneration.setDownloadFunction}
+      />
 
       {/* Download Modal */}
-      {showDownloadModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
-          <div className="bg-white rounded-lg sm:rounded-xl shadow-xl p-4 sm:p-5 md:p-6 max-w-md w-full">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Download Resume</h2>
-              <button
-                onClick={() => setShowDownloadModal(false)}
-                disabled={isGeneratingPDF}
-                className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 flex-shrink-0"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-              Your resume is ready! Click the button below to download it as a PDF.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <button
-                onClick={() => setShowDownloadModal(false)}
-                disabled={isGeneratingPDF}
-                className="flex-1 px-4 py-2.5 rounded-lg font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDownloadPDF}
-                disabled={isGeneratingPDF}
-                className="flex-1 px-4 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {isGeneratingPDF ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Icon name="download" className="text-sm" />
-                    Download PDF
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DownloadModal
+        isOpen={modals.showDownloadModal}
+        onClose={modals.closeDownloadModal}
+        onDownload={handleDownloadPDF}
+        isGeneratingPDF={pdfGeneration.isGeneratingPDF}
+      />
     </div>
   )
 }

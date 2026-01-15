@@ -98,7 +98,6 @@ export default function TwoColumnLayout({
               </ul>
             </div>
           </section>
-        )}
 
         {/* Certifications */}
         <section className="mb-1.5" style={{ padding: 0, margin: 0 }}>
@@ -355,7 +354,6 @@ export default function TwoColumnLayout({
               </div>
             </div>
           </section>
-        )}
 
         {/* Education */}
         <section className="mb-0" style={{ padding: 0, margin: 0 }}>

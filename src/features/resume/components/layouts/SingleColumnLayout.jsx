@@ -362,7 +362,6 @@ export default function SingleColumnLayout({
             </div>
           </div>
         </section>
-      )}
 
       {/* Certifications */}
       <section className="mb-0" style={{ padding: 0, margin: 0 }}>

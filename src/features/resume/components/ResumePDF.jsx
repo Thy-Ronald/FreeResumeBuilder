@@ -1,50 +1,15 @@
 import React from 'react'
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
 import { getColorScheme } from '../../../constants/colors'
-
-// React-pdf supports these fonts out of the box:
-// - Helvetica (default)
-// - Times-Roman
-// - Courier
-// For Google Fonts, we'll map them to the closest system font
-// or use Helvetica as fallback for best compatibility
-const getPDFFontFamily = (fontId) => {
-  const fontMap = {
-    'inter': 'Helvetica',
-    'roboto': 'Helvetica',
-    'opensans': 'Helvetica',
-    'lato': 'Helvetica',
-    'montserrat': 'Helvetica',
-    'raleway': 'Helvetica',
-    'poppins': 'Helvetica',
-    'source-sans': 'Helvetica',
-    'ubuntu': 'Helvetica',
-    'playfair': 'Times-Roman',
-    'merriweather': 'Times-Roman',
-    'crimson': 'Times-Roman',
-  }
-  return fontMap[fontId] || 'Helvetica'
-}
+import { getTemplatePadding, getPDFFontFamily } from '../../../utils/templateConstants'
 
 function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'inter', selectedColor = 'black', themeColor = '#F2F2F2' }) {
   const colorScheme = getColorScheme(selectedColor)
   // Use react-pdf compatible font name
   const pdfFontFamily = getPDFFontFamily(selectedFont)
   
-  // Get template-specific padding (convert mm to points: 1mm = 2.83465pt)
-  const getTemplatePadding = () => {
-    const paddingMap = {
-      compact: { top: 22.68, right: 28.35, bottom: 22.68, left: 28.35 }, // 8mm 10mm
-      modern: { top: 25.51, right: 31.18, bottom: 25.51, left: 31.18 }, // 9mm 11mm
-      classic: { top: 25.51, right: 34.02, bottom: 25.51, left: 34.02 }, // 9mm 12mm
-      minimal: { top: 22.68, right: 28.35, bottom: 22.68, left: 28.35 }, // 8mm 10mm
-      corporate: { top: 34.02, right: 42.52, bottom: 34.02, left: 42.52 }, // 12mm 15mm
-      'with-image': { top: 28.35, right: 34.02, bottom: 28.35, left: 34.02 }, // 10mm 12mm
-    }
-    return paddingMap[selectedTemplate] || paddingMap.modern
-  }
-
-  const padding = getTemplatePadding()
+  // Get template-specific padding
+  const padding = getTemplatePadding(selectedTemplate)
 
   // Create styles
   const styles = StyleSheet.create({

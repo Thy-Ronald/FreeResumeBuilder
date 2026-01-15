@@ -4,6 +4,7 @@ import { templates } from '../../constants/templates'
 import logoImage from '../../assets/logo.jpg'
 import { themeColors } from '../../constants/themeColors'
 import { debounce } from '../../utils/debounce'
+import { getPreviewColor as getDefaultPreviewColor, getResponsiveFontSize } from '../../utils/templateConstants'
 
 function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorChange, getTemplateColor }) {
   const [hoveredTemplate, setHoveredTemplate] = useState(null)
@@ -21,14 +22,7 @@ function TemplateSelection({ onSelectTemplate, templateColors, onTemplateColorCh
   
   const getPreviewColor = (templateId) => {
     const color = getTemplateColor(templateId)
-    return color || '#D1D5DB' // Default gray if no color selected
-  }
-
-  const getResponsiveFontSize = (baseSize) => {
-    if (isMobile) {
-      return `${baseSize * 0.85}px`
-    }
-    return `${baseSize}px`
+    return color || getDefaultPreviewColor(templateId) // Use shared default if no color selected
   }
 
   return (

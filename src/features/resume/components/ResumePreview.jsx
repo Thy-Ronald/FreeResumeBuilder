@@ -9,12 +9,13 @@ import SingleColumnLayout from './layouts/SingleColumnLayout'
 import CorporateLayout from './layouts/CorporateLayout'
 import ImageLayout from './layouts/ImageLayout'
 import { renderDivider, renderSectionHeader } from './layouts/layoutUtils'
+import { US_LETTER_DIMENSIONS } from '../../../utils/templateConstants'
 
 function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont = 'inter', selectedColor = 'black', themeColor = '#F2F2F2', onDownloadReady, inModal = false }) {
   // US Letter dimensions at 96 DPI: 816px x 1056px (exact 1:1 scale)
   // This ensures pixel-perfect WYSIWYG between preview and PDF
-  const US_LETTER_WIDTH_PX = 816
-  const US_LETTER_HEIGHT_PX = 1056
+  const US_LETTER_WIDTH_PX = US_LETTER_DIMENSIONS.width
+  const US_LETTER_HEIGHT_PX = US_LETTER_DIMENSIONS.height
   
   const resumeRef = useRef(null)
   const resumeDataRef = useRef(resumeData)

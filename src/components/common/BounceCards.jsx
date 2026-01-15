@@ -2,25 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import './BounceCards.css';
 import logoImage from '../../assets/logo.jpg';
-
-const getPreviewColor = (templateId) => {
-  const colors = {
-    modern: '#D1D5DB',
-    classic: '#D1D5DB',
-    minimal: '#D1D5DB',
-    corporate: '#2563eb',
-    'with-image': '#D1D5DB'
-  };
-  return colors[templateId] || '#D1D5DB';
-};
-
-const getResponsiveFontSize = (baseSize, isMobile = false) => {
-  if (isMobile) {
-    // Scale down font sizes for mobile to fit more content
-    return `${baseSize * 0.85}px`;
-  }
-  return `${baseSize}px`;
-};
+import { getPreviewColor, getResponsiveFontSize } from '../../utils/templateConstants';
 
 const renderTemplatePreview = (template, isMobile = false) => {
   const previewColor = getPreviewColor(template.id);

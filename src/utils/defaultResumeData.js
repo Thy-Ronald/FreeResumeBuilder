@@ -96,7 +96,7 @@ export const defaultPersonalInfo = {
   fullName: 'Ronald Moran Jr',
   title: 'Software Engineer',
   email: 'email@example.com',
-  phone: '+1 (555) 000-0000',
+  phone: '+63 912 345 6789',
   location: 'San Francisco, CA',
   linkedin: 'linkedin.com/in/username',
   github: 'github.com/username',

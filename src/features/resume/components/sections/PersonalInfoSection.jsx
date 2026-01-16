@@ -113,7 +113,7 @@ export default function PersonalInfoSection({
             </label>
             <input
               type="tel"
-              placeholder="+1 (555) 000-0000"
+              placeholder="+63 912 345 6789"
               value={personalInfo.phone}
               onChange={(e) => {
                 updatePersonalInfo('phone', e.target.value)

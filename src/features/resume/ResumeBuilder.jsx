@@ -98,12 +98,19 @@ function ResumeBuilder({
 
   // Handle go back with confirmation
   const handleGoBack = useCallback(() => {
-    // If on the first section, reset the form
+    // If on the first section, check if there's form data before showing alert
     if (currentSection === 0) {
-      const confirmed = window.confirm(
-        'Are you sure you want to go back?\n\nThis will reset all form data and you will lose all your progress.\n\nDo you want to continue?'
-      )
-      if (confirmed) {
+      if (hasFormData) {
+        const confirmed = window.confirm(
+          'Are you sure you want to go back?\n\nThis will reset all form data and you will lose all your progress.\n\nDo you want to continue?'
+        )
+        if (confirmed) {
+          resetResumeData()
+          setCurrentSection(0)
+          onBack()
+        }
+      } else {
+        // No form data, just go back without alert
         resetResumeData()
         setCurrentSection(0)
         onBack()

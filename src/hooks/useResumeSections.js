@@ -112,15 +112,44 @@ export function useResumeSections(selectedTemplate, resumeData, handlers) {
     // Check summary
     const hasSummary = resumeData.summary && resumeData.summary.trim() !== ''
     
-    // Check arrays
-    const hasArrays = 
-      resumeData.experience.length > 0 ||
-      resumeData.education.length > 0 ||
-      resumeData.skills.length > 0 ||
-      resumeData.tools.length > 0 ||
-      resumeData.languages.length > 0 ||
-      resumeData.certifications.length > 0 ||
-      resumeData.projects.length > 0
+    // Check arrays - only count as data if entries have meaningful content
+    const hasExperience = resumeData.experience.some(exp => 
+      (exp.company && exp.company.trim() !== '') ||
+      (exp.position && exp.position.trim() !== '') ||
+      (exp.description && exp.description.trim() !== '')
+    )
+    
+    const hasEducation = resumeData.education.some(edu => 
+      (edu.school && edu.school.trim() !== '') ||
+      (edu.degree && edu.degree.trim() !== '') ||
+      (edu.field && edu.field.trim() !== '')
+    )
+    
+    const hasSkills = resumeData.skills.some(skill => 
+      skill.name && skill.name.trim() !== ''
+    )
+    
+    const hasTools = resumeData.tools.some(tool => 
+      tool.name && tool.name.trim() !== ''
+    )
+    
+    const hasLanguages = resumeData.languages.some(lang => 
+      lang.name && lang.name.trim() !== ''
+    )
+    
+    const hasCertifications = resumeData.certifications.some(cert => 
+      (cert.name && cert.name.trim() !== '') ||
+      (cert.issuer && cert.issuer.trim() !== '') ||
+      (cert.date && cert.date.trim() !== '')
+    )
+    
+    const hasProjects = resumeData.projects.some(project => 
+      (project.name && project.name.trim() !== '') ||
+      (project.description && project.description.trim() !== '') ||
+      (project.technologies && project.technologies.trim() !== '')
+    )
+    
+    const hasArrays = hasExperience || hasEducation || hasSkills || hasTools || hasLanguages || hasCertifications || hasProjects
     
     return hasPersonalInfo || hasSummary || hasArrays
   }, [resumeData])

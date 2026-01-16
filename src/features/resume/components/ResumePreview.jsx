@@ -170,7 +170,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
             wordBreak: 'normal',
             overflowWrap: 'break-word',
             letterSpacing: 'normal',
-            textAlign: 'left'
+            textAlign: selectedTemplate === 'corporate' || selectedTemplate === 'with-image' ? 'left' : 'center'
           }}
         >
           {resumeData.personalInfo.fullName || 'Your Name'}
@@ -184,7 +184,7 @@ function ResumePreview({ resumeData, selectedTemplate = 'modern', selectedFont =
               wordBreak: 'normal',
               overflowWrap: 'break-word',
               letterSpacing: 'normal',
-              textAlign: 'left'
+              textAlign: selectedTemplate === 'corporate' || selectedTemplate === 'with-image' ? 'left' : 'center'
             }}
           >
             {resumeData.personalInfo.title}

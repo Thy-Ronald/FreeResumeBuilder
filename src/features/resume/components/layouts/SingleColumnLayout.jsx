@@ -247,7 +247,7 @@ export default function SingleColumnLayout({
                         <h3 className="text-[9.5pt] font-bold m-0 mb-0 leading-[1.2]" style={{ color: colorScheme.colors.primary, ...textFlowStyles }}>
                           {edu.degree || 'Degree'}
                         </h3>
-                        <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: themeColor, ...textFlowStyles }}>
+                        <div className="text-[9pt] font-semibold mb-0 leading-[1.2]" style={{ color: colorScheme.colors.tertiary, ...textFlowStyles }}>
                           {edu.school || 'School'}
                         </div>
                         {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary, ...textFlowStyles }}>{edu.field}</div>}

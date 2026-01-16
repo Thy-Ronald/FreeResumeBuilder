@@ -211,7 +211,7 @@ export default function ImageLayout({
                       <h3 className="text-[10pt] font-bold mb-0 leading-tight" style={{ color: colorScheme.colors.primary, ...textFlowStyles }}>
                         {edu.degree || 'Degree'}
                       </h3>
-                      <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: themeColor, ...textFlowStyles }}>
+                      <div className="text-[9.5pt] font-semibold mb-0 leading-tight" style={{ color: colorScheme.colors.tertiary, ...textFlowStyles }}>
                         {edu.school || 'School'}
                       </div>
                       {edu.field && <div className="text-[8.5pt] italic" style={{ color: colorScheme.colors.tertiary, ...textFlowStyles }}>{edu.field}</div>}

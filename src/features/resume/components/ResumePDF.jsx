@@ -127,6 +127,11 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
       fontWeight: 'semibold',
       color: themeColor,
     },
+    school: {
+      fontSize: 9,
+      fontWeight: 'semibold',
+      color: colorScheme.colors.tertiary,
+    },
     date: {
       fontSize: 8,
       color: colorScheme.colors.tertiary,
@@ -388,7 +393,7 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
             <View style={styles.experienceHeader}>
               <View style={{ flex: 1 }}>
                 <Text style={styles.position}>{edu.degree || 'Degree'}</Text>
-                <Text style={styles.company}>{edu.school || 'School'}</Text>
+                <Text style={styles.school}>{edu.school || 'School'}</Text>
                 {edu.field && <Text style={[styles.date, { textAlign: 'left', fontStyle: 'italic' }]}>{edu.field}</Text>}
               </View>
               <View style={{ alignItems: 'flex-end' }}>

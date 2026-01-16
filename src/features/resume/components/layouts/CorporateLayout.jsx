@@ -25,7 +25,7 @@ export default function CorporateLayout({
                       <h3 className="text-[10pt] font-semibold mb-0.5 leading-tight text-gray-900" style={textFlowStyles}>
                         {edu.degree || 'Degree'}
                       </h3>
-                      <div className="text-[9pt] mb-0.5" style={{ color: themeColor, ...textFlowStyles }}>{edu.school || 'School'}</div>
+                      <div className="text-[9pt] mb-0.5" style={{ color: colorScheme.colors.tertiary, ...textFlowStyles }}>{edu.school || 'School'}</div>
                       {edu.field && <div className="text-[8.5pt] italic text-gray-600" style={textFlowStyles}>{edu.field}</div>}
                       <div className="text-[8.5pt] mt-0.5 text-gray-600" style={textFlowStyles}>
                         {edu.startDate} - {edu.endDate}

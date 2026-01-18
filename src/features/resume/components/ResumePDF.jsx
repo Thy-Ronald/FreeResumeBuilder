@@ -414,40 +414,134 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
 
   const renderSingleColumnLayout = () => (
     <View style={styles.singleColumn}>
+      {/* Professional Summary */}
       {resumeData.summary && (
         <>
           {renderSectionHeader('Summary')}
-          <Text style={styles.summary}>{resumeData.summary}</Text>
+          <View style={styles.modernSectionContent}>
+            <Text style={styles.summary}>{resumeData.summary}</Text>
+          </View>
         </>
       )}
 
+      {/* Experience */}
       {renderSectionHeader('Experience')}
-      {(resumeData.experience.length > 0 ? resumeData.experience : []).map(exp => (
-        <View key={exp.id} style={styles.experienceItem}>
-          <View style={styles.experienceHeader}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.position}>{exp.position || 'Position'}</Text>
-              <Text style={styles.company}>{exp.company || 'Company'}</Text>
+      <View style={styles.modernSectionContent}>
+        {(resumeData.experience.length > 0 ? resumeData.experience : []).map(exp => (
+          <View key={exp.id} style={styles.experienceItem}>
+            <View style={styles.experienceHeader}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.position}>{exp.position || 'Position'}</Text>
+                <Text style={styles.company}>{exp.company || 'Company'}</Text>
+              </View>
+              <View style={{ alignItems: 'flex-end' }}>
+                {exp.location && <Text style={styles.location}>{exp.location}</Text>}
+                <Text style={styles.date}>
+                  {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                </Text>
+              </View>
             </View>
-            <View style={{ alignItems: 'flex-end' }}>
-              {exp.location && <Text style={styles.location}>{exp.location}</Text>}
-              <Text style={styles.date}>
-                {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+            {exp.description && exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+              <Text key={idx} style={styles.bulletPoint}>
+                {line.trim().replace(/^[•\-]\s*/, '')}
               </Text>
+            ))}
+          </View>
+        ))}
+      </View>
+
+      {/* Projects */}
+      {renderSectionHeader('Projects')}
+      <View style={styles.modernSectionContent}>
+        {(resumeData.projects.length > 0 ? resumeData.projects : []).map(project => (
+          <View key={project.id} style={{ marginBottom: 4 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
+              <Text style={[styles.position, { fontSize: 9.5 }]}>{project.name || 'Project Name'}</Text>
+              {project.technologies && (
+                <Text style={[styles.date, { fontSize: 7.5, fontStyle: 'italic', textAlign: 'right' }]}>{project.technologies}</Text>
+              )}
+            </View>
+            {project.description && project.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+              <Text key={idx} style={styles.bulletPoint}>
+                {line.trim().replace(/^[•\-]\s*/, '')}
+              </Text>
+            ))}
+            {(project.link || project.github) && (
+              <View style={{ flexDirection: 'row', gap: 6, marginTop: 2 }}>
+                {project.link && <Text style={[styles.date, { fontSize: 7.5, textAlign: 'left' }]}>{project.link}</Text>}
+                {project.github && <Text style={[styles.date, { fontSize: 7.5, textAlign: 'left' }]}>{project.github}</Text>}
+              </View>
+            )}
+          </View>
+        ))}
+      </View>
+
+      {/* Education */}
+      {renderSectionHeader('Education')}
+      <View style={styles.modernSectionContent}>
+        {(resumeData.education.length > 0 ? resumeData.education : []).map(edu => (
+          <View key={edu.id} style={styles.experienceItem}>
+            <View style={styles.experienceHeader}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.position}>{edu.degree || 'Degree'}</Text>
+                <Text style={styles.school}>{edu.school || 'School'}</Text>
+                {edu.field && <Text style={[styles.date, { textAlign: 'left', fontStyle: 'italic', fontSize: 8.5 }]}>{edu.field}</Text>}
+              </View>
+              <View style={{ alignItems: 'flex-end' }}>
+                {edu.location && <Text style={styles.location}>{edu.location}</Text>}
+                <Text style={styles.date}>
+                  {edu.startDate} - {edu.endDate}
+                </Text>
+                {edu.gpa && <Text style={[styles.date, { fontSize: 8 }]}>GPA: {edu.gpa}</Text>}
+              </View>
             </View>
           </View>
-          {exp.description && exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
-            <Text key={idx} style={styles.bulletPoint}>
-              {line.trim().replace(/^[•\-]\s*/, '')}
+        ))}
+      </View>
+
+      {/* Skills */}
+      {renderSectionHeader('Skills')}
+      <View style={styles.modernSectionContent}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+          {(resumeData.skills.length > 0 ? resumeData.skills : []).map(skill => (
+            <Text key={skill.id} style={[styles.listItem, { marginBottom: 0 }]}>{skill.name}</Text>
+          ))}
+        </View>
+      </View>
+
+      {/* Tools */}
+      {renderSectionHeader('Tools')}
+      <View style={styles.modernSectionContent}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+          {(resumeData.tools.length > 0 ? resumeData.tools : []).map(tool => (
+            <Text key={tool.id} style={[styles.listItem, { marginBottom: 0 }]}>{tool.name}</Text>
+          ))}
+        </View>
+      </View>
+
+      {/* Languages */}
+      {renderSectionHeader('Languages')}
+      <View style={styles.modernSectionContent}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
+          {(resumeData.languages.length > 0 ? resumeData.languages : []).map(lang => (
+            <Text key={lang.id} style={[styles.listItem, { marginBottom: 0 }]}>
+              {lang.name} <Text style={{ fontSize: 7.5, color: colorScheme.colors.muted }}>({lang.proficiency})</Text>
             </Text>
           ))}
         </View>
-      ))}
+      </View>
 
-      {renderSectionHeader('Skills')}
-      <Text style={styles.summary}>
-        {(resumeData.skills.length > 0 ? resumeData.skills : []).map(s => s.name).join(', ')}
-      </Text>
+      {/* Certifications */}
+      {renderSectionHeader('Certifications')}
+      <View style={styles.modernSectionContent}>
+        {(resumeData.certifications.length > 0 ? resumeData.certifications : []).map(cert => (
+          <View key={cert.id} style={{ marginBottom: 3, lineHeight: 1.25 }}>
+            <Text style={[styles.listItem, { fontWeight: 'bold', marginBottom: 0 }]}>{cert.name}</Text>
+            {cert.issuer && <Text style={[styles.listItem, { fontSize: 8, marginBottom: 0 }]}>{cert.issuer}</Text>}
+            {cert.date && <Text style={[styles.listItem, { fontSize: 7.5, color: colorScheme.colors.muted, marginBottom: 0 }]}>{cert.date}</Text>}
+          </View>
+        ))}
+      </View>
     </View>
   )
 

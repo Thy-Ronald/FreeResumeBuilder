@@ -3,6 +3,8 @@
  * Handles education entries input
  */
 
+import CustomSelect from '../../../../components/common/CustomSelect'
+
 // List of predefined degree options
 const DEGREE_OPTIONS = [
   'Associate of Arts (AA)',
@@ -134,7 +136,7 @@ export default function EducationSection({
         </div>
       )}
       {education.map((edu) => (
-        <div key={edu.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4">
+        <div key={edu.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 mb-3 sm:mb-4 overflow-visible">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-gray-700">
@@ -160,7 +162,7 @@ export default function EducationSection({
                 <p className="text-xs text-red-500">{errors[`education_${edu.id}_school`]}</p>
               )}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 relative">
               <label className="text-sm font-medium text-gray-700">
                 Degree <span className="text-red-500">*</span>
               </label>
@@ -168,79 +170,47 @@ export default function EducationSection({
                 const isCustomDegree = edu.degree && !DEGREE_OPTIONS.includes(edu.degree)
                 const selectValue = isCustomDegree ? 'Other' : (edu.degree || '')
                 
+                const degreeGroups = [
+                  {
+                    label: 'Associate Degrees',
+                    options: ['Associate of Arts (AA)', 'Associate of Science (AS)', 'Associate of Applied Science (AAS)']
+                  },
+                  {
+                    label: "Bachelor's Degrees",
+                    options: ['Bachelor of Arts (BA)', 'Bachelor of Science (BS)', 'Bachelor of Engineering (BEng)', 'Bachelor of Business Administration (BBA)', 'Bachelor of Fine Arts (BFA)', 'Bachelor of Architecture (BArch)', 'Bachelor of Computer Science (BCS)', 'Bachelor of Nursing (BN)', 'Bachelor of Education (BEd)', 'Bachelor of Laws (LLB)']
+                  },
+                  {
+                    label: "Master's Degrees",
+                    options: ['Master of Arts (MA)', 'Master of Science (MS)', 'Master of Business Administration (MBA)', 'Master of Engineering (MEng)', 'Master of Fine Arts (MFA)', 'Master of Education (MEd)', 'Master of Public Administration (MPA)', 'Master of Public Health (MPH)', 'Master of Laws (LLM)', 'Master of Computer Science (MCS)']
+                  },
+                  {
+                    label: 'Doctoral Degrees',
+                    options: ['Doctor of Philosophy (PhD)', 'Doctor of Medicine (MD)', 'Doctor of Education (EdD)', 'Doctor of Business Administration (DBA)', 'Doctor of Jurisprudence (JD)', 'Doctor of Engineering (DEng)']
+                  },
+                  {
+                    label: 'Professional Certifications',
+                    options: ['Professional Certificate', 'Diploma', 'Certificate', 'Other']
+                  }
+                ]
+                
                 return (
                   <>
-                    <select
+                    <CustomSelect
                       value={selectValue}
-                      onChange={(e) => {
-                        if (e.target.value === 'Other') {
-                          // When "Other" is selected, clear the degree so user can type
+                      onChange={(value) => {
+                        if (value === 'Other') {
                           updateEducation(edu.id, 'degree', '')
                         } else {
-                          updateEducation(edu.id, 'degree', e.target.value)
+                          updateEducation(edu.id, 'degree', value)
                         }
                         if (errors[`education_${edu.id}_degree`]) {
                           setErrors(prev => ({ ...prev, [`education_${edu.id}_degree`]: null }))
                         }
                       }}
-                      className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 appearance-none cursor-pointer ${
-                        errors[`education_${edu.id}_degree`]
-                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                      }`}
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: 'right 0.5rem center',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: '1.5em 1.5em',
-                        paddingRight: '2.5rem'
-                      }}
-                    >
-                      <option value="">Select a degree</option>
-                      <optgroup label="Associate Degrees">
-                        <option value="Associate of Arts (AA)">Associate of Arts (AA)</option>
-                        <option value="Associate of Science (AS)">Associate of Science (AS)</option>
-                        <option value="Associate of Applied Science (AAS)">Associate of Applied Science (AAS)</option>
-                      </optgroup>
-                      <optgroup label="Bachelor's Degrees">
-                        <option value="Bachelor of Arts (BA)">Bachelor of Arts (BA)</option>
-                        <option value="Bachelor of Science (BS)">Bachelor of Science (BS)</option>
-                        <option value="Bachelor of Engineering (BEng)">Bachelor of Engineering (BEng)</option>
-                        <option value="Bachelor of Business Administration (BBA)">Bachelor of Business Administration (BBA)</option>
-                        <option value="Bachelor of Fine Arts (BFA)">Bachelor of Fine Arts (BFA)</option>
-                        <option value="Bachelor of Architecture (BArch)">Bachelor of Architecture (BArch)</option>
-                        <option value="Bachelor of Computer Science (BCS)">Bachelor of Computer Science (BCS)</option>
-                        <option value="Bachelor of Nursing (BN)">Bachelor of Nursing (BN)</option>
-                        <option value="Bachelor of Education (BEd)">Bachelor of Education (BEd)</option>
-                        <option value="Bachelor of Laws (LLB)">Bachelor of Laws (LLB)</option>
-                      </optgroup>
-                      <optgroup label="Master's Degrees">
-                        <option value="Master of Arts (MA)">Master of Arts (MA)</option>
-                        <option value="Master of Science (MS)">Master of Science (MS)</option>
-                        <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
-                        <option value="Master of Engineering (MEng)">Master of Engineering (MEng)</option>
-                        <option value="Master of Fine Arts (MFA)">Master of Fine Arts (MFA)</option>
-                        <option value="Master of Education (MEd)">Master of Education (MEd)</option>
-                        <option value="Master of Public Administration (MPA)">Master of Public Administration (MPA)</option>
-                        <option value="Master of Public Health (MPH)">Master of Public Health (MPH)</option>
-                        <option value="Master of Laws (LLM)">Master of Laws (LLM)</option>
-                        <option value="Master of Computer Science (MCS)">Master of Computer Science (MCS)</option>
-                      </optgroup>
-                      <optgroup label="Doctoral Degrees">
-                        <option value="Doctor of Philosophy (PhD)">Doctor of Philosophy (PhD)</option>
-                        <option value="Doctor of Medicine (MD)">Doctor of Medicine (MD)</option>
-                        <option value="Doctor of Education (EdD)">Doctor of Education (EdD)</option>
-                        <option value="Doctor of Business Administration (DBA)">Doctor of Business Administration (DBA)</option>
-                        <option value="Doctor of Jurisprudence (JD)">Doctor of Jurisprudence (JD)</option>
-                        <option value="Doctor of Engineering (DEng)">Doctor of Engineering (DEng)</option>
-                      </optgroup>
-                      <optgroup label="Professional Certifications">
-                        <option value="Professional Certificate">Professional Certificate</option>
-                        <option value="Diploma">Diploma</option>
-                        <option value="Certificate">Certificate</option>
-                      </optgroup>
-                      <option value="Other">Other (Specify)</option>
-                    </select>
+                      groups={degreeGroups}
+                      placeholder="Select a degree"
+                      error={!!errors[`education_${edu.id}_degree`]}
+                    />
                     {(selectValue === 'Other' || isCustomDegree) && (
                       <input
                         type="text"
@@ -266,7 +236,7 @@ export default function EducationSection({
                 <p className="text-xs text-red-500">{errors[`education_${edu.id}_degree`]}</p>
               )}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 relative">
               <label className="text-sm font-medium text-gray-700">
                 Field of Study <span className="text-red-500">*</span>
               </label>
@@ -274,121 +244,67 @@ export default function EducationSection({
                 const isCustomField = edu.field && !FIELD_OF_STUDY_OPTIONS.includes(edu.field)
                 const selectValue = isCustomField ? 'Other' : (edu.field || '')
                 
+                const fieldOfStudyGroups = [
+                  {
+                    label: 'Computer & Technology',
+                    options: ['Computer Science', 'Software Engineering', 'Information Technology', 'Computer Engineering', 'Data Science', 'Cybersecurity', 'Information Systems']
+                  },
+                  {
+                    label: 'Business & Management',
+                    options: ['Business Administration', 'Business Management', 'Finance', 'Accounting', 'Marketing', 'Economics', 'International Business', 'Human Resources', 'Management', 'Entrepreneurship']
+                  },
+                  {
+                    label: 'Engineering',
+                    options: ['Electrical Engineering', 'Mechanical Engineering', 'Civil Engineering', 'Chemical Engineering', 'Biomedical Engineering', 'Aerospace Engineering', 'Industrial Engineering', 'Environmental Engineering']
+                  },
+                  {
+                    label: 'Health & Medicine',
+                    options: ['Medicine', 'Nursing', 'Pharmacy', 'Public Health', 'Dentistry', 'Physical Therapy', 'Occupational Therapy', 'Veterinary Science']
+                  },
+                  {
+                    label: 'Sciences',
+                    options: ['Biology', 'Chemistry', 'Physics', 'Mathematics', 'Statistics', 'Environmental Science', 'Agriculture']
+                  },
+                  {
+                    label: 'Social Sciences & Humanities',
+                    options: ['Psychology', 'Sociology', 'Political Science', 'International Relations', 'Anthropology', 'History', 'Philosophy', 'English', 'Linguistics', 'Theology']
+                  },
+                  {
+                    label: 'Law & Justice',
+                    options: ['Law', 'Criminal Justice']
+                  },
+                  {
+                    label: 'Education & Communication',
+                    options: ['Education', 'Communications', 'Journalism', 'Media Studies']
+                  },
+                  {
+                    label: 'Arts & Design',
+                    options: ['Graphic Design', 'Fine Arts', 'Architecture', 'Urban Planning', 'Music', 'Theater', 'Film Studies']
+                  },
+                  {
+                    label: 'Other',
+                    options: ['Social Work', 'Other']
+                  }
+                ]
+                
                 return (
                   <>
-                    <select
+                    <CustomSelect
                       value={selectValue}
-                      onChange={(e) => {
-                        if (e.target.value === 'Other') {
-                          // When "Other" is selected, clear the field so user can type
+                      onChange={(value) => {
+                        if (value === 'Other') {
                           updateEducation(edu.id, 'field', '')
                         } else {
-                          updateEducation(edu.id, 'field', e.target.value)
+                          updateEducation(edu.id, 'field', value)
                         }
                         if (errors[`education_${edu.id}_field`]) {
                           setErrors(prev => ({ ...prev, [`education_${edu.id}_field`]: null }))
                         }
                       }}
-                      className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 appearance-none cursor-pointer ${
-                        errors[`education_${edu.id}_field`]
-                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                      }`}
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: 'right 0.5rem center',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: '1.5em 1.5em',
-                        paddingRight: '2.5rem'
-                      }}
-                    >
-                      <option value="">Select a field of study</option>
-                      <optgroup label="Computer & Technology">
-                        <option value="Computer Science">Computer Science</option>
-                        <option value="Software Engineering">Software Engineering</option>
-                        <option value="Information Technology">Information Technology</option>
-                        <option value="Computer Engineering">Computer Engineering</option>
-                        <option value="Data Science">Data Science</option>
-                        <option value="Cybersecurity">Cybersecurity</option>
-                        <option value="Information Systems">Information Systems</option>
-                      </optgroup>
-                      <optgroup label="Business & Management">
-                        <option value="Business Administration">Business Administration</option>
-                        <option value="Business Management">Business Management</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Accounting">Accounting</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Economics">Economics</option>
-                        <option value="International Business">International Business</option>
-                        <option value="Human Resources">Human Resources</option>
-                        <option value="Management">Management</option>
-                        <option value="Entrepreneurship">Entrepreneurship</option>
-                      </optgroup>
-                      <optgroup label="Engineering">
-                        <option value="Electrical Engineering">Electrical Engineering</option>
-                        <option value="Mechanical Engineering">Mechanical Engineering</option>
-                        <option value="Civil Engineering">Civil Engineering</option>
-                        <option value="Chemical Engineering">Chemical Engineering</option>
-                        <option value="Biomedical Engineering">Biomedical Engineering</option>
-                        <option value="Aerospace Engineering">Aerospace Engineering</option>
-                        <option value="Industrial Engineering">Industrial Engineering</option>
-                        <option value="Environmental Engineering">Environmental Engineering</option>
-                      </optgroup>
-                      <optgroup label="Health & Medicine">
-                        <option value="Medicine">Medicine</option>
-                        <option value="Nursing">Nursing</option>
-                        <option value="Pharmacy">Pharmacy</option>
-                        <option value="Public Health">Public Health</option>
-                        <option value="Dentistry">Dentistry</option>
-                        <option value="Physical Therapy">Physical Therapy</option>
-                        <option value="Occupational Therapy">Occupational Therapy</option>
-                        <option value="Veterinary Science">Veterinary Science</option>
-                      </optgroup>
-                      <optgroup label="Sciences">
-                        <option value="Biology">Biology</option>
-                        <option value="Chemistry">Chemistry</option>
-                        <option value="Physics">Physics</option>
-                        <option value="Mathematics">Mathematics</option>
-                        <option value="Statistics">Statistics</option>
-                        <option value="Environmental Science">Environmental Science</option>
-                        <option value="Agriculture">Agriculture</option>
-                      </optgroup>
-                      <optgroup label="Social Sciences & Humanities">
-                        <option value="Psychology">Psychology</option>
-                        <option value="Sociology">Sociology</option>
-                        <option value="Political Science">Political Science</option>
-                        <option value="International Relations">International Relations</option>
-                        <option value="Anthropology">Anthropology</option>
-                        <option value="History">History</option>
-                        <option value="Philosophy">Philosophy</option>
-                        <option value="English">English</option>
-                        <option value="Linguistics">Linguistics</option>
-                        <option value="Theology">Theology</option>
-                      </optgroup>
-                      <optgroup label="Law & Justice">
-                        <option value="Law">Law</option>
-                        <option value="Criminal Justice">Criminal Justice</option>
-                      </optgroup>
-                      <optgroup label="Education & Communication">
-                        <option value="Education">Education</option>
-                        <option value="Communications">Communications</option>
-                        <option value="Journalism">Journalism</option>
-                        <option value="Media Studies">Media Studies</option>
-                      </optgroup>
-                      <optgroup label="Arts & Design">
-                        <option value="Graphic Design">Graphic Design</option>
-                        <option value="Fine Arts">Fine Arts</option>
-                        <option value="Architecture">Architecture</option>
-                        <option value="Urban Planning">Urban Planning</option>
-                        <option value="Music">Music</option>
-                        <option value="Theater">Theater</option>
-                        <option value="Film Studies">Film Studies</option>
-                      </optgroup>
-                      <optgroup label="Other">
-                        <option value="Social Work">Social Work</option>
-                      </optgroup>
-                      <option value="Other">Other (Specify)</option>
-                    </select>
+                      groups={fieldOfStudyGroups}
+                      placeholder="Select a field of study"
+                      error={!!errors[`education_${edu.id}_field`]}
+                    />
                     {(selectValue === 'Other' || isCustomField) && (
                       <input
                         type="text"

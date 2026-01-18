@@ -43,3 +43,40 @@
     display: none;  /* Chrome, Safari and Opera */
   }
 }
+
+@layer components {
+  /* Ensure select dropdowns open downward and are properly positioned */
+  select {
+    position: relative;
+  }
+  
+  select:focus {
+    position: relative;
+    z-index: 50;
+  }
+  
+  /* Force select dropdowns to open downward by ensuring proper stacking context */
+  select[style*="z-index"] {
+    isolation: isolate;
+  }
+}
+
+/* Additional styles to prevent dropdown from opening upward */
+@layer utilities {
+  .select-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .select-wrapper:focus-within {
+    z-index: 100;
+  }
+  
+  .select-wrapper select {
+    position: relative;
+  }
+  
+  .select-wrapper select:focus {
+    z-index: 100;
+  }
+}

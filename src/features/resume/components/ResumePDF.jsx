@@ -567,51 +567,81 @@ function ResumePDF({ resumeData, selectedTemplate = 'modern', selectedFont = 'in
     <View style={styles.twoColumn}>
       <View style={styles.corporateLeft}>
         {renderSectionHeader('Education')}
-        {(resumeData.education.length > 0 ? resumeData.education : []).map(edu => (
-          <View key={edu.id} style={{ marginBottom: 8 }}>
-            <Text style={[styles.position, { fontSize: 10 }]}>{edu.degree || 'Degree'}</Text>
-            <Text style={styles.company}>{edu.school || 'School'}</Text>
-            {edu.field && <Text style={[styles.date, { textAlign: 'left' }]}>{edu.field}</Text>}
-            <Text style={styles.date}>{edu.startDate} - {edu.endDate}</Text>
-          </View>
-        ))}
+        <View style={styles.modernSectionContent}>
+          {(resumeData.education.length > 0 ? resumeData.education : []).map(edu => (
+            <View key={edu.id} style={{ marginBottom: 8 }}>
+              <Text style={[styles.position, { fontSize: 10 }]}>{edu.degree || 'Degree'}</Text>
+              <Text style={styles.company}>{edu.school || 'School'}</Text>
+              {edu.field && <Text style={[styles.date, { textAlign: 'left', fontStyle: 'italic', fontSize: 8.5 }]}>{edu.field}</Text>}
+              <Text style={[styles.date, { textAlign: 'left', fontSize: 8.5 }]}>{edu.startDate} - {edu.endDate}</Text>
+              {edu.gpa && <Text style={[styles.date, { textAlign: 'left', fontSize: 8.5 }]}>GPA: {edu.gpa}</Text>}
+            </View>
+          ))}
+        </View>
 
         {renderSectionHeader('Skills')}
-        {(resumeData.skills.length > 0 ? resumeData.skills : []).map(skill => (
-          <Text key={skill.id} style={styles.bulletPoint}>• {skill.name}</Text>
-        ))}
+        <View style={styles.modernSectionContent}>
+          {(resumeData.skills.length > 0 ? resumeData.skills : []).map(skill => (
+            <Text key={skill.id} style={styles.bulletPoint}>• {skill.name}</Text>
+          ))}
+        </View>
+
+        {renderSectionHeader('Languages')}
+        <View style={styles.modernSectionContent}>
+          {(resumeData.languages.length > 0 ? resumeData.languages : []).map(lang => (
+            <View key={lang.id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 }}>
+              <Text style={[styles.listItem, { fontWeight: 'bold', marginBottom: 0 }]}>{lang.name}</Text>
+              <Text style={[styles.listItem, { fontSize: 8, color: colorScheme.colors.muted, marginBottom: 0 }]}>{lang.proficiency}</Text>
+            </View>
+          ))}
+        </View>
+
+        {renderSectionHeader('Certifications')}
+        <View style={styles.modernSectionContent}>
+          {(resumeData.certifications.length > 0 ? resumeData.certifications : []).map(cert => (
+            <View key={cert.id} style={{ marginBottom: 3, lineHeight: 1.3 }}>
+              <Text style={[styles.listItem, { fontWeight: 'bold', marginBottom: 0 }]}>{cert.name}</Text>
+              {cert.issuer && <Text style={[styles.listItem, { fontSize: 8.5, marginBottom: 0 }]}>{cert.issuer}</Text>}
+              {cert.date && <Text style={[styles.listItem, { fontSize: 8, color: colorScheme.colors.muted, marginBottom: 0 }]}>{cert.date}</Text>}
+            </View>
+          ))}
+        </View>
       </View>
 
       <View style={styles.corporateRight}>
         {resumeData.summary && (
           <>
             {renderSectionHeader('Professional Summary')}
-            <Text style={styles.summary}>{resumeData.summary}</Text>
+            <View style={styles.modernSectionContent}>
+              <Text style={styles.summary}>{resumeData.summary}</Text>
+            </View>
           </>
         )}
 
         {renderSectionHeader('Work History')}
-        {(resumeData.experience.length > 0 ? resumeData.experience : []).map(exp => (
-          <View key={exp.id} style={styles.experienceItem}>
-            <View style={styles.experienceHeader}>
-              <View style={{ flex: 1 }}>
-                <Text style={[styles.position, { fontSize: 10.5 }]}>{exp.position || 'Position'}</Text>
-                <Text style={[styles.company, { fontSize: 9.5 }]}>{exp.company || 'Company'}</Text>
+        <View style={styles.modernSectionContent}>
+          {(resumeData.experience.length > 0 ? resumeData.experience : []).map(exp => (
+            <View key={exp.id} style={styles.experienceItem}>
+              <View style={styles.experienceHeader}>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.position, { fontSize: 10.5 }]}>{exp.position || 'Position'}</Text>
+                  <Text style={[styles.company, { fontSize: 9.5 }]}>{exp.company || 'Company'}</Text>
+                </View>
+                <View style={{ alignItems: 'flex-end' }}>
+                  {exp.location && <Text style={styles.location}>{exp.location}</Text>}
+                  <Text style={styles.date}>
+                    {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                  </Text>
+                </View>
               </View>
-              <View style={{ alignItems: 'flex-end' }}>
-                {exp.location && <Text style={styles.location}>{exp.location}</Text>}
-                <Text style={styles.date}>
-                  {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+              {exp.description && exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
+                <Text key={idx} style={[styles.bulletPoint, { paddingLeft: 12 }]}>
+                  {line.trim().replace(/^[•\-]\s*/, '')}
                 </Text>
-              </View>
+              ))}
             </View>
-            {exp.description && exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
-              <Text key={idx} style={[styles.bulletPoint, { paddingLeft: 12 }]}>
-                {line.trim().replace(/^[•\-]\s*/, '')}
-              </Text>
-            ))}
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
     </View>
   )

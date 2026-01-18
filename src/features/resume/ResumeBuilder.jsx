@@ -170,7 +170,7 @@ function ResumeBuilder({
           <div className="flex-1 flex justify-center lg:justify-start min-w-0 lg:ml-4">
             <div className="max-w-[200px] sm:max-w-[280px] md:max-w-md w-full">
               <div className="flex items-center justify-between mb-1 sm:mb-1.5 gap-1">
-              {sections.map((section, index) => (
+              {sections && sections.length > 0 && sections.map((section, index) => (
                 <div
                   key={section.id}
                   className={`flex flex-col items-center gap-0.5 transition-all cursor-default flex-shrink-0 ${
@@ -203,7 +203,11 @@ function ResumeBuilder({
               ></div>
             </div>
             <div className="text-center mt-0.5 text-[8px] sm:text-[9px] text-gray-600 px-1">
-              Step {currentSection + 1} of {sections.length}: {sections[currentSection].label}
+              {sections && sections.length > 0 && sections[currentSection] ? (
+                <>Step {currentSection + 1} of {sections.length}: {sections[currentSection].label}</>
+              ) : (
+                'Loading...'
+              )}
             </div>
             </div>
           </div>

@@ -71,6 +71,58 @@ export default function CorporateLayout({
               </ul>
             </div>
           </section>
+
+        {/* Languages */}
+        <section className="mb-4" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Languages', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <ul className="list-none p-0 m-0">
+              {hasContent.languages(resumeData.languages) ? (
+                  resumeData.languages.map(lang => (
+                    <li key={lang.id} className="py-0.5 flex justify-between items-center text-[9pt] leading-[1.4] text-gray-700" style={textFlowStyles}>
+                      <span className="font-medium">{lang.name}</span>
+                      <span className="text-[8pt] text-gray-600">{lang.proficiency}</span>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li className="py-0.5 flex justify-between items-center text-[9pt] leading-[1.4] text-gray-400 italic" style={textFlowStyles}>
+                      <span className="font-medium">English</span>
+                      <span className="text-[8pt]">Native</span>
+                    </li>
+                    <li className="py-0.5 flex justify-between items-center text-[9pt] leading-[1.4] text-gray-400 italic" style={textFlowStyles}>
+                      <span className="font-medium">Spanish</span>
+                      <span className="text-[8pt]">Fluent</span>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </div>
+          </section>
+
+        {/* Certifications */}
+        <section className="mb-0" style={{ padding: 0, margin: 0 }}>
+          {renderSectionHeader('Certifications', selectedTemplate, colorScheme, themeColor)}
+          <div style={{ paddingTop: '7pt', margin: 0 }}>
+            <div className="flex flex-col gap-1.5">
+              {hasContent.certifications(resumeData.certifications) ? (
+                  resumeData.certifications.map(cert => (
+                    <div key={cert.id} className="leading-[1.3]">
+                      <div className="text-[9pt] font-semibold mb-0 text-gray-900" style={textFlowStyles}>{cert.name}</div>
+                      {cert.issuer && <div className="text-[8.5pt] text-gray-600" style={textFlowStyles}>{cert.issuer}</div>}
+                      {cert.date && <div className="text-[8pt] text-gray-600" style={textFlowStyles}>{cert.date}</div>}
+                    </div>
+                  ))
+                ) : (
+                  <div className="leading-[1.3]">
+                    <div className="text-[9pt] font-semibold text-gray-400 italic mb-0">AWS Certified</div>
+                    <div className="text-[8.5pt] text-gray-400 italic">Amazon Web Services</div>
+                    <div className="text-[8pt] text-gray-400 italic">Jan 2023</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
       </aside>
 
       {/* Right Column - Summary and Work History - Fixed width in print units */}

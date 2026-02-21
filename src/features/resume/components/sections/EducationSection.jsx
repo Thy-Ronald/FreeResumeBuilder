@@ -16,6 +16,7 @@ const DEGREE_OPTIONS = [
   'Bachelor of Business Administration (BBA)',
   'Bachelor of Fine Arts (BFA)',
   'Bachelor of Architecture (BArch)',
+  'Bachelor of Information Technology (BSIT)',
   'Bachelor of Computer Science (BCS)',
   'Bachelor of Nursing (BN)',
   'Bachelor of Education (BEd)',
@@ -152,11 +153,10 @@ export default function EducationSection({
                     setErrors(prev => ({ ...prev, [`education_${edu.id}_school`]: null }))
                   }
                 }}
-                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                  errors[`education_${edu.id}_school`]
-                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                    : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                }`}
+                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${errors[`education_${edu.id}_school`]
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                  }`}
               />
               {errors[`education_${edu.id}_school`] && (
                 <p className="text-xs text-red-500">{errors[`education_${edu.id}_school`]}</p>
@@ -169,7 +169,7 @@ export default function EducationSection({
               {(() => {
                 const isCustomDegree = edu.degree && !DEGREE_OPTIONS.includes(edu.degree)
                 const selectValue = isCustomDegree ? 'Other' : (edu.degree || '')
-                
+
                 const degreeGroups = [
                   {
                     label: 'Associate Degrees',
@@ -192,7 +192,7 @@ export default function EducationSection({
                     options: ['Professional Certificate', 'Diploma', 'Certificate', 'Other']
                   }
                 ]
-                
+
                 return (
                   <>
                     <CustomSelect
@@ -222,11 +222,10 @@ export default function EducationSection({
                             setErrors(prev => ({ ...prev, [`education_${edu.id}_degree`]: null }))
                           }
                         }}
-                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 mt-2 ${
-                          errors[`education_${edu.id}_degree`]
-                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                        }`}
+                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 mt-2 ${errors[`education_${edu.id}_degree`]
+                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                          }`}
                       />
                     )}
                   </>
@@ -243,7 +242,7 @@ export default function EducationSection({
               {(() => {
                 const isCustomField = edu.field && !FIELD_OF_STUDY_OPTIONS.includes(edu.field)
                 const selectValue = isCustomField ? 'Other' : (edu.field || '')
-                
+
                 const fieldOfStudyGroups = [
                   {
                     label: 'Computer & Technology',
@@ -286,7 +285,7 @@ export default function EducationSection({
                     options: ['Social Work', 'Other']
                   }
                 ]
-                
+
                 return (
                   <>
                     <CustomSelect
@@ -316,11 +315,10 @@ export default function EducationSection({
                             setErrors(prev => ({ ...prev, [`education_${edu.id}_field`]: null }))
                           }
                         }}
-                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 mt-2 ${
-                          errors[`education_${edu.id}_field`]
-                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                        }`}
+                        className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 mt-2 ${errors[`education_${edu.id}_field`]
+                          ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                          : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                          }`}
                       />
                     )}
                   </>
@@ -356,11 +354,10 @@ export default function EducationSection({
                     setErrors(prev => ({ ...prev, [`education_${edu.id}_startDate`]: null }))
                   }
                 }}
-                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                  errors[`education_${edu.id}_startDate`]
-                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                    : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                }`}
+                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${errors[`education_${edu.id}_startDate`]
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                  }`}
               />
               {errors[`education_${edu.id}_startDate`] && (
                 <p className="text-xs text-red-500">{errors[`education_${edu.id}_startDate`]}</p>
@@ -380,11 +377,10 @@ export default function EducationSection({
                     setErrors(prev => ({ ...prev, [`education_${edu.id}_endDate`]: null }))
                   }
                 }}
-                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${
-                  errors[`education_${edu.id}_endDate`]
-                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                    : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-                }`}
+                className={`w-full px-3 py-2.5 border rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 ${errors[`education_${edu.id}_endDate`]
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+                  }`}
               />
               {errors[`education_${edu.id}_endDate`] && (
                 <p className="text-xs text-red-500">{errors[`education_${edu.id}_endDate`]}</p>
